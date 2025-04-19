@@ -7,9 +7,7 @@ on:
 
 jobs:
   deploy:
-    uses: TheClusterFlux/central-workflows/.github/workflows/deploy.yaml@main
+    uses: TheClusterFlux/central-workflows/.github/workflows/k8Deploy.yaml@main
     secrets: 
-      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       KUBECONFIG: ${{ secrets.KUBECONFIG }}
     
