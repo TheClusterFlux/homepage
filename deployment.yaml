@@ -33,17 +33,27 @@ data:
   custom.css: ""
   custom.js: ""
   bookmarks.yaml: |
-    - Developer:
-        - Github:
-            - abbr: GH
-              href: https://github.com/
+    - Github Pages:
+        - Orginization Page:
+            - href: https://github.com/TheClusterFlux
+        - Keanu Watts:
+            - href: https://github.com/KeanuWatts
+        - Dean Nortje:
+            - href: https://github.com/Deannortje
+        - Stephen Potgieter:
+            - href: https://github.com/stephenlpx
   services.yaml: |
-    - My First Group:
-        - My First Service:
-            href: http://localhost/
-            description: Homepage is awesome
+    - Cluster Services:
+        - sqlite:
+            links:
+              - href: https://github.com/TheClusterFlux/sqlite
+                description: GitHub repository for the SQLite service.
+              - href: https://sqlite.theclusterflux.com
+                description: Service page for SQLite.
+            author: "keanu Watts"
+            description: a simple sqlite db service that allows services to store data in them without needing to manage their own persistent storage.
 
-    - My Second Group:
+    - Usable services:
         - My Second Service:
             href: http://localhost/
             description: Homepage is the best
@@ -254,4 +264,3 @@ spec:
               name: homepage
               port:
                 number: 3000
-                
