@@ -166,7 +166,7 @@ spec:
           imagePullPolicy: Always
           env:
             - name: HOMEPAGE_ALLOWED_HOSTS
-          value: "homepage.theclusterflux.com" 
+              value: "homepage.theclusterflux.com" # Add the correct host here
           ports:
             - name: http
               containerPort: 3000
