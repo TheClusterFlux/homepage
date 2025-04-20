@@ -12,8 +12,8 @@
   },
   {
     "title": "BigBrother Bot",
-    "description": "A chatbot for monitoring and managing BigBrother alerts.",
-    "tech": ["Python", "Flask", "Slack API"],
+    "description": "A Discord bot that tracks and logs user activity in voice channels.",
+    "tech": ["Python", "Discord API"],
     "links": {
       "source": "https://github.com/TheClusterFlux/BigBrotherBot"
     },
