@@ -1,0 +1,67 @@
+[
+  {
+    "title": "BigBrother",
+    "description": "",
+    "tech": [""],
+    "links": {
+      "source": "https://github.com/TheClusterFlux/BigBrother",
+      "visit": "https://bigbrother.theclusterflux.com"
+    },
+    "image": "assets/BigBrother.jpg",
+    "author": "Dean Nortje"
+  },
+  {
+    "title": "BigBrother Bot",
+    "description": "A chatbot for monitoring and managing BigBrother alerts.",
+    "tech": ["Python", "Flask", "Slack API"],
+    "links": {
+      "source": "https://github.com/TheClusterFlux/BigBrotherBot"
+    },
+    "image": "assets/BigBrotherBot.jpg",
+    "author": "Keanu Watts"
+  },
+  {
+    "title": "homepage",
+    "description": "This portfolio page.",
+    "tech": ["HTML", "CSS", "JavaScript"],
+    "links": {
+      "source": "https://github.com/TheClusterFlux/homepage",
+      "visit": "https://homepage.theclusterflux.com"
+    },
+    "image": "assets/homepage.png",
+    "author": "Keanu Watts"
+  },
+  {
+    "title": "sqlite",
+    "description": "A lightweight SQLite wrapper for other services on the cluster to use, with a web interface to see an overview of the data.",
+    "tech": ["SQLite", "Python"],
+    "links": {
+      "source": "https://github.com/TheClusterFlux/sqlite",
+      "visit": "https://sqlite.theclusterflux.com"
+    },
+    "image": "assets/sqlite.png",
+    "author": "Keanu Watts"
+  },
+  {
+    "title": "Susca Watts",
+    "description": "A website for Susca Watts Academy.",
+    "tech": [""],
+    "links": {
+      "source": "https://github.com/TheClusterFlux/susca-watts",
+      "visit": "https://susca-watts.theclusterflux.com"
+    },
+    "image": "assets/susca-watts.jpg",
+    "author": "Stephen Potgieter"
+  },
+  {
+    "title": "Habit Tracker",
+    "description": "A web app for tracking habits and goals.",
+    "tech": ["HTML", "CSS", "JavaScript"],
+    "links": {
+      "source": "https://github.com/TheClusterFlux/HabitTracker",
+      "visit": "https://habit-tracker.theclusterflux.com"
+    },
+    "image": "assets/habit-tracker.jpg",
+    "author": "Keanu Watts"
+  }
+]
