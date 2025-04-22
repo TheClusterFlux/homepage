@@ -1,16 +1,5 @@
 [
   {
-    "title": "BigBrother",
-    "description": "",
-    "tech": [""],
-    "links": {
-      "source": "https://github.com/TheClusterFlux/BigBrother",
-      "visit": "https://bigbrother.theclusterflux.com"
-    },
-    "image": "assets/BigBrother.jpg",
-    "author": "Dean Nortje"
-  },
-  {
     "title": "BigBrother Bot",
     "description": "A Discord bot that tracks and logs user activity in voice channels.",
     "tech": ["Python", "Discord API"],
@@ -62,6 +51,36 @@
       "visit": "https://habit-tracker.theclusterflux.com"
     },
     "image": "assets/habit-tracker.jpg",
+    "author": "Keanu Watts"
+  },
+  {
+    "title": "Replay Hub API",
+    "description": "A web app for tracking and sharing game replays.",
+    "tech": ["S3", "Python"],
+    "links": {
+      "source": "https://github.com/TheClusterFlux/replay-hub"
+    },
+    "image": "assets/replay-hub.webp",
+    "author": "Keanu Watts"
+  },
+  {
+    "title": "Replay Hub Bot",
+    "description": "A discord bot for uploading replays to the Replay Hub.",
+    "tech": ["Python", "Discord API"],
+    "links": {
+      "source": "https://github.com/TheClusterFlux/replay-hub-bot"
+    },
+    "image": "assets/replay-hub-bot.webp",
+    "author": "Keanu Watts"
+  },
+  {
+    "title": "MongoDB",
+    "description": "A MongoDB service for other services on the cluster to use",
+    "tech": ["MongoDB", "Helm"],
+    "links": {
+      "source": "https://github.com/TheClusterFlux/MongoDB"
+    },
+    "image": "assets/mongodb.webp",
     "author": "Keanu Watts"
   }
 ]
