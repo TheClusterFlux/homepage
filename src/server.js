@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const multer = require('multer');
-const { fetchAndSaveHomepageData,addProjectWithImage,addCreator } = require('./src/datamanagement');
+const { fetchAndSaveHomepageData, addProjectWithImage, addCreator } = require('./dataManagement');
 const fs = require('fs');
 
 const app = express();
