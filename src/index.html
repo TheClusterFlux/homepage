@@ -85,9 +85,10 @@
 </div>
 
 <script>
+  const baseURL = "https://homepage.theclusterflux.com";
   // Fetch creators and populate the filter and creators section
   function fetchCreators() {
-    fetch('/data/creators.json')
+    fetch(`${baseURL}/api/creators.json`)
       .then(response => response.json())
       .then(creators => {
         const filter = document.getElementById('creator-filter');
@@ -126,7 +127,7 @@
   });
 
   function fetchProjects() {
-    fetch('/data/projects.json')
+    fetch(`${baseURL}/api/projects.json`)
       .then(response => response.json())
       .then(projects => {
         const container = document.getElementById('projects');
@@ -134,7 +135,7 @@
         projects.forEach(project => {
           container.innerHTML += `
             <div class="card">
-              <img src="/thumbnails/${project.image}" alt="${project.title}">
+              <img src="${baseURL}/thumbnails/${project.image}" alt="${project.title}">
               <div class="card-body">
                 <h5>${project.title}</h5>
                 <p>${project.description}</p>
@@ -227,7 +228,7 @@
       linkItem.remove();
     });
   });
-addProjectForm.addEventListener('submit', (event) => {
+  addProjectForm.addEventListener('submit', (event) => {
     event.preventDefault();
 
     const formData = new FormData(addProjectForm);
@@ -235,23 +236,23 @@ addProjectForm.addEventListener('submit', (event) => {
 
     // Convert FormData to JSON
     formData.forEach((value, key) => {
-        if (key === 'link-name[]' || key === 'link-url[]') {
-            const index = key === 'link-name[]' ? 'name' : 'url';
-            projectData.links[index] = projectData.links[index] || [];
-            projectData.links[index].push(value);
-        } else if (key.endsWith('[]')) {
-            const cleanKey = key.replace('[]', '');
-            projectData[cleanKey] = projectData[cleanKey] || [];
-            projectData[cleanKey].push(value);
-        } else {
-            projectData[key] = value;
-        }
+      if (key === 'link-name[]' || key === 'link-url[]') {
+        const index = key === 'link-name[]' ? 'name' : 'url';
+        projectData.links[index] = projectData.links[index] || [];
+        projectData.links[index].push(value);
+      } else if (key.endsWith('[]')) {
+        const cleanKey = key.replace('[]', '');
+        projectData[cleanKey] = projectData[cleanKey] || [];
+        projectData[cleanKey].push(value);
+      } else {
+        projectData[key] = value;
+      }
     });
 
     // Combine link-name[] and link-url[] into a single object
     const combinedLinks = {};
     (projectData.links.name || []).forEach((name, i) => {
-        combinedLinks[name] = projectData.links.url[i];
+      combinedLinks[name] = projectData.links.url[i];
     });
     projectData.links = combinedLinks;
 
@@ -269,28 +270,27 @@ addProjectForm.addEventListener('submit', (event) => {
     formData.append('projectData', JSON.stringify(projectData));
 
     // Submit the form data
-    fetch('/api/add-project', {
-        method: 'POST',
-        body: formData,
+    fetch(`${baseURL}/api/add-project`, {
+      method: 'POST',
+      body: formData,
     })
-        .then((response) => {
-            if (response.ok) {
-                console.log('Project added successfully');
-                addProjectModal.classList.add('hidden');
-                fetchProjects(); // Refresh the projects on the page
-            } else {
-                // Parse and display the error message
-                return response.text().then((errorMessage) => {
-                    console.error('Failed to add project:', errorMessage);
-                    alert(`Error: ${errorMessage}`); // Show the error to the user
-                });
-            }
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            alert(`Error: ${error.message}`); // Show network or other errors
-        });
-});
+      .then((response) => {
+        if (response.ok) {
+          console.log('Project added successfully');
+          addProjectModal.classList.add('hidden');
+          fetchProjects(); // Refresh the projects on the page
+        } else {
+          return response.text().then((errorMessage) => {
+            console.error('Failed to add project:', errorMessage);
+            alert(`Error: ${errorMessage}`); // Show the error to the user
+          });
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        alert(`Error: ${error.message}`); // Show network or other errors
+      });
+  });
 
 
   const addCreatorButton = document.getElementById('add-creator-button');
@@ -319,7 +319,7 @@ addProjectForm.addEventListener('submit', (event) => {
     });
 
     // Submit the form data
-    fetch('/api/add-creator', {
+    fetch(`${baseURL}/api/add-creator`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(creatorData),
