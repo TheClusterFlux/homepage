@@ -266,11 +266,13 @@
 
     projectData.password = formData.get('password'); // Correctly assign the password from the form data
 
+    formData.append('projectData', JSON.stringify(projectData)); // Append the project data as a JSON string
+    
 
     // Submit the form data
     fetch(`${baseURL}/api/add-project`, {
       method: 'POST',
-      body: JSON.stringify(projectData),
+      body: formData,
     })
       .then((response) => {
         if (response.ok) {
