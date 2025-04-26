@@ -264,15 +264,13 @@
         projectData.fileType = fileExtension; // Add fileType to projectData
     }
 
-    projectData.password = password; // Add password to projectData
+    projectData.password = formData.get('password'); // Correctly assign the password from the form data
 
-    // Append JSON string to FormData
-    formData.append('projectData', JSON.stringify(projectData));
 
     // Submit the form data
     fetch(`${baseURL}/api/add-project`, {
       method: 'POST',
-      body: formData,
+      body: projectData,
     })
       .then((response) => {
         if (response.ok) {

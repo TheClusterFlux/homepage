@@ -36,7 +36,7 @@ app.get('/api/fetch-data', async (req, res) => {
 app.post('/api/add-project', upload.single('image'), async (req, res) => {
     try {
         // Parse project data from the request body
-        const projectData = JSON.parse(req.body.projectData); // Use the correct key for the JSON data
+        const projectData = JSON.parse(req.body); // Use the correct key for the JSON data
         console.log('Project Data:', projectData);
 
         const imagePath = req.file.path; // Path to the uploaded image
