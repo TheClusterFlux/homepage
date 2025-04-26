@@ -1,0 +1,18 @@
+{
+  "name": "homepage",
+  "version": "1.0.0",
+  "description": "once read, please replace this readme with one detailing your service, what it does, how to use it, and any other relevant information. 😊",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "mongodb": "^6.16.0",
+    "multer": "^1.4.5-lts.2"
+  }
+}

@@ -1,15 +1,20 @@
-
 <link rel="stylesheet" href="style.css">
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
 <header class="header">
-  
+  <div class="header-buttons">
+    <button id="refresh-button" class="refresh-button">
+      <i class="fas fa-sync-alt"></i> <!-- Font Awesome Icon -->
+    </button>
+    <button id="add-project-button" class="add-project-button">Add Project</button>
+    <button id="add-creator-button" class="add-creator-button">Add Creator</button>
+  </div>
   <input
-  type="text"
-  id="search-bar"
-  class="search-bar"
-  placeholder="Search by title or tech..."
-/>
+    type="text"
+    id="search-bar"
+    class="search-bar"
+    placeholder="Search by title or tech..."
+  />
   <div id="filter-container" class="filter-container">
     <label for="creator-filter">Filter by Author:</label>
     <select id="creator-filter">
@@ -17,7 +22,6 @@
     </select>
   </div>
 </header>
-
 
 <div id="projects" class="projects-grid"></div>
 
@@ -27,15 +31,68 @@
   <a href="https://github.com/TheClusterFlux" target="_blank" class="org-link">Visit Our GitHub</a>
 </div>
 
-<script>
+<!-- Add Project Modal -->
+<div id="add-project-modal" class="modal hidden">
+  <div class="modal-content">
+    <button id="close-project-modal" class="close-button">&times;</button> <!-- Close Button -->
+    <h2>Add New Project</h2>
+    <form id="add-project-form" class="vertical-form">
+      <label for="title">Title:</label>
+      <input type="text" id="title" name="title" required />
 
-   // Fetch creators and populate the filter and creators section
-   function fetchCreators() {
-    fetch('/creators.json')
+      <label for="description">Description:</label>
+      <textarea id="description" name="description" required></textarea>
+
+      <label for="author">Author:</label>
+      <input type="text" id="author" name="author" required />
+
+      <label for="tech">Tech (comma-separated):</label>
+      <input type="text" id="tech" name="tech" required />
+
+      <label>Links:</label>
+      <div id="links-container"></div>
+      <button type="button" id="add-link-button">Add Link</button>
+
+      <label for="image">Upload Image:</label>
+      <input type="file" id="image" name="image" accept="image/*" required />
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required />
+
+      <button type="submit" class="submit-button">Submit</button>
+    </form>
+  </div>
+</div>
+
+<!-- Add Creator Modal -->
+<div id="add-creator-modal" class="modal hidden">
+  <div class="modal-content">
+    <button id="close-creator-modal" class="close-button">&times;</button> <!-- Close Button -->
+    <h2>Add New Creator</h2>
+    <form id="add-creator-form" class="vertical-form">
+      <label for="creator-name">Name:</label>
+      <input type="text" id="creator-name" name="name" required />
+
+      <label for="creator-github">GitHub:</label>
+      <input type="url" id="creator-github" name="github" required />
+
+      <label for="creator-password">Password:</label>
+      <input type="password" id="creator-password" name="password" required />
+
+      <button type="submit" class="submit-button">Submit</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Fetch creators and populate the filter and creators section
+  function fetchCreators() {
+    fetch('/data/creators.json')
       .then(response => response.json())
       .then(creators => {
         const filter = document.getElementById('creator-filter');
         const creatorsList = document.getElementById('creators-list');
+        creatorsList.innerHTML = ''; // Clear existing creators
 
         creators.forEach(creator => {
           // Add to filter dropdown
@@ -52,6 +109,7 @@
       })
       .catch(error => console.error('Error fetching creators:', error));
   }
+
   // Filter projects based on the selected creator
   document.getElementById('creator-filter').addEventListener('change', (event) => {
     const selectedCreator = event.target.value;
@@ -66,55 +124,219 @@
       }
     });
   });
-  
+
   function fetchProjects() {
-      fetch('/projects.json')
-        .then(response => response.json())
-        .then(projects => {
-          const container = document.getElementById('projects');
-          projects.forEach(project => {
-            container.innerHTML += `
-              <div class="card">
-                <img src="${project.image}" alt="${project.title}">
-                <div class="card-body">
-                  <h5>${project.title}</h5>
-                  <p>${project.description}</p>
-                  <div class="tech-list">Tech: ${project.tech.join(', ')}</div>
-                  <p class="author">Author: ${project.author}</p>
-                  ${Object.entries(project.links)
-                    .map(
-                      ([key, url]) =>
-                        `<a href="${url}" class="btn" target="_blank">${key}</a>` // Added target="_blank"
-                    )
-                    .join(' ')}
-                </div>
+    fetch('/data/projects.json')
+      .then(response => response.json())
+      .then(projects => {
+        const container = document.getElementById('projects');
+        container.innerHTML = ''; // Clear existing projects
+        projects.forEach(project => {
+          container.innerHTML += `
+            <div class="card">
+              <img src="/thumbnails/${project.image}" alt="${project.title}">
+              <div class="card-body">
+                <h5>${project.title}</h5>
+                <p>${project.description}</p>
+                <div class="tech-list">Tech: ${project.tech}</div>
+                <p class="author">Author: ${project.author}</p>
+                ${Object.entries(project.links)
+                  .map(
+                    ([key, url]) =>
+                      `<a href="${url}" class="btn" target="_blank">${key}</a>`
+                  )
+                  .join(' ')}
               </div>
-            `;
-          });
-        })
-        .catch(error => console.error('Error fetching projects:', error));
-    }
+            </div>
+          `;
+        });
+      })
+      .catch(error => console.error('Error fetching projects:', error));
+  }
 
   // Initialize the page
-  // fetchClusterInfo();
   fetchCreators();
   fetchProjects();
 
   // Filter projects based on the search input
-document.getElementById('search-bar').addEventListener('input', (event) => {
-  const searchTerm = event.target.value.toLowerCase();
-  const projectCards = document.querySelectorAll('.card');
+  document.getElementById('search-bar').addEventListener('input', (event) => {
+    const searchTerm = event.target.value.toLowerCase();
+    const projectCards = document.querySelectorAll('.card');
 
-  projectCards.forEach((card) => {
-    const title = card.querySelector('h5').textContent.toLowerCase();
-    const tech = card.querySelector('.tech-list').textContent.toLowerCase();
+    projectCards.forEach((card) => {
+      const title = card.querySelector('h5').textContent.toLowerCase();
+      const tech = card.querySelector('.tech-list').textContent.toLowerCase();
 
-    if (title.includes(searchTerm) || tech.includes(searchTerm)) {
-      card.style.display = 'block';
-    } else {
-      card.style.display = 'none';
-    }
+      if (title.includes(searchTerm) || tech.includes(searchTerm)) {
+        card.style.display = 'block';
+      } else {
+        card.style.display = 'none';
+      }
+    });
   });
+
+  // Refresh Button: Call /api/fetch-data
+  document.getElementById('refresh-button').addEventListener('click', () => {
+    fetch('/api/fetch-data')
+      .then(response => {
+        if (response.ok) {
+          console.log('Data fetched and saved locally');
+          fetchProjects(); // Refresh the projects on the page
+          fetchCreators(); // Refresh the creators on the page
+        } else {
+          console.error('Failed to fetch data');
+        }
+      })
+      .catch(error => console.error('Error:', error));
+  });
+
+  // Add Project Button: Show Modal
+  const addProjectButton = document.getElementById('add-project-button');
+  const addProjectModal = document.getElementById('add-project-modal');
+  const closeModalButton = document.getElementById('close-project-modal');
+  const addProjectForm = document.getElementById('add-project-form');
+
+  addProjectButton.addEventListener('click', () => {
+    addProjectModal.classList.remove('hidden');
+  });
+
+  closeModalButton.addEventListener('click', () => {
+    addProjectModal.classList.add('hidden');
+  });
+
+  // Add Link Button Logic
+  const linksContainer = document.getElementById('links-container');
+  const addLinkButton = document.getElementById('add-link-button');
+  const closeProjectModalButton = document.getElementById('close-project-modal');
+  closeProjectModalButton.addEventListener('click', () => {
+    addProjectModal.classList.add('hidden');
+  });
+
+  addLinkButton.addEventListener('click', () => {
+    const linkItem = document.createElement('div');
+    linkItem.classList.add('link-item');
+    linkItem.innerHTML = `
+      <input type="text" name="link-name[]" placeholder="Link Name" required />
+      <input type="url" name="link-url[]" placeholder="Link URL" required />
+      <button type="button" class="remove-link-button">Remove</button>
+    `;
+    linksContainer.appendChild(linkItem);
+
+    // Add remove functionality to the new button
+    linkItem.querySelector('.remove-link-button').addEventListener('click', () => {
+      linkItem.remove();
+    });
+  });
+addProjectForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(addProjectForm);
+    const projectData = { links: {} };
+
+    // Convert FormData to JSON
+    formData.forEach((value, key) => {
+        if (key === 'link-name[]' || key === 'link-url[]') {
+            const index = key === 'link-name[]' ? 'name' : 'url';
+            projectData.links[index] = projectData.links[index] || [];
+            projectData.links[index].push(value);
+        } else if (key.endsWith('[]')) {
+            const cleanKey = key.replace('[]', '');
+            projectData[cleanKey] = projectData[cleanKey] || [];
+            projectData[cleanKey].push(value);
+        } else {
+            projectData[key] = value;
+        }
+    });
+
+    // Combine link-name[] and link-url[] into a single object
+    const combinedLinks = {};
+    (projectData.links.name || []).forEach((name, i) => {
+        combinedLinks[name] = projectData.links.url[i];
+    });
+    projectData.links = combinedLinks;
+
+    // Extract file type from the uploaded file
+    const fileInput = document.getElementById('image');
+    if (fileInput.files.length > 0) {
+        const fileName = fileInput.files[0].name;
+        const fileExtension = fileName.substring(fileName.lastIndexOf('.') + 1);
+        projectData.fileType = fileExtension; // Add fileType to projectData
+    }
+
+    projectData.password = password; // Add password to projectData
+
+    // Append JSON string to FormData
+    formData.append('projectData', JSON.stringify(projectData));
+
+    // Submit the form data
+    fetch('/api/add-project', {
+        method: 'POST',
+        body: formData,
+    })
+        .then((response) => {
+            if (response.ok) {
+                console.log('Project added successfully');
+                addProjectModal.classList.add('hidden');
+                fetchProjects(); // Refresh the projects on the page
+            } else {
+                // Parse and display the error message
+                return response.text().then((errorMessage) => {
+                    console.error('Failed to add project:', errorMessage);
+                    alert(`Error: ${errorMessage}`); // Show the error to the user
+                });
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert(`Error: ${error.message}`); // Show network or other errors
+        });
 });
 
+
+  const addCreatorButton = document.getElementById('add-creator-button');
+  const addCreatorModal = document.getElementById('add-creator-modal');
+  const closeCreatorModalButton = document.getElementById('close-creator-modal');
+  const addCreatorForm = document.getElementById('add-creator-form');
+
+  addCreatorButton.addEventListener('click', () => {
+    addCreatorModal.classList.remove('hidden');
+  });
+
+  closeCreatorModalButton.addEventListener('click', () => {
+    addCreatorModal.classList.add('hidden');
+  });
+
+  // Submit Add Creator Form
+  addCreatorForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const formData = new FormData(addCreatorForm);
+    const creatorData = {};
+
+    // Convert FormData to JSON
+    formData.forEach((value, key) => {
+      creatorData[key] = value;
+    });
+
+    // Submit the form data
+    fetch('/api/add-creator', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(creatorData),
+    })
+      .then((response) => {
+        if (response.ok) {
+          console.log('Creator added successfully');
+          addCreatorModal.classList.add('hidden');
+          fetchCreators(); // Refresh the creators on the page
+        } else {
+          // Parse and display the error message
+          return response.text().then((errorMessage) => {
+            console.error('Failed to add creator:', errorMessage);
+            alert(`${errorMessage}`); // Show the error to the user
+          });
+        }
+      })
+      .catch((error) => console.error('Error:', error));
+  });
 </script>
