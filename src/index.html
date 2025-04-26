@@ -88,7 +88,7 @@
   const baseURL = "https://homepage.theclusterflux.com";
   // Fetch creators and populate the filter and creators section
   function fetchCreators() {
-    fetch(`${baseURL}/api/creators.json`)
+    fetch(`${baseURL}/data/creators.json`)
       .then(response => response.json())
       .then(creators => {
         const filter = document.getElementById('creator-filter');
@@ -127,7 +127,7 @@
   });
 
   function fetchProjects() {
-    fetch(`${baseURL}/api/projects.json`)
+    fetch(`${baseURL}/data/projects.json`)
       .then(response => response.json())
       .then(projects => {
         const container = document.getElementById('projects');

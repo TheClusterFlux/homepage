@@ -18,6 +18,7 @@ const upload = multer({ dest: 'uploads/' }); // Temporary directory for uploaded
 
 // Serve static files from the "public" directory
 app.use('/thumbnails', express.static(path.join(__dirname, '/data/thumbnails')));
+app.use('/data', express.static(path.join(__dirname, 'data')));
 
 
 // API endpoint to fetch and save data
