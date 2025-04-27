@@ -2,24 +2,54 @@
 <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
 <header class="header">
-  <div class="header-buttons">
-    <button id="refresh-button" class="refresh-button">
-      <i class="fas fa-sync-alt"></i> <!-- Font Awesome Icon -->
-    </button>
-    <button id="add-project-button" class="add-project-button">Add Project</button>
-    <button id="add-creator-button" class="add-creator-button">Add Creator</button>
-  </div>
-  <input
-    type="text"
-    id="search-bar"
-    class="search-bar"
-    placeholder="Search by title or tech..."
-  />
-  <div id="filter-container" class="filter-container">
-    <label for="creator-filter">Filter by Author:</label>
-    <select id="creator-filter">
-      <option value="all">All</option>
-    </select>
+  <div class="header-content">
+    <div class="header-brand">
+      <h1 class="site-title">ClusterFlux Projects</h1>
+    </div>
+    
+    <div class="header-controls">
+      <div class="search-filter-container">
+        <div class="search-container">
+          <i class="fas fa-search search-icon"></i>
+          <input
+            type="text"
+            id="search-bar"
+            class="search-bar"
+            placeholder="Search projects by title or tech..."
+          />
+        </div>
+        
+        <div id="filter-container" class="filter-container">
+          <label for="creator-filter"><i class="fas fa-user-filter"></i> Filter Author:</label>
+          <select id="creator-filter">
+            <option value="all">All Creators</option>
+          </select>
+        </div>
+      </div>
+      
+      <div class="header-buttons">
+        <button id="refresh-button" class="action-button refresh-button" title="Refresh Data">
+          <i class="fas fa-sync-alt"></i>
+          <span>Refresh</span>
+        </button>
+        <button id="about-button" class="action-button about-button" title="About Us">
+          <i class="fas fa-info-circle"></i>
+          <span>About</span>
+        </button>
+        <button id="add-project-button" class="action-button add-project-button" title="Add New Project">
+          <i class="fas fa-plus-circle"></i>
+          <span>Add Project</span>
+        </button>
+        <button id="add-creator-button" class="action-button add-creator-button" title="Add New Creator">
+          <i class="fas fa-user-plus"></i>
+          <span>Add Creator</span>
+        </button>
+        <a href="https://github.com/TheClusterFlux" target="_blank" class="action-button github-button" title="GitHub">
+          <i class="fab fa-github"></i>
+          <span>GitHub</span>
+        </a>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -28,7 +58,6 @@
 <div id="creators" class="creators-footer">
   <h2>Creators</h2>
   <div id="creators-list" class="creators-buttons"></div>
-  <a href="https://github.com/TheClusterFlux" target="_blank" class="org-link">Visit Our GitHub</a>
 </div>
 
 <!-- Add Project Modal -->
@@ -85,7 +114,11 @@
 </div>
 
 <script>
-  const baseURL = "https://homepage.theclusterflux.com";
+  // Dynamically determine base URL based on environment
+  const baseURL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+    ? window.location.origin  // Use relative URL for local development
+    : "https://homepage.theclusterflux.com";
+    
   // Fetch creators and populate the filter and creators section
   function fetchCreators() {
     fetch(`${baseURL}/data/creators.json`)
@@ -191,6 +224,11 @@
       .catch(error => console.error('Error:', error));
   });
 
+  // Navigate to About page
+  document.getElementById('about-button').addEventListener('click', () => {
+    window.location.href = '/about.html';
+  });
+
   // Add Project Button: Show Modal
   const addProjectButton = document.getElementById('add-project-button');
   const addProjectModal = document.getElementById('add-project-modal');
@@ -291,7 +329,6 @@
         alert(`Error: ${error.message}`); // Show network or other errors
       });
   });
-
 
   const addCreatorButton = document.getElementById('add-creator-button');
   const addCreatorModal = document.getElementById('add-creator-modal');

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About TheClusterFlux</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body class="about-page">
+    <header class="header">
+        <div class="header-content">
+            <div class="header-brand">
+                <h1 class="site-title">About TheClusterFlux</h1>
+            </div>
+            
+            <div class="header-controls">
+                <div class="header-buttons">
+                    <button id="home-button" class="action-button home-button" title="Back to Home">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </button>
+                    <button id="refresh-metrics-button" class="action-button refresh-button" title="Refresh Metrics">
+                        <i class="fas fa-sync-alt"></i>
+                        <span>Refresh Metrics</span>    
+                    </button>
+                    <a href="https://github.com/TheClusterFlux" target="_blank" class="action-button github-button" title="Visit GitHub">
+                        <i class="fab fa-github"></i>
+                        <span>GitHub</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="hero-section">
+        <div class="hero-content">
+            <h2><span class="highlight">The</span>ClusterFlux</h2>
+            <p class="hero-tagline">A Kubernetes playground for innovation and experimentation</p>
+        </div>
+    </div>
+
+    <div class="about-container">
+        <div class="about-section">
+            <div class="section-icon">
+                <i class="fas fa-server"></i>
+            </div>
+            <div class="section-content">
+                <h2>About the Cluster</h2>
+                <p>
+                    TheClusterFlux is a personal Kubernetes cluster that serves as both a learning platform and hosting environment 
+                    for various projects. The cluster is designed to be a playground for experimentation with cloud-native technologies
+                    while also providing reliable hosting for applications and services.
+                </p>
+                <p>
+                    This platform allows creators to deploy their projects in a containerized environment, 
+                    making it easy to test, deploy, and share their work. Whether you're a developer looking to host 
+                    your latest creation or someone interested in learning about Kubernetes, TheClusterFlux provides
+                    the infrastructure you need.
+                </p>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <i class="fas fa-cloud"></i>
+                        <span>Cloud Native</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-project-diagram"></i>
+                        <span>Microservices</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>Secure</span>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Scalable</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="metrics-section">
+            <div class="section-icon">
+                <i class="fas fa-chart-line"></i>
+            </div>
+            <div class="section-content">
+                <h2>Cluster Metrics</h2>
+                <p class="section-description">Real-time performance data from the Kubernetes cluster</p>
+                <div class="metrics-loading">
+                    <i class="fas fa-spinner fa-pulse"></i> Loading cluster metrics...
+                </div>
+                
+                <div class="metrics-container">
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <h3>Nodes</h3>
+                        <div id="node-count" class="metric-value">-</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-th"></i>
+                        </div>
+                        <h3>Pods</h3>
+                        <div id="pod-count" class="metric-value">-</div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                        <h3>CPU Usage</h3>
+                        <div id="cpu-usage" class="metric-value">-</div>
+                        <div class="progress-bar">
+                            <div id="cpu-progress" class="progress-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-memory"></i>
+                        </div>
+                        <h3>Memory Usage</h3>
+                        <div id="memory-usage" class="metric-value">-</div>
+                        <div class="progress-bar">
+                            <div id="memory-progress" class="progress-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tech-stack-section">
+            <div class="section-icon">
+                <i class="fas fa-layer-group"></i>
+            </div>
+            <div class="section-content">
+                <h2>Technology Stack</h2>
+                <p class="section-description">Exploring the technologies that power TheClusterFlux</p>
+                
+                <div id="tech-cards" class="tech-cards">
+                    <!-- Technologies will be loaded dynamically here -->
+                    <div class="tech-loading">
+                        <i class="fas fa-spinner fa-pulse"></i> Loading technologies...
+                    </div>
+                </div>
+                
+                <div class="tech-action">
+                    <button id="add-technology-btn" class="action-button add-tech-button">
+                        <i class="fas fa-plus"></i> Add Technology
+                    </button>
+                </div>
+                
+                <!-- Add Technology Form (Hidden by default) -->
+                <div id="add-technology-form" class="form-container" style="display: none;">
+                    <h3>Add New Technology</h3>
+                    <form id="technology-form" class="modern-form">
+                        <div class="form-group">
+                            <label for="tech-name">Technology Name:</label>
+                            <input type="text" id="tech-name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="tech-description">Description:</label>
+                            <textarea id="tech-description" name="description" rows="4" required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="tech-password">Password:</label>
+                            <input type="password" id="tech-password" name="password" required>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="submit-button">Submit</button>
+                            <button type="button" id="cancel-tech-btn" class="cancel-button">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="creators" class="creators-footer">
+        <h2>Creators</h2>
+        <p class="section-description">The brilliant minds behind the projects</p>
+        <div id="creators-list" class="creators-buttons"></div>
+    </div>
+
+    <script>
+        // Dynamically determine base URL based on environment
+        const baseURL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+            ? window.location.origin  // Use relative URL for local development
+            : "https://homepage.theclusterflux.com";
+        
+        // Navigate back to home page
+        document.getElementById('home-button').addEventListener('click', () => {
+            window.location.href = '/';
+        });
+        
+        // Fetch creators for the footer
+        function fetchCreators() {
+            fetch(`${baseURL}/data/creators.json`)
+                .then(response => response.json())
+                .then(creators => {
+                    const creatorsList = document.getElementById('creators-list');
+                    creatorsList.innerHTML = ''; // Clear existing creators
+
+                    creators.forEach(creator => {
+                        // Add to creators section
+                        const listItem = document.createElement('li');
+                        listItem.innerHTML = `<a href="${creator.github}" target="_blank">${creator.name}</a>`;
+                        creatorsList.appendChild(listItem);
+                    });
+                })
+                .catch(error => console.error('Error fetching creators:', error));
+        }
+
+        // Fetch technologies for the technology stack section
+        function fetchTechnologies() {
+            const techCards = document.getElementById('tech-cards');
+            techCards.innerHTML = '<div class="tech-loading"><i class="fas fa-spinner fa-pulse"></i> Loading technologies...</div>';
+            
+            fetch(`${baseURL}/data/technologies.json`)
+                .then(response => response.json())
+                .then(technologies => {
+                    techCards.innerHTML = ''; // Clear existing technologies
+                    
+                    if (technologies.length === 0) {
+                        techCards.innerHTML = '<p>No technologies found.</p>';
+                        return;
+                    }
+                    
+                    technologies.forEach(tech => {
+                        const techCard = document.createElement('div');
+                        techCard.className = 'tech-card';
+                        techCard.innerHTML = `
+                            <h3>${tech.name}</h3>
+                            <p>${tech.description}</p>
+                        `;
+                        techCards.appendChild(techCard);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching technologies:', error);
+                    techCards.innerHTML = '<p>Error loading technologies. Please try again later.</p>';
+                });
+        }
+
+        // Fetch cluster metrics
+        function fetchClusterMetrics() {
+            document.querySelector('.metrics-loading').style.display = 'block';
+            document.querySelector('.metrics-container').style.display = 'none';
+            
+            fetch(`${baseURL}/api/cluster-metrics`)
+                .then(response => response.json())
+                .then(metrics => {
+                    document.querySelector('.metrics-loading').style.display = 'none';
+                    document.querySelector('.metrics-container').style.display = 'grid';
+                    
+                    // Update metrics on the page
+                    document.getElementById('node-count').textContent = metrics.nodes.count;
+                    document.getElementById('pod-count').textContent = metrics.pods.count;
+                    
+                    // Update CPU metrics
+                    const cpuUsage = metrics.cpu.usage;
+                    const cpuTotal = metrics.cpu.total;
+                    const cpuPercent = (cpuUsage / cpuTotal * 100).toFixed(1);
+                    document.getElementById('cpu-usage').textContent = `${cpuUsage}/${cpuTotal} cores (${cpuPercent}%)`;
+                    document.getElementById('cpu-progress').style.width = `${cpuPercent}%`;
+                    
+                    // Update Memory metrics
+                    const memoryUsage = metrics.memory.usage;
+                    const memoryTotal = metrics.memory.total;
+                    const memoryPercent = (memoryUsage / memoryTotal * 100).toFixed(1);
+                    document.getElementById('memory-usage').textContent = `${memoryUsage}/${memoryTotal} GB (${memoryPercent}%)`;
+                    document.getElementById('memory-progress').style.width = `${memoryPercent}%`;
+                })
+                .catch(error => {
+                    console.error('Error fetching cluster metrics:', error);
+                    document.querySelector('.metrics-loading').textContent = 'Failed to load metrics. Please try again later.';
+                });
+        }
+
+        // Add Technology Form Handling
+        document.getElementById('add-technology-btn').addEventListener('click', () => {
+            document.getElementById('add-technology-form').style.display = 'block';
+        });
+        
+        document.getElementById('cancel-tech-btn').addEventListener('click', () => {
+            document.getElementById('add-technology-form').style.display = 'none';
+            document.getElementById('technology-form').reset();
+        });
+        
+        document.getElementById('technology-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('tech-name').value,
+                description: document.getElementById('tech-description').value,
+                password: document.getElementById('tech-password').value
+            };
+            
+            fetch(`${baseURL}/api/add-technology`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(err => { throw new Error(err.error || 'Failed to add technology'); });
+                }
+                return response.text();
+            })
+            .then(result => {
+                alert('Technology added successfully!');
+                document.getElementById('technology-form').reset();
+                document.getElementById('add-technology-form').style.display = 'none';
+                
+                // Refresh technologies list and cached data
+                fetch(`${baseURL}/api/fetch-data`)
+                    .then(() => fetchTechnologies())
+                    .catch(error => console.error('Error refreshing data:', error));
+            })
+            .catch(error => {
+                console.error('Error adding technology:', error);
+                alert(`Error: ${error.message}`);
+            });
+        });
+
+        // Initialize the page
+        fetchCreators();
+        fetchTechnologies();
+        fetchClusterMetrics();
+        
+        // Refresh metrics when button is clicked
+        document.getElementById('refresh-metrics-button').addEventListener('click', fetchClusterMetrics);
+    </script>
+</body>
+</html>

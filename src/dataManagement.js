@@ -5,7 +5,7 @@ const { Readable } = require('stream');
 
 const IS_LOCAL = process.env.IS_LOCAL === 'true';
 const MONGO_URI = IS_LOCAL
-  ? 'mongodb://localhost:27017'
+  ? `mongodb://root:${process.env.MONGO_PASSWORD}@localhost:27016`
   : `mongodb://root:${process.env.MONGO_PASSWORD}@mongodb.default.svc.cluster.local:27017`;
 const maskedMongoUri = IS_LOCAL
   ? MONGO_URI
@@ -25,10 +25,12 @@ async function fetchAndSaveHomepageData() {
         const db = client.db('homepage');
         const creatorsCollection = db.collection('creators');
         const projectsCollection = db.collection('projects');
+        const technologiesCollection = db.collection('technologies');
 
         // Fetch data from MongoDB
         const creators = await creatorsCollection.find({}).toArray();
         const projects = await projectsCollection.find({}).toArray();
+        const technologies = await technologiesCollection.find({}).toArray();
 
         // Save data locally
         const dataDir = path.join(__dirname, 'data');
@@ -38,6 +40,7 @@ async function fetchAndSaveHomepageData() {
 
         fs.writeFileSync(path.join(dataDir, 'creators.json'), JSON.stringify(creators, null, 2));
         fs.writeFileSync(path.join(dataDir, 'projects.json'), JSON.stringify(projects, null, 2));
+        fs.writeFileSync(path.join(dataDir, 'technologies.json'), JSON.stringify(technologies, null, 2));
 
         console.log('Data fetched and saved locally');
 
@@ -171,4 +174,45 @@ async function addCreator(creatorData) {
     }
 }
 
-module.exports = { fetchAndSaveHomepageData, addProjectWithImage, addCreator};
+async function addTechnology(technologyData) {
+    const client = new MongoClient(MONGO_URI);
+    try {
+        if (!technologyData) {
+            throw new Error('Technology data is required to add a technology.');
+        }
+        if (!technologyData.password) {
+            throw new Error('Password is required to add a technology.');
+        }
+        
+        // Check if the password is correct
+        const password = process.env.PASSWORD || 'defaultpassword';
+        if (technologyData.password !== password) {
+            throw new Error('Incorrect password. Technology not added.');
+        }
+        
+        // Remove password from technologyData
+        delete technologyData.password;
+        
+        await client.connect();
+        console.log('Connected to MongoDB');
+        
+        const db = client.db('homepage');
+        const technologiesCollection = db.collection('technologies');
+        
+        // Validate technologyData structure
+        if (!technologyData.name || !technologyData.description) {
+            throw new Error('Invalid technology data structure. Required fields: name and description.');
+        }
+        
+        // Add the technology data to the database
+        await technologiesCollection.insertOne(technologyData);
+        console.log('Technology data added to the database:', technologyData);
+    } catch (error) {
+        console.error('Error adding technology:', error);
+        throw error;
+    } finally {
+        await client.close();
+    }
+}
+
+module.exports = { fetchAndSaveHomepageData, addProjectWithImage, addCreator, addTechnology };
