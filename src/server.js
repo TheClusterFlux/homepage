@@ -251,8 +251,17 @@ app.post('/api/add-technology', async (req, res) => {
     }
 });
 
+// Specific routes for HTML pages
+app.get('/about.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'about.html'));
+});
+
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
 // Fallback to serve index.html for any unknown routes (for SPA support)
-app.get(/^\/(?!api).*/, (req, res) => {
+app.get(/^\/(?!api)(?!about\.html).*/, (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
