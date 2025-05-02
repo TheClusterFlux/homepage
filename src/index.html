@@ -115,14 +115,17 @@
 
 <script>
   // Dynamically determine base URL based on environment
-  const baseURL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
-    ? window.location.origin  // Use relative URL for local development
-    : "https://homepage.theclusterflux.com";
+  const baseURL = '';  // Use empty string for relative URLs
     
   // Fetch creators and populate the filter and creators section
   function fetchCreators() {
     fetch(`${baseURL}/data/creators.json`)
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error ${response.status}`);
+        }
+        return response.json();
+      })
       .then(creators => {
         const filter = document.getElementById('creator-filter');
         const creatorsList = document.getElementById('creators-list');
