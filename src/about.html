@@ -6,6 +6,10 @@
     <title>About TheClusterFlux</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <!-- Chart.js and required adapter libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.29.4/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.1/dist/chartjs-adapter-moment.min.js"></script>
 </head>
 <body class="about-page">
     <header class="header">
@@ -132,6 +136,52 @@
             </div>
         </div>
 
+        <div class="prometheus-metrics-section">
+            <div class="section-icon">
+                <i class="fas fa-chart-area"></i>
+            </div>
+            <div class="section-content">
+                <h2>Cluster Performance</h2>
+                <p class="section-description">Real-time metrics from Prometheus showing cluster performance over time</p>
+                
+                <div class="time-range-selector">
+                    <label for="time-range">Time Range:</label>
+                    <select id="time-range">
+                        <option value="15m">Last 15 minutes</option>
+                        <option value="1h" selected>Last hour</option>
+                        <option value="3h">Last 3 hours</option>
+                        <option value="6h">Last 6 hours</option>
+                        <option value="12h">Last 12 hours</option>
+                        <option value="24h">Last 24 hours</option>
+                    </select>
+                    <button id="refresh-prometheus" class="action-button refresh-button">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
+
+                <div class="prometheus-charts">
+                    <div class="chart-container">
+                        <h3>CPU Usage</h3>
+                        <div class="chart-loading">Loading CPU metrics...</div>
+                        <canvas id="cpu-chart"></canvas>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <h3>Memory Usage</h3>
+                        <div class="chart-loading">Loading memory metrics...</div>
+                        <canvas id="memory-chart"></canvas>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <h3>Node Status</h3>
+                        <div id="node-status" class="node-status-grid">
+                            <!-- Node status will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="tech-stack-section">
             <div class="section-icon">
                 <i class="fas fa-layer-group"></i>
@@ -245,39 +295,66 @@
                 });
         }
 
-        // Fetch cluster metrics
+        // Fetch cluster metrics from Prometheus
         function fetchClusterMetrics() {
             document.querySelector('.metrics-loading').style.display = 'block';
             document.querySelector('.metrics-container').style.display = 'none';
             
-            fetch(`${baseURL}/api/cluster-metrics`)
-                .then(response => response.json())
-                .then(metrics => {
-                    document.querySelector('.metrics-loading').style.display = 'none';
-                    document.querySelector('.metrics-container').style.display = 'grid';
-                    
-                    // Update metrics on the page
-                    document.getElementById('node-count').textContent = metrics.nodes.count;
-                    document.getElementById('pod-count').textContent = metrics.pods.count;
-                    
-                    // Update CPU metrics
-                    const cpuUsage = metrics.cpu.usage;
-                    const cpuTotal = metrics.cpu.total;
-                    const cpuPercent = (cpuUsage / cpuTotal * 100).toFixed(1);
-                    document.getElementById('cpu-usage').textContent = `${cpuUsage}/${cpuTotal} cores (${cpuPercent}%)`;
-                    document.getElementById('cpu-progress').style.width = `${cpuPercent}%`;
-                    
-                    // Update Memory metrics
-                    const memoryUsage = metrics.memory.usage;
-                    const memoryTotal = metrics.memory.total;
-                    const memoryPercent = (memoryUsage / memoryTotal * 100).toFixed(1);
-                    document.getElementById('memory-usage').textContent = `${memoryUsage}/${memoryTotal} GB (${memoryPercent}%)`;
-                    document.getElementById('memory-progress').style.width = `${memoryPercent}%`;
-                })
-                .catch(error => {
-                    console.error('Error fetching cluster metrics:', error);
-                    document.querySelector('.metrics-loading').textContent = 'Failed to load metrics. Please try again later.';
-                });
+            // Define Prometheus queries
+            const nodeCountQuery = 'count(node_uname_info)';
+            const podCountQuery = 'count(kube_pod_info)';
+            const cpuCoresQuery = 'sum(machine_cpu_cores)';
+            const cpuUsageQuery = 'sum(rate(node_cpu_seconds_total{mode!="idle"}[5m]))';
+            const memTotalQuery = 'sum(node_memory_MemTotal_bytes) / (1024*1024*1024)';  // Convert to GB
+            const memUsedQuery = 'sum(node_memory_MemTotal_bytes - node_memory_MemFree_bytes - node_memory_Buffers_bytes - node_memory_Cached_bytes) / (1024*1024*1024)';  // Convert to GB
+            
+            // Perform all queries in parallel
+            Promise.all([
+                fetch(`${prometheusBaseURL}/api/v1/query?query=${encodeURIComponent(nodeCountQuery)}`).then(r => r.json()),
+                fetch(`${prometheusBaseURL}/api/v1/query?query=${encodeURIComponent(podCountQuery)}`).then(r => r.json()),
+                fetch(`${prometheusBaseURL}/api/v1/query?query=${encodeURIComponent(cpuCoresQuery)}`).then(r => r.json()),
+                fetch(`${prometheusBaseURL}/api/v1/query?query=${encodeURIComponent(cpuUsageQuery)}`).then(r => r.json()),
+                fetch(`${prometheusBaseURL}/api/v1/query?query=${encodeURIComponent(memTotalQuery)}`).then(r => r.json()),
+                fetch(`${prometheusBaseURL}/api/v1/query?query=${encodeURIComponent(memUsedQuery)}`).then(r => r.json())
+            ])
+            .then(([nodeCount, podCount, cpuTotal, cpuUsage, memTotal, memUsed]) => {
+                document.querySelector('.metrics-loading').style.display = 'none';
+                document.querySelector('.metrics-container').style.display = 'grid';
+                
+                // Update node count
+                const nodeCountValue = nodeCount.status === 'success' && nodeCount.data.result.length > 0 ? 
+                    nodeCount.data.result[0].value[1] : '0';
+                document.getElementById('node-count').textContent = nodeCountValue;
+                
+                // Update pod count
+                const podCountValue = podCount.status === 'success' && podCount.data.result.length > 0 ? 
+                    podCount.data.result[0].value[1] : '0';
+                document.getElementById('pod-count').textContent = podCountValue;
+                
+                // Update CPU metrics
+                const cpuTotalValue = cpuTotal.status === 'success' && cpuTotal.data.result.length > 0 ? 
+                    parseFloat(cpuTotal.data.result[0].value[1]).toFixed(1) : '0';
+                const cpuUsageValue = cpuUsage.status === 'success' && cpuUsage.data.result.length > 0 ? 
+                    parseFloat(cpuUsage.data.result[0].value[1]).toFixed(1) : '0';
+                const cpuPercent = (cpuUsageValue / cpuTotalValue * 100).toFixed(1);
+                
+                document.getElementById('cpu-usage').textContent = `${cpuUsageValue}/${cpuTotalValue} cores (${cpuPercent}%)`;
+                document.getElementById('cpu-progress').style.width = `${cpuPercent}%`;
+                
+                // Update Memory metrics
+                const memTotalValue = memTotal.status === 'success' && memTotal.data.result.length > 0 ? 
+                    parseFloat(memTotal.data.result[0].value[1]).toFixed(1) : '0';
+                const memUsedValue = memUsed.status === 'success' && memUsed.data.result.length > 0 ? 
+                    parseFloat(memUsed.data.result[0].value[1]).toFixed(1) : '0';
+                const memPercent = (memUsedValue / memTotalValue * 100).toFixed(1);
+                
+                document.getElementById('memory-usage').textContent = `${memUsedValue}/${memTotalValue} GB (${memPercent}%)`;
+                document.getElementById('memory-progress').style.width = `${memPercent}%`;
+            })
+            .catch(error => {
+                console.error('Error fetching cluster metrics from Prometheus:', error);
+                document.querySelector('.metrics-loading').textContent = 'Failed to load metrics. Please try again later.';
+            });
         }
 
         // Add Technology Form Handling
@@ -328,13 +405,333 @@
             });
         });
 
+        // Prometheus integration
+        const prometheusBaseURL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+            ? 'http://localhost:9090'  // Development environment with port forwarding
+            : '/prometheus';  // Production environment (assuming you'll set up proxy)
+        
+        let cpuChart = null;
+        let memoryChart = null;
+
+        // Initialize charts when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchPrometheusMetrics();
+            
+            // Set up event handlers
+            document.getElementById('time-range').addEventListener('change', fetchPrometheusMetrics);
+            document.getElementById('refresh-prometheus').addEventListener('click', fetchPrometheusMetrics);
+        });
+        
+        // Fetch metrics from Prometheus
+        function fetchPrometheusMetrics() {
+            const timeRange = document.getElementById('time-range').value;
+            
+            // Show loading indicators
+            document.querySelectorAll('.chart-loading').forEach(el => {
+                el.style.display = 'block';
+            });
+            
+            // Clear any existing charts
+            if (cpuChart) cpuChart.destroy();
+            if (memoryChart) memoryChart.destroy();
+            
+            // Get the current time in seconds
+            const endTime = Math.floor(Date.now() / 1000);
+            
+            // Calculate start time based on selected range
+            let startTime;
+            switch (timeRange) {
+                case '15m': startTime = endTime - 900; break;
+                case '1h': startTime = endTime - 3600; break;
+                case '3h': startTime = endTime - 10800; break;
+                case '6h': startTime = endTime - 21600; break;
+                case '12h': startTime = endTime - 43200; break;
+                case '24h': startTime = endTime - 86400; break;
+                default: startTime = endTime - 3600; // Default to 1 hour
+            }
+            
+            // Set step based on range (to prevent too many data points)
+            const step = timeRange === '15m' ? '15s' : 
+                        timeRange === '1h' ? '30s' : 
+                        timeRange === '3h' ? '1m' : 
+                        timeRange === '6h' ? '2m' : 
+                        timeRange === '12h' ? '5m' : '10m';
+            
+            // Fetch node info first
+            fetchNodeInfo()
+                .then(() => {
+                    // Fetch CPU and Memory metrics in parallel
+                    Promise.all([
+                        fetchCPUMetrics(startTime, endTime, step),
+                        fetchMemoryMetrics(startTime, endTime, step)
+                    ])
+                    .then(() => {
+                        // Hide loading indicators after data is processed
+                        document.querySelectorAll('.chart-loading').forEach(el => {
+                            el.style.display = 'none';
+                        });
+                    })
+                    .catch(error => {
+                        console.error('Error fetching Prometheus metrics:', error);
+                        document.querySelectorAll('.chart-loading').forEach(el => {
+                            el.textContent = 'Failed to load metrics. Please try again later.';
+                        });
+                    });
+                });
+        }
+        
+        // Fetch information about nodes
+        function fetchNodeInfo() {
+            const queryUp = 'up{job="node-exporter"}';
+            const queryInfo = 'node_uname_info';
+            
+            return Promise.all([
+                fetch(`${prometheusBaseURL}/api/v1/query?query=${encodeURIComponent(queryUp)}`).then(r => r.json()),
+                fetch(`${prometheusBaseURL}/api/v1/query?query=${encodeURIComponent(queryInfo)}`).then(r => r.json())
+            ])
+            .then(([upData, infoData]) => {
+                const nodeStatus = document.getElementById('node-status');
+                nodeStatus.innerHTML = '';
+                
+                // Process node info and status
+                const nodeInfoMap = {};
+                
+                // First process node_uname_info to get node details
+                if (infoData.status === 'success') {
+                    infoData.data.result.forEach(node => {
+                        const instance = node.metric.instance;
+                        const nodeName = node.metric.nodename || "Node " + (Object.keys(nodeInfoMap).length + 1);
+                        nodeInfoMap[instance] = {
+                            nodename: nodeName,
+                            machine: node.metric.machine,
+                            up: false,
+                            shortName: nodeName.split('.')[0] // Use first part of hostname
+                        };
+                    });
+                }
+                
+                // Then process up metric to see if nodes are up
+                if (upData.status === 'success') {
+                    upData.data.result.forEach(node => {
+                        const instance = node.metric.instance;
+                        if (nodeInfoMap[instance]) {
+                            nodeInfoMap[instance].up = node.value[1] === '1';
+                        } else {
+                            const nodeCount = Object.keys(nodeInfoMap).length + 1;
+                            nodeInfoMap[instance] = {
+                                nodename: `Node ${nodeCount}`,
+                                shortName: `Node ${nodeCount}`,
+                                machine: 'unknown',
+                                up: node.value[1] === '1'
+                            };
+                        }
+                    });
+                }
+                
+                // Create node status display
+                Object.entries(nodeInfoMap).forEach(([instance, info]) => {
+                    const nodeEl = document.createElement('div');
+                    nodeEl.className = `node-item ${info.up ? 'node-up' : 'node-down'}`;
+                    nodeEl.innerHTML = `
+                        <div class="node-status-icon">
+                            <i class="fas ${info.up ? 'fa-check-circle' : 'fa-times-circle'}"></i>
+                        </div>
+                        <div class="node-details">
+                            <h4>${info.nodename}</h4>
+                            <div class="node-meta">Status: ${info.up ? 'Online' : 'Offline'}</div>
+                            <div class="node-meta">${info.machine}</div>
+                        </div>
+                    `;
+                    nodeStatus.appendChild(nodeEl);
+                });
+                
+                return nodeInfoMap;
+            });
+        }
+        
+        // Fetch CPU metrics from Prometheus
+        function fetchCPUMetrics(startTime, endTime, step) {
+            // Query for CPU usage per node (100 - idle percentage)
+            const query = 'avg by(instance) (100 - (avg by (instance, mode) (irate(node_cpu_seconds_total{mode="idle"}[5m])) * 100))';
+            
+            return fetchNodeInfo().then(nodeInfoMap => {
+                return fetch(`${prometheusBaseURL}/api/v1/query_range?query=${encodeURIComponent(query)}&start=${startTime}&end=${endTime}&step=${step}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status !== 'success' || !data.data.result.length) {
+                            throw new Error('No CPU metrics returned');
+                        }
+                        
+                        // Process data for Chart.js
+                        const datasets = data.data.result.map((series, index) => {
+                            // Get a color for each node
+                            const color = getColorForIndex(index);
+                            
+                            // Get node name from the instance IP
+                            const instance = series.metric.instance;
+                            const nodeName = nodeInfoMap[instance] ? 
+                                nodeInfoMap[instance].shortName : 
+                                `Node ${index + 1}`;
+                            
+                            // Extract the data points
+                            return {
+                                label: `${nodeName} CPU Usage`,
+                                data: series.values.map(point => ({
+                                    x: point[0] * 1000, // Convert to milliseconds for Chart.js
+                                    y: parseFloat(point[1]).toFixed(2)
+                                })),
+                                borderColor: color,
+                                backgroundColor: `${color}33`, // Add transparency
+                                fill: false,
+                                tension: 0.3
+                            };
+                        });
+                        
+                        // Create the CPU chart
+                        const ctx = document.getElementById('cpu-chart').getContext('2d');
+                        cpuChart = new Chart(ctx, {
+                            type: 'line',
+                            data: { datasets },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                scales: {
+                                    x: {
+                                        type: 'time',
+                                        time: {
+                                            tooltipFormat: 'MMM d, h:mm:ss a'
+                                        },
+                                        title: {
+                                            display: true,
+                                            text: 'Time'
+                                        }
+                                    },
+                                    y: {
+                                        title: {
+                                            display: true,
+                                            text: 'CPU Usage %'
+                                        },
+                                        suggestedMin: 0,
+                                        suggestedMax: 100
+                                    }
+                                },
+                                plugins: {
+                                    title: {
+                                        display: true,
+                                        text: 'CPU Usage Over Time'
+                                    },
+                                    tooltip: {
+                                        mode: 'index',
+                                        intersect: false
+                                    }
+                                }
+                            }
+                        });
+                    });
+            });
+        }
+        
+        // Fetch Memory metrics from Prometheus
+        function fetchMemoryMetrics(startTime, endTime, step) {
+            // Query for memory usage percentage per node
+            const query = 'avg by(instance) (100 * (1 - ((node_memory_MemFree_bytes + node_memory_Cached_bytes + node_memory_Buffers_bytes) / node_memory_MemTotal_bytes)))';
+            
+            return fetchNodeInfo().then(nodeInfoMap => {
+                return fetch(`${prometheusBaseURL}/api/v1/query_range?query=${encodeURIComponent(query)}&start=${startTime}&end=${endTime}&step=${step}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status !== 'success' || !data.data.result.length) {
+                            throw new Error('No memory metrics returned');
+                        }
+                        
+                        // Process data for Chart.js
+                        const datasets = data.data.result.map((series, index) => {
+                            // Get a color for each node
+                            const color = getColorForIndex(index);
+                            
+                            // Get node name from the instance IP
+                            const instance = series.metric.instance;
+                            const nodeName = nodeInfoMap[instance] ? 
+                                nodeInfoMap[instance].shortName : 
+                                `Node ${index + 1}`;
+                            
+                            // Extract the data points
+                            return {
+                                label: `${nodeName} Memory Usage`,
+                                data: series.values.map(point => ({
+                                    x: point[0] * 1000, // Convert to milliseconds for Chart.js
+                                    y: parseFloat(point[1]).toFixed(2)
+                                })),
+                                borderColor: color,
+                                backgroundColor: `${color}33`, // Add transparency
+                                fill: false,
+                                tension: 0.3
+                            };
+                        });
+                        
+                        // Create the memory chart
+                        const ctx = document.getElementById('memory-chart').getContext('2d');
+                        memoryChart = new Chart(ctx, {
+                            type: 'line',
+                            data: { datasets },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                scales: {
+                                    x: {
+                                        type: 'time',
+                                        time: {
+                                            tooltipFormat: 'MMM d, h:mm:ss a'
+                                        },
+                                        title: {
+                                            display: true,
+                                            text: 'Time'
+                                        }
+                                    },
+                                    y: {
+                                        title: {
+                                            display: true,
+                                            text: 'Memory Usage %'
+                                        },
+                                        suggestedMin: 0,
+                                        suggestedMax: 100
+                                    }
+                                },
+                                plugins: {
+                                    title: {
+                                        display: true,
+                                        text: 'Memory Usage Over Time'
+                                    },
+                                    tooltip: {
+                                        mode: 'index',
+                                        intersect: false
+                                    }
+                                }
+                            }
+                        });
+                    });
+            });
+        }
+        
+        // Helper function to get a color based on index
+        function getColorForIndex(index) {
+            const colors = [
+                '#3498db', '#e74c3c', '#2ecc71', '#f39c12', 
+                '#9b59b6', '#1abc9c', '#34495e', '#d35400'
+            ];
+            return colors[index % colors.length];
+        }
+
         // Initialize the page
         fetchCreators();
         fetchTechnologies();
         fetchClusterMetrics();
         
         // Refresh metrics when button is clicked
-        document.getElementById('refresh-metrics-button').addEventListener('click', fetchClusterMetrics);
+        document.getElementById('refresh-metrics-button').addEventListener('click', () => {
+            fetchClusterMetrics();
+            fetchPrometheusMetrics();
+        });
     </script>
 </body>
 </html>
