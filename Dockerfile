@@ -9,15 +9,11 @@ COPY package.json ./
 # Install dependencies
 RUN npm install
 
-# Copy the application code
-COPY ./src ./src
+# First copy all the source code
+COPY src/ ./src/
 
-# Ensure the data directory exists in the image
+# Create data directories if they don't exist
 RUN mkdir -p ./src/data/thumbnails
-
-# Copy the data files
-COPY ./src/data/*.json ./src/data/
-COPY ./src/data/thumbnails/* ./src/data/thumbnails/
 
 # Expose port 8080
 EXPOSE 8080
