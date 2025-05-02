@@ -4,6 +4,7 @@ const multer = require('multer');
 const { fetchAndSaveHomepageData, addProjectWithImage, addCreator, addTechnology } = require('./dataManagement');
 const fs = require('fs');
 const { exec } = require('child_process');
+const http = require('http');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -12,15 +13,75 @@ app.use(express.json());
 // Serve static files (e.g., index.html, style.css, etc.)
 app.use(express.static(path.join(__dirname)));
 
-
 // Configure multer for file uploads
 const upload = multer({ dest: 'uploads/' }); // Temporary directory for uploaded files
-
 
 // Serve static files from the "public" directory
 app.use('/thumbnails', express.static(path.join(__dirname, '/data/thumbnails')));
 app.use('/data', express.static(path.join(__dirname, 'data')));
 
+// Proxy for Prometheus - this must be added before any fallback routes
+app.use('/prometheus', (req, res) => {
+  console.log(`Proxying Prometheus request: ${req.url}`);
+  
+  // Determine the Prometheus host based on environment
+  const prometheusHost = process.env.KUBERNETES_SERVICE_HOST ? 
+    'monitoring-stack-kube-prom-prometheus.monitoring.svc.cluster.local' : 
+    'localhost';
+  
+  // Determine the Prometheus port based on environment
+  const prometheusPort = process.env.KUBERNETES_SERVICE_HOST ? 9090 : 9090;
+  
+  // Build the target URL from the original URL
+  const targetPath = req.url;
+  
+  // Set up the options for the HTTP request to Prometheus
+  const options = {
+    hostname: prometheusHost,
+    port: prometheusPort,
+    path: targetPath,
+    method: req.method,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  };
+  
+  // Create the proxy request
+  const proxyReq = http.request(options, (proxyRes) => {
+    // Set headers from the Prometheus response
+    Object.keys(proxyRes.headers).forEach(key => {
+      res.setHeader(key, proxyRes.headers[key]);
+    });
+    
+    // Set CORS headers
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    
+    // Set the status code
+    res.statusCode = proxyRes.statusCode;
+    
+    // Pipe the Prometheus response directly to our response
+    proxyRes.pipe(res);
+  });
+  
+  // Handle errors in the proxy request
+  proxyReq.on('error', (error) => {
+    console.error(`Error proxying to Prometheus: ${error.message}`);
+    res.status(500).json({
+      error: 'Failed to proxy request to Prometheus',
+      message: error.message,
+    });
+  });
+  
+  // If this is a POST request, pipe the request body to the proxy request
+  if (req.method === 'POST') {
+    req.pipe(proxyReq);
+  } else {
+    // End the request for GET requests
+    proxyReq.end();
+  }
+});
 
 // API endpoint to fetch and save data
 app.get('/api/fetch-data', async (req, res) => {
@@ -261,7 +322,7 @@ app.get('/', (req, res) => {
 });
 
 // Fallback to serve index.html for any unknown routes (for SPA support)
-app.get(/^\/(?!api)(?!about\.html).*/, (req, res) => {
+app.get(/^\/(?!api)(?!about\.html)(?!prometheus).*/, (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 

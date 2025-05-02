@@ -82,6 +82,8 @@ metadata:
   namespace: default
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    # Add rewrite target annotation to handle Prometheus paths
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   ingressClassName: nginx
   tls:
@@ -92,6 +94,15 @@ spec:
   - host: homepage.theclusterflux.com
     http:
       paths:
+      # Add specific path for Prometheus with correct service name
+      - path: /prometheus(/|$)(.*)
+        pathType: Prefix
+        backend:
+          service:
+            name: monitoring-stack-kube-prom-prometheus
+            port:
+              number: 9090
+      # Keep general path for homepage
       - path: /
         pathType: Prefix
         backend:
