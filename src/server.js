@@ -10,17 +10,17 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 app.use(express.json());
-// Serve static files (e.g., index.html, style.css, etc.)
+
+// IMPORTANT: Order of middleware matters!
+// Serve specific static files and directories first (must come before any routes)
 app.use(express.static(path.join(__dirname)));
+app.use('/thumbnails', express.static(path.join(__dirname, '/data/thumbnails')));
+app.use('/data', express.static(path.join(__dirname, 'data')));
 
 // Configure multer for file uploads
 const upload = multer({ dest: 'uploads/' }); // Temporary directory for uploaded files
 
-// Serve static files from the "public" directory
-app.use('/thumbnails', express.static(path.join(__dirname, '/data/thumbnails')));
-app.use('/data', express.static(path.join(__dirname, 'data')));
-
-// Proxy for Prometheus - this must be added before any fallback routes
+// Proxy for Prometheus - this middleware must come after static file middleware
 app.use('/prometheus', (req, res) => {
   console.log(`Proxying Prometheus request: ${req.url}`);
   
@@ -312,7 +312,7 @@ app.post('/api/add-technology', async (req, res) => {
     }
 });
 
-// Specific routes for HTML pages
+// Specific routes for HTML pages - these should come after API routes but before the fallback
 app.get('/about.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'about.html'));
 });
@@ -321,8 +321,8 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// Fallback to serve index.html for any unknown routes (for SPA support)
-app.get(/^\/(?!api)(?!about\.html)(?!prometheus).*/, (req, res) => {
+// Fallback route - must be last
+app.get(/^\/(?!api)(?!about\.html)(?!prometheus)(?!data)(?!thumbnails).*/, (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
