@@ -161,11 +161,29 @@
       }
     });
   });
-
   function fetchProjects() {
     fetch(`${baseURL}/data/projects.json`)
       .then(response => response.json())
       .then(projects => {
+        // Sort projects
+        projects.sort((a, b) => {
+          // First sort alphabetically by title
+          const titleComparison = a.title.localeCompare(b.title);
+          
+          // Check if either project has a "Visit" or "visit" link
+          const aHasVisitLink = Object.keys(a.links || {}).some(key => 
+            key.toLowerCase() === 'visit' || key.toLowerCase() === 'website' || key.toLowerCase() === 'demo');
+          const bHasVisitLink = Object.keys(b.links || {}).some(key => 
+            key.toLowerCase() === 'visit' || key.toLowerCase() === 'website' || key.toLowerCase() === 'demo');
+          
+          // Projects with Visit links come first
+          if (aHasVisitLink && !bHasVisitLink) return -1;
+          if (!aHasVisitLink && bHasVisitLink) return 1;
+          
+          // If both have or don't have visit links, sort by title
+          return titleComparison;
+        });
+        
         const container = document.getElementById('projects');
         container.innerHTML = ''; // Clear existing projects
         projects.forEach(project => {
