@@ -130,6 +130,9 @@
         const filter = document.getElementById('creator-filter');
         const creatorsList = document.getElementById('creators-list');
         creatorsList.innerHTML = ''; // Clear existing creators
+        
+        // Clear existing filter options except "All Creators"
+        filter.innerHTML = '<option value="all">All Creators</option>';
 
         creators.forEach(creator => {
           // Add to filter dropdown
