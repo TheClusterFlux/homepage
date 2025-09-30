@@ -247,6 +247,75 @@ body {
   background-color: #2980b9;
 }
 
+.project-links {
+  margin-top: 1rem;
+}
+
+.link-container {
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.preview-btn {
+  background-color: #95a5a6;
+  color: #fff;
+  border: none;
+  padding: 4px 8px;
+  margin-left: 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.preview-btn:hover {
+  background-color: #7f8c8d;
+}
+
+.link-preview {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  margin-top: 0.5rem;
+  max-width: 400px;
+}
+
+.preview-content {
+  padding: 1rem;
+}
+
+.preview-loading {
+  text-align: center;
+  color: #666;
+  font-style: italic;
+}
+
+.preview-error {
+  color: #e74c3c;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.preview-success {
+  color: #27ae60;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.preview-meta {
+  border-top: 1px solid #eee;
+  padding-top: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: #666;
+}
+
 /* Creators Footer */
 .creators-footer {
   max-width: 1200px;

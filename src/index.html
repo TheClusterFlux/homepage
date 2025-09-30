@@ -5,6 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ClusterFlux Projects</title>
     <link rel="icon" type="image/svg+xml" href="logo.svg">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://homepage.theclusterflux.com/">
+    <meta property="og:title" content="ClusterFlux Projects">
+    <meta property="og:description" content="A showcase of innovative projects built by TheClusterFlux community. Explore our collection of web applications, tools, and creative solutions.">
+    <meta property="og:image" content="https://homepage.theclusterflux.com/logo.svg">
+    <meta property="og:site_name" content="ClusterFlux">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://homepage.theclusterflux.com/">
+    <meta property="twitter:title" content="ClusterFlux Projects">
+    <meta property="twitter:description" content="A showcase of innovative projects built by TheClusterFlux community. Explore our collection of web applications, tools, and creative solutions.">
+    <meta property="twitter:image" content="https://homepage.theclusterflux.com/logo.svg">
+    
+    <!-- Additional meta tags -->
+    <meta name="description" content="A showcase of innovative projects built by TheClusterFlux community. Explore our collection of web applications, tools, and creative solutions.">
+    <meta name="keywords" content="ClusterFlux, projects, web development, open source, community">
+    <meta name="author" content="TheClusterFlux">
+    
     <link rel="stylesheet" href="style.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 </head>
@@ -128,6 +149,109 @@
   const baseURL = '';  // Use empty string for relative URLs
     
   // Fetch creators and populate the filter and creators section
+  // Preview functionality
+  async function togglePreview(url, button) {
+    const previewId = `preview-${btoa(url)}`;
+    const preview = document.getElementById(previewId);
+    
+    if (preview.style.display === 'none') {
+      preview.style.display = 'block';
+      button.textContent = '👁️ Hide';
+      
+      // Fetch preview data if not already loaded
+      const content = preview.querySelector('.preview-content');
+      if (content.innerHTML.includes('Loading preview...')) {
+        await fetchLinkPreview(url, content);
+      }
+    } else {
+      preview.style.display = 'none';
+      button.textContent = '👁️ Preview';
+    }
+  }
+
+  async function fetchLinkPreview(url, contentElement) {
+    try {
+      // Check if it's a GitHub URL
+      if (url.includes('github.com')) {
+        await fetchGitHubPreview(url, contentElement);
+      } else {
+        // For other URLs, try to get basic info
+        await fetchGenericPreview(url, contentElement);
+      }
+    } catch (error) {
+      console.error('Error fetching preview:', error);
+      contentElement.innerHTML = '<div class="preview-error">Failed to load preview</div>';
+    }
+  }
+
+  async function fetchGitHubPreview(url, contentElement) {
+    try {
+      // Extract owner and repo from GitHub URL
+      const match = url.match(/github\.com\/([^\/]+)\/([^\/]+)/);
+      if (!match) {
+        throw new Error('Invalid GitHub URL');
+      }
+      
+      const [, owner, repo] = match;
+      const apiUrl = `https://api.github.com/repos/${owner}/${repo}`;
+      
+      const response = await fetch(apiUrl);
+      if (!response.ok) {
+        throw new Error('GitHub API request failed');
+      }
+      
+      const data = await response.json();
+      
+      contentElement.innerHTML = `
+        <div class="preview-success">
+          <h4>${data.name}</h4>
+          <p>${data.description || 'No description available'}</p>
+          <div class="preview-meta">
+            <div>⭐ ${data.stargazers_count} stars</div>
+            <div>🍴 ${data.forks_count} forks</div>
+            <div>📝 ${data.language || 'Unknown'} language</div>
+            <div>📅 Updated ${new Date(data.updated_at).toLocaleDateString()}</div>
+          </div>
+        </div>
+      `;
+    } catch (error) {
+      contentElement.innerHTML = '<div class="preview-error">Failed to load GitHub preview</div>';
+    }
+  }
+
+  async function fetchGenericPreview(url, contentElement) {
+    try {
+      // Use a CORS proxy to fetch the page
+      const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(url)}`;
+      const response = await fetch(proxyUrl);
+      
+      if (!response.ok) {
+        throw new Error('Failed to fetch page');
+      }
+      
+      const data = await response.json();
+      const parser = new DOMParser();
+      const doc = parser.parseFromString(data.contents, 'text/html');
+      
+      const title = doc.querySelector('title')?.textContent || 'Unknown Title';
+      const description = doc.querySelector('meta[name="description"]')?.getAttribute('content') || 
+                         doc.querySelector('meta[property="og:description"]')?.getAttribute('content') || 
+                         'No description available';
+      
+      contentElement.innerHTML = `
+        <div class="preview-success">
+          <h4>${title}</h4>
+          <p>${description}</p>
+          <div class="preview-meta">
+            <div>🔗 ${new URL(url).hostname}</div>
+          </div>
+        </div>
+      `;
+    } catch (error) {
+      contentElement.innerHTML = '<div class="preview-error">Failed to load preview</div>';
+    }
+  }
+
   function fetchCreators() {
     fetch(`${baseURL}/data/creators.json`)
       .then(response => {
@@ -208,12 +332,22 @@
                 <p>${project.description}</p>
                 <div class="tech-list">Tech: ${project.tech}</div>
                 <p class="author">Author: ${project.author}</p>
-                ${Object.entries(project.links)
-                  .map(
-                    ([key, url]) =>
-                      `<a href="${url}" class="btn" target="_blank">${key}</a>`
-                  )
-                  .join(' ')}
+                <div class="project-links">
+                  ${Object.entries(project.links)
+                    .map(
+                      ([key, url]) =>
+                        `<div class="link-container">
+                          <a href="${url}" class="btn" target="_blank">${key}</a>
+                          <button class="preview-btn" onclick="togglePreview('${url}', this)">👁️ Preview</button>
+                          <div class="link-preview" id="preview-${btoa(url)}" style="display: none;">
+                            <div class="preview-content">
+                              <div class="preview-loading">Loading preview...</div>
+                            </div>
+                          </div>
+                        </div>`
+                    )
+                    .join(' ')}
+                </div>
               </div>
             </div>
           `;
