@@ -5,7 +5,7 @@ const { Readable } = require('stream');
 
 const IS_LOCAL = process.env.IS_LOCAL === 'true';
 const MONGO_URI = IS_LOCAL
-  ? `mongodb://root:${process.env.MONGO_PASSWORD}@localhost:27016`
+  ? `mongodb://root:${process.env.MONGO_PASSWORD}@localhost:27017`
   : `mongodb://root:${process.env.MONGO_PASSWORD}@mongodb.default.svc.cluster.local:27017`;
 const maskedMongoUri = IS_LOCAL
   ? MONGO_URI
