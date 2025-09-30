@@ -37,6 +37,12 @@ body {
   align-items: center;
 }
 
+.site-logo {
+  height: 40px;
+  width: auto;
+  margin-right: 12px;
+}
+
 .site-title {
   font-size: 1.8rem;
   font-weight: 600;
@@ -423,6 +429,13 @@ body {
   margin: 0 auto;
   padding: 0 1rem;
   color: white;
+}
+
+.hero-logo {
+  height: 80px;
+  width: auto;
+  margin-bottom: 1rem;
+  filter: drop-shadow(0 2px 10px rgba(0, 0, 0, 0.3));
 }
 
 .hero-content h2 {
