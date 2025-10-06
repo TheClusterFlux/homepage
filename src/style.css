@@ -44,6 +44,18 @@ body {
   text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.2);
 }
 
+.site-logo {
+  height: 2rem; /* Default mobile size */
+  width: auto;
+}
+
+/* Desktop logo sizing - quarter size */
+@media (min-width: 768px) {
+  .site-logo {
+    height: 1rem; /* Quarter size on desktop */
+  }
+}
+
 .org-link {
   display: flex;
   align-items: center;
