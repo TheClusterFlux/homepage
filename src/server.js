@@ -11,16 +11,10 @@ const PORT = process.env.PORT || 8080;
 
 app.use(express.json());
 
-// Debug middleware to log all requests
-app.use((req, res, next) => {
-  console.log(`${req.method} ${req.url}`);
-  next();
-});
-
 // IMPORTANT: Order of middleware matters!
 // Serve specific static files and directories first (must come before any routes)
 app.use(express.static(path.join(__dirname)));
-app.use('/thumbnails', express.static(path.join(__dirname, 'data/thumbnails')));
+app.use('/thumbnails', express.static(path.join(__dirname, '/data/thumbnails')));
 app.use('/data', express.static(path.join(__dirname, 'data')));
 
 // Configure multer for file uploads
@@ -324,9 +318,6 @@ app.get('/about.html', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-  console.log('Root route hit!');
-  console.log('__dirname:', __dirname);
-  console.log('index.html path:', path.join(__dirname, 'index.html'));
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
