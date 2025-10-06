@@ -33,8 +33,9 @@ body {
 
 .header-brand {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
+  gap: 1rem;
 }
 
 .site-title {
@@ -45,14 +46,14 @@ body {
 }
 
 .site-logo {
-  height: 2rem; /* Default mobile size */
+  height: 4rem; /* Mobile size - half of original */
   width: auto;
 }
 
 /* Desktop logo sizing - quarter size */
 @media (min-width: 768px) {
   .site-logo {
-    height: 1rem; /* Quarter size on desktop */
+    height: 4rem; /* Quarter size on desktop */
   }
 }
 
