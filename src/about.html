@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About TheClusterFlux</title>
     <link rel="icon" type="image/svg+xml" href="logo.svg">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style-guilty-crown.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <!-- Chart.js and required adapter libraries -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
@@ -13,6 +13,58 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-moment@1.0.1/dist/chartjs-adapter-moment.min.js"></script>
 </head>
 <body class="about-page">
+    <!-- SVG Animated Energy Ribbons Background -->
+    <svg id="energy-ribbons" class="energy-ribbons-svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="ribbonGradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:rgba(96, 165, 250, 0.3);stop-opacity:0" />
+          <stop offset="50%" style="stop-color:rgba(96, 165, 250, 0.6);stop-opacity:1" />
+          <stop offset="100%" style="stop-color:rgba(147, 197, 253, 0.3);stop-opacity:0" />
+        </linearGradient>
+        <linearGradient id="ribbonGradient2" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:rgba(59, 130, 246, 0.25);stop-opacity:0" />
+          <stop offset="50%" style="stop-color:rgba(96, 165, 250, 0.5);stop-opacity:1" />
+          <stop offset="100%" style="stop-color:rgba(147, 197, 253, 0.25);stop-opacity:0" />
+        </linearGradient>
+        <linearGradient id="ribbonGradient3" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:rgba(147, 197, 253, 0.3);stop-opacity:0" />
+          <stop offset="50%" style="stop-color:rgba(96, 165, 250, 0.55);stop-opacity:1" />
+          <stop offset="100%" style="stop-color:rgba(59, 130, 246, 0.3);stop-opacity:0" />
+        </linearGradient>
+        <filter id="glow">
+          <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+          <feMerge>
+            <feMergeNode in="coloredBlur"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+      
+      <!-- Ribbon 1 - Long flowing curve -->
+      <path id="ribbon1" class="energy-ribbon" d="M -200,300 Q 300,100 700,400 T 1600,350 T 2200,450" 
+            fill="none" stroke="url(#ribbonGradient1)" stroke-width="2" filter="url(#glow)" opacity="0.6"/>
+      
+      <!-- Ribbon 2 - Spiraling curve -->
+      <path id="ribbon2" class="energy-ribbon" d="M 1920,200 Q 1400,500 1000,200 T 200,400 T -400,250" 
+            fill="none" stroke="url(#ribbonGradient2)" stroke-width="1.5" filter="url(#glow)" opacity="0.5"/>
+      
+      <!-- Ribbon 3 - Wavy flow -->
+      <path id="ribbon3" class="energy-ribbon" d="M 400,1080 Q 600,700 800,900 T 1200,750 T 1600,950 T 2100,800" 
+            fill="none" stroke="url(#ribbonGradient3)" stroke-width="2" filter="url(#glow)" opacity="0.55"/>
+      
+      <!-- Ribbon 4 - Upper swirl -->
+      <path id="ribbon4" class="energy-ribbon" d="M 0,0 Q 400,200 600,0 T 1200,200 T 1800,50 T 2200,300" 
+            fill="none" stroke="url(#ribbonGradient1)" stroke-width="1.8" filter="url(#glow)" opacity="0.5"/>
+      
+      <!-- Ribbon 5 - Diagonal flow -->
+      <path id="ribbon5" class="energy-ribbon" d="M -100,500 Q 400,300 900,600 T 1700,400 T 2300,650" 
+            fill="none" stroke="url(#ribbonGradient2)" stroke-width="1.6" filter="url(#glow)" opacity="0.48"/>
+      
+      <!-- Ribbon 6 - Central spiral -->
+      <path id="ribbon6" class="energy-ribbon" d="M 960,540 Q 700,700 960,900 Q 1220,700 960,540" 
+            fill="none" stroke="url(#ribbonGradient3)" stroke-width="2.2" filter="url(#glow)" opacity="0.45"/>
+    </svg>
+
     <header class="header">
         <div class="header-content">
             <div class="header-brand">
@@ -737,6 +789,81 @@
             fetchClusterMetrics();
             fetchPrometheusMetrics();
         });
+    </script>
+
+    <!-- Animate SVG ribbons for about page -->
+    <script>
+      // Animate SVG ribbons with JavaScript for organic flowing curves
+      function animateRibbons() {
+        const ribbons = [
+          { el: document.getElementById('ribbon1'), basePath: 'M -200,300 Q 300,100 700,400 T 1600,350 T 2200,450', speed: 0.4 },
+          { el: document.getElementById('ribbon2'), basePath: 'M 1920,200 Q 1400,500 1000,200 T 200,400 T -400,250', speed: 0.35 },
+          { el: document.getElementById('ribbon3'), basePath: 'M 400,1080 Q 600,700 800,900 T 1200,750 T 1600,950 T 2100,800', speed: 0.45 },
+          { el: document.getElementById('ribbon4'), basePath: 'M 0,0 Q 400,200 600,0 T 1200,200 T 1800,50 T 2200,300', speed: 0.38 },
+          { el: document.getElementById('ribbon5'), basePath: 'M -100,500 Q 400,300 900,600 T 1700,400 T 2300,650', speed: 0.42 },
+          { el: document.getElementById('ribbon6'), basePath: 'M 960,540 Q 700,700 960,900 Q 1220,700 960,540', speed: 0.5 }
+        ];
+        
+        let time = 0;
+        
+        function updateRibbons() {
+          time += 0.005;
+          
+          ribbons.forEach((ribbon, index) => {
+            if (!ribbon.el) return;
+            
+            const speed = ribbon.speed;
+            const phase = time * speed + (index * Math.PI / 3);
+            
+            // Create flowing wave motion
+            const wave1 = Math.sin(phase) * 40;
+            const wave2 = Math.cos(phase * 1.7) * 30;
+            
+            // Parse and modify the path dynamically for organic flow
+            let modifiedPath = ribbon.basePath;
+            
+            // Apply wave transformations to path coordinates
+            modifiedPath = modifiedPath.replace(/([QTM]\s+)(-?\d+),(-?\d+)/g, (match, cmd, x, y) => {
+              const numX = parseFloat(x);
+              const numY = parseFloat(y);
+              
+              // Apply different wave patterns based on position
+              const waveX = wave1 * Math.sin((numX / 500) + phase);
+              const waveY = wave2 * Math.cos((numY / 400) + phase * 1.3);
+              
+              return cmd + (numX + waveX) + ',' + (numY + waveY);
+            });
+            
+            ribbon.el.setAttribute('d', modifiedPath);
+            
+            // Animate stroke-dashoffset for flowing effect
+            const dashSpeed = 1.5 + (index * 0.2);
+            const currentDashOffset = parseFloat(ribbon.el.style.strokeDashoffset || 1000);
+            const newDashOffset = currentDashOffset - dashSpeed;
+            
+            if (newDashOffset < -3000) {
+              ribbon.el.style.strokeDashoffset = '1000';
+            } else {
+              ribbon.el.style.strokeDashoffset = newDashOffset;
+            }
+            
+            // Dynamic opacity pulsing
+            const opacity = 0.35 + Math.sin(phase * 2) * 0.35 + Math.cos(phase * 1.5) * 0.15;
+            ribbon.el.style.opacity = Math.max(0.2, Math.min(0.85, opacity));
+          });
+          
+          requestAnimationFrame(updateRibbons);
+        }
+        
+        updateRibbons();
+      }
+      
+      // Start ribbon animation when page loads
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', animateRibbons);
+      } else {
+        animateRibbons();
+      }
     </script>
 </body>
 </html>

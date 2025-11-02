@@ -26,10 +26,65 @@
     <meta name="keywords" content="ClusterFlux, projects, web development, open source, community">
     <meta name="author" content="TheClusterFlux">
     
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style-guilty-crown.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 </head>
 <body>
+
+<!-- SVG Animated Energy Ribbons Background - Fragmented Silver-Blue Style -->
+<svg id="energy-ribbons" class="energy-ribbons-svg" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <!-- Silver-blue gradients with metallic shine -->
+    <linearGradient id="silverBlue1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6b8db8;stop-opacity:0.8" />
+      <stop offset="30%" style="stop-color:#a8c5e0;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#d4e4f0;stop-opacity:1" />
+      <stop offset="70%" style="stop-color:#b8d1e5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8ba8c4;stop-opacity:0.7" />
+    </linearGradient>
+    <linearGradient id="silverBlue2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#7a9cc2;stop-opacity:0.75" />
+      <stop offset="40%" style="stop-color:#b5d1e8;stop-opacity:1" />
+      <stop offset="60%" style="stop-color:#c8dcf0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#9bb3cc;stop-opacity:0.7" />
+    </linearGradient>
+    <linearGradient id="silverBlue3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#5a7fa0;stop-opacity:0.8" />
+      <stop offset="35%" style="stop-color:#9fbfdd;stop-opacity:1" />
+      <stop offset="65%" style="stop-color:#d0e2f0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7da0bd;stop-opacity:0.75" />
+    </linearGradient>
+    
+    <!-- Simplified metallic shine filters for better performance -->
+    <filter id="ribbonGlow" x="-10%" y="-10%" width="120%" height="120%">
+      <!-- Light glow for metallic effect - simplified for performance -->
+      <feGaussianBlur in="SourceAlpha" stdDeviation="0.8" result="blur"/>
+      <feFlood flood-color="#d4e4f0" flood-opacity="0.25"/>
+      <feComposite in2="blur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <filter id="particleGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <!-- Minimal glow for particles -->
+      <feGaussianBlur stdDeviation="0.5" result="coloredBlur"/>
+      <feFlood flood-color="#b8d1e5" flood-opacity="0.2"/>
+      <feComposite in2="coloredBlur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Main ribbon paths - will be fragmented by JavaScript -->
+  <g id="ribbons-container"></g>
+  
+  <!-- Particle fragments container -->
+  <g id="particles-container"></g>
+</svg>
 
 <header class="header">
   <div class="header-content">
@@ -450,6 +505,500 @@
       })
       .catch((error) => console.error('Error:', error));
   });
+</script>
+
+<!-- Debug Panel for Animation Controls -->
+<div id="debug-panel" class="debug-panel">
+  <div class="debug-header">
+    <h3>⚙️ Animation Debug</h3>
+    <button id="toggle-debug" class="debug-toggle">Hide</button>
+  </div>
+  <div class="debug-controls">
+    <div class="debug-group">
+      <label>Ribbon Speed: <span id="ribbon-speed-value">22</span>s</label>
+      <input type="range" id="ribbon-speed" min="5" max="50" value="22" step="1">
+    </div>
+    <div class="debug-group">
+      <label>Thread Speed: <span id="thread-speed-value">28</span>s</label>
+      <input type="range" id="thread-speed" min="5" max="60" value="28" step="1">
+    </div>
+    <div class="debug-group">
+      <label>Ribbon Opacity: <span id="ribbon-opacity-value">1.0</span></label>
+      <input type="range" id="ribbon-opacity" min="0" max="1" value="1.0" step="0.05">
+    </div>
+    <div class="debug-group">
+      <label>Thread Opacity: <span id="thread-opacity-value">0.75</span></label>
+      <input type="range" id="thread-opacity" min="0" max="1" value="0.75" step="0.05">
+    </div>
+    <div class="debug-group">
+      <label>Ribbon Blur: <span id="ribbon-blur-value">1.5</span>px</label>
+      <input type="range" id="ribbon-blur" min="0" max="5" value="1.5" step="0.1">
+    </div>
+    <div class="debug-group">
+      <label>Thread Blur: <span id="thread-blur-value">0.8</span>px</label>
+      <input type="range" id="thread-blur" min="0" max="5" value="0.8" step="0.1">
+    </div>
+    <div class="debug-group">
+      <label>Blue Intensity: <span id="blue-intensity-value">1.0</span></label>
+      <input type="range" id="blue-intensity" min="0" max="2" value="1.0" step="0.1">
+    </div>
+    <div class="debug-group">
+      <label>Transform Scale: <span id="scale-value">1.0</span></label>
+      <input type="range" id="scale" min="0.5" max="2" value="1.0" step="0.1">
+    </div>
+    <div class="debug-group">
+      <button id="reset-debug" class="debug-reset">Reset to Defaults</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Animation Debug Controls
+  const debugPanel = document.getElementById('debug-panel');
+  const toggleDebug = document.getElementById('toggle-debug');
+  const resetDebug = document.getElementById('reset-debug');
+  const root = document.documentElement;
+
+  // Default values
+  const defaults = {
+    ribbonSpeed: 22,
+    threadSpeed: 28,
+    ribbonOpacity: 1.0,
+    threadOpacity: 0.75,
+    ribbonBlur: 1.5,
+    threadBlur: 0.8,
+    blueIntensity: 1.0,
+    scale: 1.0
+  };
+
+  // Set CSS custom properties
+  function updateAnimationProperty(property, value, suffix = '') {
+    root.style.setProperty(`--${property}`, value + suffix);
+  }
+
+  // Update value displays
+  function updateValueDisplay(id, value) {
+    const display = document.getElementById(id + '-value');
+    if (display) {
+      display.textContent = value;
+    }
+  }
+
+  // Ribbon Speed
+  const ribbonSpeedSlider = document.getElementById('ribbon-speed');
+  ribbonSpeedSlider.addEventListener('input', (e) => {
+    const value = e.target.value;
+    updateAnimationProperty('ribbon-speed', value, 's');
+    updateValueDisplay('ribbon-speed', value);
+  });
+
+  // Thread Speed
+  const threadSpeedSlider = document.getElementById('thread-speed');
+  threadSpeedSlider.addEventListener('input', (e) => {
+    const value = e.target.value;
+    updateAnimationProperty('thread-speed', value, 's');
+    updateValueDisplay('thread-speed', value);
+  });
+
+  // Ribbon Opacity
+  const ribbonOpacitySlider = document.getElementById('ribbon-opacity');
+  ribbonOpacitySlider.addEventListener('input', (e) => {
+    const value = parseFloat(e.target.value).toFixed(2);
+    updateAnimationProperty('ribbon-opacity', value);
+    updateValueDisplay('ribbon-opacity', value);
+  });
+
+  // Thread Opacity
+  const threadOpacitySlider = document.getElementById('thread-opacity');
+  threadOpacitySlider.addEventListener('input', (e) => {
+    const value = parseFloat(e.target.value).toFixed(2);
+    updateAnimationProperty('thread-opacity', value);
+    updateValueDisplay('thread-opacity', value);
+  });
+
+  // Ribbon Blur
+  const ribbonBlurSlider = document.getElementById('ribbon-blur');
+  ribbonBlurSlider.addEventListener('input', (e) => {
+    const value = parseFloat(e.target.value).toFixed(1);
+    updateAnimationProperty('ribbon-blur', value, 'px');
+    updateValueDisplay('ribbon-blur', value);
+  });
+
+  // Thread Blur
+  const threadBlurSlider = document.getElementById('thread-blur');
+  threadBlurSlider.addEventListener('input', (e) => {
+    const value = parseFloat(e.target.value).toFixed(1);
+    updateAnimationProperty('thread-blur', value, 'px');
+    updateValueDisplay('thread-blur', value);
+  });
+
+  // Blue Intensity
+  const blueIntensitySlider = document.getElementById('blue-intensity');
+  blueIntensitySlider.addEventListener('input', (e) => {
+    const value = parseFloat(e.target.value).toFixed(1);
+    updateAnimationProperty('blue-intensity', value);
+    updateValueDisplay('blue-intensity', value);
+    
+    // Update SVG gradient stops based on intensity
+    const ribbons = document.getElementById('energy-ribbons');
+    if (ribbons) {
+      const gradients = ribbons.querySelectorAll('linearGradient');
+      gradients.forEach((gradient, index) => {
+        const stops = gradient.querySelectorAll('stop');
+        stops.forEach((stop, stopIndex) => {
+          const baseOpacities = [
+            [0, 0.3, 0], // gradient 1
+            [0, 0.25, 0], // gradient 2
+            [0, 0.3, 0]  // gradient 3
+          ];
+          const baseOpacity = baseOpacities[index % 3][stopIndex] || 0;
+          const newOpacity = baseOpacity * value;
+          stop.setAttribute('stop-opacity', Math.min(1, newOpacity));
+        });
+      });
+    }
+  });
+
+  // Scale
+  const scaleSlider = document.getElementById('scale');
+  scaleSlider.addEventListener('input', (e) => {
+    const value = parseFloat(e.target.value).toFixed(1);
+    updateAnimationProperty('animation-scale', value);
+    updateValueDisplay('scale', value);
+  });
+
+  // Toggle panel visibility
+  toggleDebug.addEventListener('click', () => {
+    const controls = debugPanel.querySelector('.debug-controls');
+    if (controls.style.display === 'none') {
+      controls.style.display = 'block';
+      toggleDebug.textContent = 'Hide';
+    } else {
+      controls.style.display = 'none';
+      toggleDebug.textContent = 'Show';
+    }
+  });
+
+  // Reset to defaults
+  resetDebug.addEventListener('click', () => {
+    ribbonSpeedSlider.value = defaults.ribbonSpeed;
+    threadSpeedSlider.value = defaults.threadSpeed;
+    ribbonOpacitySlider.value = defaults.ribbonOpacity;
+    threadOpacitySlider.value = defaults.threadOpacity;
+    ribbonBlurSlider.value = defaults.ribbonBlur;
+    threadBlurSlider.value = defaults.threadBlur;
+    blueIntensitySlider.value = defaults.blueIntensity;
+    scaleSlider.value = defaults.scale;
+
+    // Trigger all updates
+    ribbonSpeedSlider.dispatchEvent(new Event('input'));
+    threadSpeedSlider.dispatchEvent(new Event('input'));
+    ribbonOpacitySlider.dispatchEvent(new Event('input'));
+    threadOpacitySlider.dispatchEvent(new Event('input'));
+    ribbonBlurSlider.dispatchEvent(new Event('input'));
+    threadBlurSlider.dispatchEvent(new Event('input'));
+    blueIntensitySlider.dispatchEvent(new Event('input'));
+    scaleSlider.dispatchEvent(new Event('input'));
+  });
+
+  // Initialize with defaults
+  Object.keys(defaults).forEach(key => {
+    if (key === 'ribbonSpeed') ribbonSpeedSlider.dispatchEvent(new Event('input'));
+    if (key === 'threadSpeed') threadSpeedSlider.dispatchEvent(new Event('input'));
+    if (key === 'ribbonOpacity') ribbonOpacitySlider.dispatchEvent(new Event('input'));
+    if (key === 'threadOpacity') threadOpacitySlider.dispatchEvent(new Event('input'));
+    if (key === 'ribbonBlur') ribbonBlurSlider.dispatchEvent(new Event('input'));
+    if (key === 'threadBlur') threadBlurSlider.dispatchEvent(new Event('input'));
+    if (key === 'blueIntensity') blueIntensitySlider.dispatchEvent(new Event('input'));
+    if (key === 'scale') scaleSlider.dispatchEvent(new Event('input'));
+  });
+
+  // Create fragmented silver-blue ribbons with particles
+  function animateRibbons() {
+    const ribbonPaths = [
+      { path: 'M -200,300 Q 300,100 700,400 T 1600,350 T 2200,450', speed: 0.4, gradient: 'silverBlue1', width: 2.5 },
+      { path: 'M 1920,200 Q 1400,500 1000,200 T 200,400 T -400,250', speed: 0.35, gradient: 'silverBlue2', width: 2 },
+      { path: 'M 400,1080 Q 600,700 800,900 T 1200,750 T 1600,950 T 2100,800', speed: 0.45, gradient: 'silverBlue3', width: 2.3 },
+      { path: 'M 0,0 Q 400,200 600,0 T 1200,200 T 1800,50 T 2200,300', speed: 0.38, gradient: 'silverBlue1', width: 2.2 },
+      { path: 'M -100,500 Q 400,300 900,600 T 1700,400 T 2300,650', speed: 0.42, gradient: 'silverBlue2', width: 2.1 },
+      { path: 'M 960,540 Q 700,700 960,900 Q 1220,700 960,540', speed: 0.5, gradient: 'silverBlue3', width: 2.4 }
+    ];
+    
+    const ribbonsContainer = document.getElementById('ribbons-container');
+    const particlesContainer = document.getElementById('particles-container');
+    let ribbons = [];
+    let particles = [];
+    let time = 0;
+    
+    // Create fragmented ribbon segments along each path
+    function createFragmentedRibbon(pathData, gradientId, strokeWidth, ribbonIndex) {
+      const fragments = [];
+      const particlesForRibbon = [];
+      
+      // Pre-calculate path points for performance
+      const tempPath = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+      tempPath.setAttribute('d', pathData);
+      const pathLength = tempPath.getTotalLength();
+      const pathPoints = [];
+      const numSamples = 60; // Reduced from 120 for performance
+      
+      for (let i = 0; i <= numSamples; i++) {
+        const t = i / numSamples;
+        const point = tempPath.getPointAtLength(t * pathLength);
+        let tangent;
+        if (i < numSamples) {
+          const nextPoint = tempPath.getPointAtLength(Math.min(pathLength, (t + 0.01) * pathLength));
+          tangent = Math.atan2(nextPoint.y - point.y, nextPoint.x - point.x);
+        } else {
+          const prevPoint = tempPath.getPointAtLength(Math.max(0, (t - 0.01) * pathLength));
+          tangent = Math.atan2(point.y - prevPoint.y, point.x - prevPoint.x);
+        }
+        pathPoints.push({ x: point.x, y: point.y, angle: tangent });
+      }
+      
+      // Sample points along the path to create fragments (reduced count)
+      const numFragments = 50; // Reduced from 120 for better performance
+      const fragmentLength = 25;
+      const gapLength = 8;
+      
+      for (let i = 0; i < numFragments; i++) {
+        const progress = i / numFragments;
+        const pointIndex = Math.floor(progress * (pathPoints.length - 1));
+        const pointData = pathPoints[pointIndex];
+        
+        const fragment = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        fragment.setAttribute('class', 'ribbon-fragment');
+        fragment.setAttribute('fill', `url(#${gradientId})`);
+        fragment.setAttribute('stroke', '#ffffff');
+        fragment.setAttribute('stroke-width', '0.3');
+        fragment.setAttribute('stroke-opacity', '0.4');
+        fragment.setAttribute('filter', 'url(#ribbonGlow)');
+        fragment.setAttribute('stroke-linecap', 'square');
+        fragment.setAttribute('data-ribbon', ribbonIndex);
+        fragment.setAttribute('data-index', i);
+        fragment.setAttribute('data-progress', progress);
+        
+        fragments.push({ el: fragment, pointData, progress });
+        ribbonsContainer.appendChild(fragment);
+        
+        // Create fewer particle fragments for better performance
+        const numParticles = Math.floor(Math.random() * 2 + 1); // 1-2 particles per fragment (reduced from 3-6)
+        for (let p = 0; p < numParticles; p++) {
+          const particle = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          const size = Math.random() * 7 + 4; // 4-11px
+          const angle = Math.random() * Math.PI * 2;
+          const distance = Math.random() * 30 + 12;
+          
+          // Create small angular, crystalline shard shapes
+          const shapeType = Math.floor(Math.random() * 4);
+          let particlePath = '';
+          
+          if (shapeType === 0) {
+            // Sharp triangular shard
+            particlePath = `M ${-size/2},${-size*0.8} L ${size/2},0 L ${-size/2},${size*0.8} Z`;
+          } else if (shapeType === 1) {
+            // Rectangular sliver with sharp edges
+            particlePath = `M ${-size},${-size/4} L ${size*0.8},${-size/3} L ${size},${size/4} L ${-size*0.8},${size/3} Z`;
+          } else if (shapeType === 2) {
+            // Angular crystalline fragment
+            particlePath = `M ${-size/3},${-size} L ${size/2},${-size*0.6} L ${size},${size/2} L ${-size/2},${size} Z`;
+          } else {
+            // Sharp diamond-like shard
+            particlePath = `M 0,${-size} L ${size*0.7},0 L 0,${size} L ${-size*0.7},0 Z`;
+          }
+          
+          particle.setAttribute('d', particlePath);
+          particle.setAttribute('fill', `url(#${gradientId})`);
+          particle.setAttribute('stroke', `url(#${gradientId})`);
+          particle.setAttribute('stroke-width', '0.3');
+          particle.setAttribute('opacity', Math.random() * 0.4 + 0.25);
+          particle.setAttribute('filter', 'url(#particleGlow)');
+          particle.setAttribute('data-ribbon', ribbonIndex);
+          particle.setAttribute('data-fragment', i);
+          particle.setAttribute('data-offset-x', distance * Math.cos(angle));
+          particle.setAttribute('data-offset-y', distance * Math.sin(angle));
+          particle.setAttribute('data-rotation', angle * 180 / Math.PI);
+          particle.setAttribute('data-speed', Math.random() * 0.015 + 0.008);
+          particle.setAttribute('data-size', size);
+          particle.setAttribute('data-particle-index', p);
+          
+          particlesForRibbon.push(particle);
+          particlesContainer.appendChild(particle);
+        }
+      }
+      
+      return { fragments, particles: particlesForRibbon, pathData, gradientId, strokeWidth, speed: ribbonPaths[ribbonIndex].speed, pathPoints };
+    }
+    
+    // Initialize all ribbons
+    ribbonPaths.forEach((ribbonData, index) => {
+      const ribbon = createFragmentedRibbon(ribbonData.path, ribbonData.gradient, ribbonData.width, index);
+      ribbons.push(ribbon);
+    });
+    
+    console.log('Ribbons initialized:', ribbons.length, 'fragments total:', ribbons.reduce((sum, r) => sum + r.fragments.length, 0));
+    
+    function updateRibbons() {
+      time += 0.01; // Faster for flowing motion
+      
+      ribbons.forEach((ribbon, ribbonIndex) => {
+        const phase = time * ribbon.speed + (ribbonIndex * Math.PI / 3);
+        // Flow speed - how fast fragments travel along the path
+        const flowSpeed = 0.3 + (ribbonIndex * 0.05); // Different speeds per ribbon
+        
+        ribbon.fragments.forEach((fragData, fragIndex) => {
+          const fragment = fragData.el;
+          const baseProgress = fragData.progress;
+          
+          // Create flowing motion: fragments move along the path
+          // Add time-based offset so fragments flow forward along the curve
+          const timeOffset = (time * flowSpeed * 0.5) % 1; // Wrap around 0-1
+          const flowingProgress = (baseProgress + timeOffset) % 1;
+          
+          // Get interpolated point along the path for smooth flow
+          const scaledProgress = flowingProgress * (ribbon.pathPoints.length - 1);
+          const pointIndex = Math.floor(scaledProgress);
+          const nextIndex = Math.min(ribbon.pathPoints.length - 1, pointIndex + 1);
+          const t = scaledProgress - pointIndex; // Fractional part for interpolation
+          
+          const p1 = ribbon.pathPoints[pointIndex];
+          const p2 = ribbon.pathPoints[nextIndex];
+          
+          // Interpolate between points for smooth motion
+          const basePoint = {
+            x: p1.x + (p2.x - p1.x) * t,
+            y: p1.y + (p2.y - p1.y) * t,
+            angle: p1.angle + (p2.angle - p1.angle) * t
+          };
+          
+          let angle = basePoint.angle;
+          
+          // Apply wave motion perpendicular to path for ribbon-like flow
+          const wave1 = Math.sin(phase * 0.8 + flowingProgress * Math.PI * 6) * 30;
+          const wave2 = Math.cos(phase * 1.2 + flowingProgress * Math.PI * 4) * 20;
+          
+          const x = basePoint.x + wave1 * Math.cos(angle + Math.PI/2) + wave2 * Math.cos(angle - Math.PI/4);
+          const y = basePoint.y + wave1 * Math.sin(angle + Math.PI/2) + wave2 * Math.sin(angle - Math.PI/4);
+          
+          // Rotate angle slightly for twisting effect
+          const twist = Math.sin(phase * 1.5 + flowingProgress * Math.PI * 8) * 0.3;
+          angle += twist;
+          
+          // Create angular fragment with sharp, crystalline edges
+          const fragmentLength = 24 + Math.sin(phase * 2 + fragIndex * 0.2) * 4;
+          const fragmentWidth = ribbon.strokeWidth + Math.sin(phase * 1.8 + fragIndex) * 0.4;
+          const perpAngle = angle + Math.PI/2;
+          
+          // Create angular, crystalline fragment shape
+          const lengthOffset = fragmentLength / 2;
+          const widthOffset = fragmentWidth / 2;
+          
+          // Add slight angular variation for crystalline look
+          const angleVariation = Math.sin(phase * 3 + fragIndex * 0.3) * 0.1;
+          const adjustedAngle = angle + angleVariation;
+          
+          // Sharp angular fragment with mitered corners
+          const cosA = Math.cos(adjustedAngle);
+          const sinA = Math.sin(adjustedAngle);
+          const cosP = Math.cos(perpAngle);
+          const sinP = Math.sin(perpAngle);
+          
+          const x1 = x + cosA * lengthOffset;
+          const y1 = y + sinA * lengthOffset;
+          const x2 = x + cosA * -lengthOffset;
+          const y2 = y + sinA * -lengthOffset;
+          
+          const w1 = cosP * widthOffset;
+          const h1 = sinP * widthOffset;
+          
+          // Create sharp angular fragment - crystalline shard shape
+          const fragmentPath = `M ${x1 + w1},${y1 + h1} L ${x1 - w1},${y1 - h1} L ${x2 - w1},${y2 - h1} L ${x2 + w1},${y2 + h1} Z`;
+          
+          fragment.setAttribute('d', fragmentPath);
+          
+          // Shiny opacity with highlights - fade based on position in flow
+          const flowFade = 0.6 + Math.sin(flowingProgress * Math.PI * 2) * 0.2;
+          const opacity = (0.5 + Math.sin(phase * 2 + fragIndex * 0.5) * 0.2) * flowFade;
+          fragment.setAttribute('opacity', Math.max(0.3, Math.min(0.9, opacity)));
+        });
+        
+        // Update particles separately for better performance
+        ribbon.particles.forEach((particle) => {
+          const fragIndex = parseInt(particle.getAttribute('data-fragment'));
+          if (fragIndex >= ribbon.fragments.length) return;
+          
+          const fragData = ribbon.fragments[fragIndex];
+          const baseProgress = fragData.progress;
+          
+          // Particles follow their fragment's flowing position
+          const timeOffset = (time * flowSpeed * 0.5) % 1;
+          const flowingProgress = (baseProgress + timeOffset) % 1;
+          
+          const scaledProgress = flowingProgress * (ribbon.pathPoints.length - 1);
+          const pointIndex = Math.floor(scaledProgress);
+          const nextIndex = Math.min(ribbon.pathPoints.length - 1, pointIndex + 1);
+          const t = scaledProgress - pointIndex; // Fractional part for interpolation
+          
+          const p1 = ribbon.pathPoints[pointIndex];
+          const p2 = ribbon.pathPoints[nextIndex];
+          
+          const basePoint = {
+            x: p1.x + (p2.x - p1.x) * t,
+            y: p1.y + (p2.y - p1.y) * t,
+            angle: p1.angle + (p2.angle - p1.angle) * t
+          };
+          
+          let angle = basePoint.angle;
+          const wave1 = Math.sin(phase * 0.8 + flowingProgress * Math.PI * 6) * 30;
+          const wave2 = Math.cos(phase * 1.2 + flowingProgress * Math.PI * 4) * 20;
+          
+          const x = basePoint.x + wave1 * Math.cos(angle + Math.PI/2) + wave2 * Math.cos(angle - Math.PI/4);
+          const y = basePoint.y + wave1 * Math.sin(angle + Math.PI/2) + wave2 * Math.sin(angle - Math.PI/4);
+          
+          const offsetX = parseFloat(particle.getAttribute('data-offset-x'));
+          const offsetY = parseFloat(particle.getAttribute('data-offset-y'));
+          const rotation = parseFloat(particle.getAttribute('data-rotation'));
+          const particleSpeed = parseFloat(particle.getAttribute('data-speed'));
+          const pIndex = parseInt(particle.getAttribute('data-particle-index') || '0');
+          
+          // Animate particle position with orbital motion
+          const particlePhase = phase * particleSpeed * 8 + pIndex;
+          const drift = Math.sin(particlePhase * 2) * 8;
+          const orbitX = offsetX + Math.sin(particlePhase) * 18 + drift;
+          const orbitY = offsetY + Math.cos(particlePhase * 1.4) * 15 + Math.cos(particlePhase * 0.7) * 6;
+          
+          const particleX = x + orbitX;
+          const particleY = y + orbitY;
+          const particleAngle = angle + rotation + Math.sin(particlePhase * 1.5) * 0.4;
+          
+          // Particle opacity pulsing
+          const baseOpacity = 0.25 + Math.sin(fragIndex * 0.1) * 0.15;
+          const sparkle = Math.sin(particlePhase * 4) * 0.2;
+          const particleOpacity = Math.max(0.2, Math.min(0.65, baseOpacity + sparkle));
+          
+          // Subtle size pulsing
+          const size = parseFloat(particle.getAttribute('data-size'));
+          const sizePulse = 1 + Math.sin(particlePhase * 2.5) * 0.15;
+          
+          particle.setAttribute('transform', `translate(${particleX},${particleY}) rotate(${particleAngle * 180 / Math.PI}) scale(${sizePulse})`);
+          particle.setAttribute('opacity', particleOpacity);
+        });
+      });
+      
+      requestAnimationFrame(updateRibbons);
+    }
+    
+    // Start animation
+    updateRibbons();
+    console.log('Animation started');
+  }
+  
+  // Start ribbon animation when page loads
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', animateRibbons);
+  } else {
+    animateRibbons();
+  }
 </script>
 </body>
 </html>
