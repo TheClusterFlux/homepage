@@ -94,6 +94,18 @@ app.get('/api/fetch-data', async (req, res) => {
   }
 });
 
+// Fetch data on server startup to ensure JSON files exist
+(async () => {
+  try {
+    console.log('Fetching initial data from MongoDB...');
+    await fetchAndSaveHomepageData();
+    console.log('Initial data fetched successfully');
+  } catch (error) {
+    console.error('Error fetching initial data:', error);
+    console.log('Server will continue, but data files may not exist until /api/fetch-data is called');
+  }
+})();
+
 // API endpoint to get cluster metrics
 app.get('/api/cluster-metrics', async (req, res) => {
   try {
