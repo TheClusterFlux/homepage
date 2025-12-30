@@ -201,9 +201,9 @@
     fetch(`${baseURL}/data/projects.json`)
       .then(response => response.json())
       .then(projects => {
-        // Separate featured and regular projects
+        // Separate featured and all projects (featured projects appear in both sections)
         const featuredProjects = projects.filter(project => project.featured === true || project.featured === 'true');
-        const regularProjects = projects.filter(project => !project.featured || (project.featured !== true && project.featured !== 'true'));
+        const allProjects = [...projects]; // Include all projects (featured + non-featured)
         
         // Sort featured projects (prioritize those with visit links, then alphabetically)
         featuredProjects.sort((a, b) => {
@@ -217,8 +217,8 @@
           return a.title.localeCompare(b.title);
         });
         
-        // Sort regular projects
-        regularProjects.sort((a, b) => {
+        // Sort all projects (for the "All Projects" section)
+        allProjects.sort((a, b) => {
           const titleComparison = a.title.localeCompare(b.title);
           const aHasVisitLink = Object.keys(a.links || {}).some(key => 
             key.toLowerCase() === 'visit' || key.toLowerCase() === 'website' || key.toLowerCase() === 'demo');
@@ -244,10 +244,10 @@
           featuredSection.style.display = 'none';
         }
         
-        // Display regular projects
+        // Display all projects (including featured ones)
         const container = document.getElementById('projects');
         container.innerHTML = '';
-        regularProjects.forEach(project => {
+        allProjects.forEach(project => {
           container.innerHTML += createProjectCard(project);
         });
       })

@@ -338,6 +338,12 @@ body {
 .featured-grid {
   margin-top: 0;
   margin-bottom: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, max-content));
+  gap: 1.5rem;
+  padding: 0 1rem;
+  justify-content: center;
+  max-width: 100%;
 }
 
 .featured-grid .card {
@@ -405,6 +411,13 @@ body {
   padding: 0 1rem;
   position: relative;
   z-index: 1;
+}
+
+/* Override for featured grid to center items */
+.projects-grid.featured-grid {
+  justify-content: center;
+  grid-template-columns: repeat(auto-fit, minmax(280px, max-content));
+  margin: 0 auto;
 }
 
 .card {
