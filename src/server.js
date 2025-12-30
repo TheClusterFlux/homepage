@@ -83,14 +83,24 @@ app.use('/prometheus', (req, res) => {
   }
 });
 
-// API endpoint to fetch and save data
+// API endpoint to fetch and save data (refresh data from MongoDB)
 app.get('/api/fetch-data', async (req, res) => {
   try {
+    console.log('Fetching data from MongoDB...');
     await fetchAndSaveHomepageData();
-    res.status(200).send('Data fetched and saved locally');
+    res.status(200).json({ 
+      success: true, 
+      message: 'Data fetched and saved locally',
+      timestamp: new Date().toISOString()
+    });
   } catch (error) {
     console.error('Error in /api/fetch-data:', error);
-    res.status(500).send('Failed to fetch data');
+    res.status(500).json({ 
+      success: false, 
+      message: 'Failed to fetch data',
+      error: error.message,
+      timestamp: new Date().toISOString()
+    });
   }
 });
 
