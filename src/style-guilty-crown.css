@@ -1542,4 +1542,214 @@ body {
   margin-top: 2rem;
 }
 
+/* Prometheus Charts - Prevent growing on hover */
+.prometheus-metrics-section {
+  display: flex;
+  gap: 2rem;
+  background: var(--bg-card);
+  backdrop-filter: blur(10px);
+  border: 2px solid var(--border-color);
+  overflow: hidden;
+  box-shadow: 0 10px 40px var(--shadow-color);
+  padding: 0;
+  clip-path: polygon(15px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+  position: relative;
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.prometheus-charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+  gap: 2rem;
+  margin-top: 1rem;
+}
+
+.chart-container {
+  background: var(--bg-card);
+  border: 2px solid var(--border-color);
+  border-radius: 0;
+  padding: 1.5rem;
+  box-shadow: 0 5px 20px var(--shadow-color);
+  position: relative;
+  min-height: 300px;
+  max-height: 400px;
+  height: 350px;
+  overflow: hidden;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.chart-container:hover {
+  box-shadow: 0 10px 30px var(--shadow-featured);
+  border-color: var(--border-featured);
+  transform: none;
+}
+
+.chart-container h3 {
+  font-family: 'Orbitron', monospace;
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+  text-align: center;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: color 0.3s ease;
+}
+
+.chart-loading {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--bg-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  font-weight: 500;
+  color: var(--text-secondary);
+  border-radius: 0;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.chart-container canvas {
+  width: 100% !important;
+  height: 280px !important;
+  max-height: 280px !important;
+  display: block;
+}
+
+.node-status-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.node-item {
+  display: flex;
+  padding: 1rem;
+  border-radius: 0;
+  background: var(--bg-card);
+  border: 2px solid var(--border-color);
+  box-shadow: 0 2px 5px var(--shadow-color);
+  gap: 1rem;
+  transition: all 0.3s ease;
+  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+}
+
+.node-item:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px var(--shadow-featured);
+  border-color: var(--border-featured);
+}
+
+.node-up {
+  border-left: 4px solid #2ecc71;
+}
+
+.node-down {
+  border-left: 4px solid #e74c3c;
+}
+
+.node-status-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+}
+
+.node-up .node-status-icon {
+  color: #2ecc71;
+}
+
+.node-down .node-status-icon {
+  color: #e74c3c;
+}
+
+.node-details {
+  flex: 1;
+}
+
+.node-details h4 {
+  margin: 0 0 0.5rem 0;
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.node-meta {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  margin-bottom: 0.2rem;
+  transition: color 0.3s ease;
+}
+
+.time-range-selector {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background: var(--bg-card);
+  border: 2px solid var(--border-color);
+  border-radius: 0;
+  flex-wrap: wrap;
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.time-range-selector label {
+  font-weight: 500;
+  color: var(--text-primary);
+  transition: color 0.3s ease;
+}
+
+.time-range-selector select {
+  padding: 8px 12px;
+  border: 2px solid var(--border-color);
+  border-radius: 0;
+  font-size: 0.9rem;
+  background: var(--bg-card);
+  color: var(--text-primary);
+  min-width: 150px;
+  clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
+  transition: all 0.3s ease;
+}
+
+.time-range-selector select:hover {
+  border-color: var(--border-featured);
+  box-shadow: 0 0 15px var(--shadow-featured);
+}
+
+/* Responsive adjustments for charts */
+@media (max-width: 768px) {
+  .prometheus-charts {
+    grid-template-columns: 1fr;
+  }
+  
+  .chart-container {
+    min-height: 250px;
+    max-height: 300px;
+    height: 280px;
+    padding: 1rem;
+  }
+  
+  .chart-container canvas {
+    height: 220px !important;
+    max-height: 220px !important;
+  }
+  
+  .time-range-selector {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .time-range-selector select {
+    width: 100%;
+  }
+}
+
 
