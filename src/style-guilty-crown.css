@@ -1164,6 +1164,172 @@ body {
     padding: 6px 12px;
     font-size: 0.8rem;
   }
+  
+  /* About page mobile optimizations */
+  .hero-section {
+    padding: 1.5rem 0;
+    margin-bottom: 1.5rem;
+  }
+  
+  .hero-content h2 {
+    font-size: 1.8rem;
+    letter-spacing: 2px;
+    margin-bottom: 0.75rem;
+  }
+  
+  .hero-tagline {
+    font-size: 1rem;
+    letter-spacing: 1px;
+  }
+  
+  .about-container {
+    gap: 2rem;
+    padding: 0 0.75rem;
+  }
+  
+  .about-section, .metrics-section, .tech-stack-section, .prometheus-metrics-section {
+    flex-direction: column;
+  }
+  
+  .section-icon {
+    flex: 0 0 50px;
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1.5rem;
+  }
+  
+  .section-content {
+    padding: 1.25rem;
+  }
+  
+  .section-content h2 {
+    font-size: 1.3rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .section-description {
+    font-size: 0.9rem;
+    margin-bottom: 1.25rem;
+  }
+  
+  .feature-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+  }
+  
+  .feature-item {
+    padding: 0.75rem;
+  }
+  
+  .feature-item i {
+    font-size: 1.2rem;
+  }
+  
+  .feature-item span {
+    font-size: 0.75rem;
+  }
+  
+  .metrics-container {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 1rem;
+    margin-top: 1.25rem;
+  }
+  
+  .metric-card {
+    padding: 1rem;
+  }
+  
+  .metric-icon {
+    font-size: 1.5rem;
+  }
+  
+  .metric-card h3 {
+    font-size: 0.95rem;
+  }
+  
+  .metric-value {
+    font-size: 1.1rem;
+  }
+  
+  .tech-cards {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .tech-card {
+    padding: 1.25rem;
+  }
+  
+  .tech-card h3 {
+    font-size: 1.1rem;
+  }
+  
+  .tech-card p {
+    font-size: 0.9rem;
+  }
+  
+  .prometheus-metrics-section .section-content {
+    padding: 1.25rem;
+  }
+  
+  .time-range-selector {
+    padding: 0.75rem;
+    margin-bottom: 1.25rem;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  .time-range-selector label {
+    font-size: 0.9rem;
+  }
+  
+  .time-range-selector select {
+    width: 100%;
+    padding: 8px;
+  }
+  
+  .prometheus-charts {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .chart-container {
+    min-height: 220px;
+    max-height: 280px;
+    height: 250px;
+    padding: 1rem;
+  }
+  
+  .chart-container h3 {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .chart-container canvas {
+    height: 180px !important;
+    max-height: 180px !important;
+  }
+  
+  .node-status-grid {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  .node-item {
+    padding: 0.75rem;
+  }
+  
+  .form-container {
+    padding: 1.25rem;
+    margin-top: 1.25rem;
+  }
+  
+  .form-container h3 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
 }
 
 /* Responsive grid adjustments for larger screens */
