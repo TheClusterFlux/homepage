@@ -23,6 +23,7 @@
     panel.className = 'cf-theme-panel';
     panel.setAttribute('role', 'listbox');
     panel.setAttribute('aria-label', 'Visual theme');
+    panel.setAttribute('hidden', '');
 
     const title = document.createElement('li');
     title.className = 'cf-theme-panel__title';
@@ -65,11 +66,13 @@
     function open() {
       dock.setAttribute('data-open', 'true');
       trigger.setAttribute('aria-expanded', 'true');
+      panel.removeAttribute('hidden');
     }
 
     function close() {
       dock.setAttribute('data-open', 'false');
       trigger.setAttribute('aria-expanded', 'false');
+      panel.setAttribute('hidden', '');
     }
 
     trigger.addEventListener('click', () => {

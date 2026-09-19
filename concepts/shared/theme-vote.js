@@ -52,12 +52,15 @@
     panel.className = 'cf-theme-vote__panel';
     panel.setAttribute('role', 'region');
     panel.setAttribute('aria-label', 'Theme popularity poll');
+    panel.setAttribute('hidden', '');
 
     root.appendChild(panel);
     root.appendChild(trigger);
 
     function setOpen(open) {
       root.setAttribute('data-open', open ? 'true' : 'false');
+      if (open) panel.removeAttribute('hidden');
+      else panel.setAttribute('hidden', '');
     }
 
     trigger.addEventListener('click', () => {

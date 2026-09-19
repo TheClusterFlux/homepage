@@ -53,16 +53,23 @@
   color: var(--cf-vote-text);
   backdrop-filter: blur(16px);
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
-  opacity: 0;
-  visibility: hidden;
-  transform: translateY(6px);
-  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+  display: none;
 }
 
 .cf-theme-vote[data-open='true'] .cf-theme-vote__panel {
-  opacity: 1;
-  visibility: visible;
-  transform: translateY(0);
+  display: block;
+  animation: cf-theme-vote-in 0.18s ease;
+}
+
+@keyframes cf-theme-vote-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .cf-theme-vote__title {
