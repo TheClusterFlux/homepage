@@ -6,6 +6,7 @@ const fs = require('fs');
 const { exec } = require('child_process');
 const http = require('http');
 const { mountPulseRoutes } = require('./pulseProxy');
+const { mountThemeVoteRoutes } = require('./themeVotes');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -436,6 +437,7 @@ app.get('/cv/download', (req, res) => {
 });
 
 mountPulseRoutes(app);
+mountThemeVoteRoutes(app);
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));

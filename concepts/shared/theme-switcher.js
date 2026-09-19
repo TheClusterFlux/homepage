@@ -92,9 +92,26 @@
     trigger.title = `Theme: ${current.name}`;
   }
 
+  function loadThemeVote() {
+    if (document.querySelector('link[data-cf-theme-vote]')) return;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = '/shared/theme-vote.css';
+    link.setAttribute('data-cf-theme-vote', '1');
+    document.head.appendChild(link);
+    const script = document.createElement('script');
+    script.src = '/shared/theme-vote.js';
+    script.defer = true;
+    document.body.appendChild(script);
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', buildDock);
+    document.addEventListener('DOMContentLoaded', () => {
+      buildDock();
+      loadThemeVote();
+    });
   } else {
     buildDock();
+    loadThemeVote();
   }
 })();
