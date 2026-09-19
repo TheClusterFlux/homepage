@@ -598,9 +598,34 @@ body {
 }
 
 @media (max-width: 640px) {
+  :root {
+    --ring-outer-r: min(38vw, 158px);
+    --ring-inner-r: min(21vw, 86px);
+    --node-size: 44px;
+    --node-half: 22px;
+    --hud-size: min(96vw, calc(100dvh - 13rem), 360px);
+  }
+
   .hud-header {
     flex-direction: column;
     align-items: stretch;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .hud-header__controls {
+    width: 100%;
+  }
+
+  .hud-field {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+
+  .hud-field input,
+  .hud-field select {
+    width: 100%;
+    min-width: 0;
   }
 
   .hud-header__telemetry {
@@ -608,9 +633,16 @@ body {
   }
 
   .core-panel {
-    width: min(85%, 240px);
-    min-height: 160px;
-    padding: 0.85rem;
+    width: min(88%, 220px);
+    min-height: 150px;
+    padding: 0.75rem;
+  }
+
+  .orbit-node--featured .orbit-node__btn {
+    width: 52px;
+    height: 52px;
+    left: -26px;
+    top: -26px;
   }
 
   .orbit-node__label {

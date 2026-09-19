@@ -254,6 +254,24 @@ body {
   align-items: start;
 }
 
+@media (max-width: 719px) {
+  .mwpsb-header {
+    grid-template-columns: 1fr;
+  }
+
+  .mwpsb-header__controls,
+  .mwpsb-header__telemetry {
+    grid-column: 1;
+    grid-row: auto;
+    justify-content: flex-start;
+  }
+
+  .scan-field {
+    min-width: 0;
+    flex: 1 1 100%;
+  }
+}
+
 @media (max-width: 640px) {
   .spectrum-stage {
     grid-template-columns: 1fr;

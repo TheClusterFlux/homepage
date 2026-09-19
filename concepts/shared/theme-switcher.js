@@ -95,6 +95,15 @@
     trigger.title = `Theme: ${current.name}`;
   }
 
+  function loadThemeMobile() {
+    if (document.querySelector('link[data-cf-theme-mobile]')) return;
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = '/shared/theme-mobile.css';
+    link.setAttribute('data-cf-theme-mobile', '1');
+    document.head.appendChild(link);
+  }
+
   function loadThemeVote() {
     if (document.querySelector('link[data-cf-theme-vote]')) return;
     const link = document.createElement('link');
@@ -111,10 +120,12 @@
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
       buildDock();
+      loadThemeMobile();
       loadThemeVote();
     });
   } else {
     buildDock();
+    loadThemeMobile();
     loadThemeVote();
   }
 })();

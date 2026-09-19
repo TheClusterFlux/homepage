@@ -403,6 +403,15 @@ body {
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
+@media (max-width: 719px) {
+  .dl-target--stagger-0,
+  .dl-target--stagger-1,
+  .dl-target--stagger-2 {
+    margin-left: 0;
+    margin-right: 0;
+  }
+}
+
 @media (min-width: 560px) {
   .dl-target:not(.dl-target--eliminator) {
     grid-template-columns: 120px 1fr auto;

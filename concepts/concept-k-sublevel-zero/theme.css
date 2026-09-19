@@ -532,6 +532,23 @@ body {
 }
 
 @media (max-width: 720px) {
+  .sz-header {
+    flex-direction: column;
+    align-items: stretch;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .sz-header__controls,
+  .sz-header__status {
+    width: 100%;
+    align-items: flex-start;
+  }
+
+  .sz-field {
+    flex: 1 1 100%;
+  }
+
   .sz-blade {
     grid-template-columns: 4px 44px 8px 56px minmax(0, 1fr);
     grid-template-rows: auto auto;

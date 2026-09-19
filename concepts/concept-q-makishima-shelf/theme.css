@@ -866,6 +866,31 @@ body {
   opacity: 0.5;
 }
 
+@media (max-width: 767px) {
+  .ms-shell {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-bottom: 5.5rem;
+  }
+
+  .ms-header__catalog {
+    width: 100%;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ms-field {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .ms-field input,
+  .ms-field select {
+    min-width: 0;
+    width: 100%;
+  }
+}
+
 @media (max-width: 520px) {
   .ms-shelf__books {
     gap: 0.25rem 0.15rem;

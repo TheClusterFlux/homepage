@@ -414,6 +414,27 @@ body {
   .crystal-field { columns: 4; }
 }
 
+@media (max-width: 640px) {
+  .nave__controls {
+    width: 100%;
+  }
+
+  .control-glass {
+    flex: 1 1 100%;
+  }
+
+  .control-glass input,
+  .control-glass select {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .link-glass {
+    width: 100%;
+    text-align: center;
+  }
+}
+
 /* —— Glass slabs (non-uniform) —— */
 
 .slab {

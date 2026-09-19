@@ -553,6 +553,11 @@ body {
     grid-column: 1;
   }
 
+  .gauge-card {
+    flex: 1 1 100%;
+    max-width: 100%;
+  }
+
   .scan-row__cc,
   .scan-row__cat {
     display: none;
