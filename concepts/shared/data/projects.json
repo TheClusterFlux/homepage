@@ -223,17 +223,6 @@
     "image": "Game_of_Life.png"
   },
   {
-    "_id": "698bbcd93c326f3df2a2b83a",
-    "title": "MCP Server (Cluster Services)",
-    "description": "MCP server for discovering and interacting with cluster services in the Kubernetes cluster.",
-    "author": "TheClusterFlux",
-    "tech": "TypeScript, Node.js, Express, Kubernetes client, MCP SDK",
-    "links": {},
-    "category": "infrastructure",
-    "fileType": "png",
-    "image": "MCP_Server_(Cluster_Services).png"
-  },
-  {
     "_id": "698bbcd93c326f3df2a2b83c",
     "title": "MySQL",
     "description": "MySQL database service for other services on the cluster to use.",

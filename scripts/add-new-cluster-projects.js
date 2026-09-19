@@ -51,18 +51,6 @@ const NEW_PROJECTS = [
     fileType: 'webp',
   },
   {
-    title: 'MCP Server (Cluster Services)',
-    description: 'MCP server for discovering and interacting with cluster services in the Kubernetes cluster.',
-    author: 'TheClusterFlux',
-    tech: 'TypeScript, Node.js, Express, Kubernetes client, MCP SDK',
-    links: {
-      source: 'https://github.com/TheClusterFlux/mcp-server-cluster-services',
-      visit: 'https://mcp-cluster-services.theclusterflux.com',
-    },
-    category: 'infrastructure',
-    fileType: 'webp',
-  },
-  {
     title: 'MySQL',
     description: 'MySQL database service for other services on the cluster to use.',
     author: 'TheClusterFlux',

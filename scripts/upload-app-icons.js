@@ -38,7 +38,6 @@ const SLUG_TO_TITLE = {
   mongodb: 'MongoDB',
   sqlite: 'sqlite',
   email: 'Email',
-  'mcp-server-cluster-services': 'MCP Server (Cluster Services)',
   mysql: 'MySQL',
   'k8-platform-guide': 'K8 Platform Guide',
 };
