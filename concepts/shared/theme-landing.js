@@ -13,6 +13,7 @@
       id = R.resolveInitialThemeId();
     }
 
+    // Root is a hop: first visit gets a random /themes/* assignment; Guilty Crown only if chosen in the switcher.
     if (id === 'guilty-crown') return;
 
     window.location.replace(R.themeHref(R.getThemeById(id)));

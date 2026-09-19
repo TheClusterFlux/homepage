@@ -330,24 +330,19 @@
 
 
 
+  function assignableThemes() {
+    return themes.filter((t) => t.id !== 'guilty-crown');
+  }
+
   function pickWeightedRandom() {
-
     const prefersDark =
-
       global.matchMedia && global.matchMedia('(prefers-color-scheme: dark)').matches;
-
     const pool = [];
-
-    themes.forEach((t) => {
-
+    assignableThemes().forEach((t) => {
       const weight = t.scheme === (prefersDark ? 'dark' : 'light') ? 3 : 1;
-
       for (let i = 0; i < weight; i++) pool.push(t.id);
-
     });
-
-    return pool[Math.floor(Math.random() * pool.length)];
-
+    return pool[Math.floor(Math.random() * pool.length)] || assignableThemes()[0].id;
   }
 
 
@@ -415,6 +410,8 @@
     detectCurrentThemeId,
 
     themeHref,
+
+    assignableThemes,
 
     pickWeightedRandom,
 
