@@ -18,7 +18,7 @@
 
       previewPort: null,
 
-      productionPath: '/',
+      productionPath: '/themes/guilty-crown/',
 
     },
 
@@ -331,7 +331,7 @@
 
 
   function assignableThemes() {
-    return themes.filter((t) => t.id !== 'guilty-crown');
+    return themes.slice();
   }
 
   function pickWeightedRandom() {
@@ -342,7 +342,7 @@
       const weight = t.scheme === (prefersDark ? 'dark' : 'light') ? 3 : 1;
       for (let i = 0; i < weight; i++) pool.push(t.id);
     });
-    return pool[Math.floor(Math.random() * pool.length)] || assignableThemes()[0].id;
+    return pool[Math.floor(Math.random() * pool.length)] || themes[0].id;
   }
 
 

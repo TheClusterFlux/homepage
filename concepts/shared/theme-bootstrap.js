@@ -12,8 +12,6 @@
       id = R.resolveInitialThemeId();
     }
 
-    if (id === 'guilty-crown') return;
-
     window.location.replace(R.themeHref(R.getThemeById(id)));
   }
 

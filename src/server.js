@@ -36,6 +36,7 @@ app.use('/data', express.static(path.join(__dirname, 'data')));
 const conceptsRoot = path.join(__dirname, '..', 'concepts');
 app.use('/shared', express.static(path.join(conceptsRoot, 'shared')));
 const themeMounts = [
+  { route: '/themes/guilty-crown', dir: 'concept-guilty-crown' },
   { route: '/themes/neural-terminal', dir: 'concept-a-void-cathedral' },
   { route: '/themes/crystal-cathedral', dir: 'concept-b-funeral-parlor-hud' },
   { route: '/themes/sakura-genome', dir: 'concept-d-sakura-genome' },
