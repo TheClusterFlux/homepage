@@ -192,6 +192,19 @@ body[data-visual-theme] {
   }
 }
 
+/* Sakura Genome — keep featured strip scroll inside the band, not the page */
+@media (max-width: 640px) {
+  body[data-visual-theme='sakura-genome'] .featured-band {
+    overflow: hidden;
+    min-width: 0;
+  }
+
+  body[data-visual-theme='sakura-genome'] .featured-band__strip {
+    max-width: 100%;
+    overscroll-behavior-x: contain;
+  }
+}
+
 /* Seraph Static */
 @media (max-width: 480px) {
   body[data-visual-theme='seraph-static'] .channel-sidebar {
