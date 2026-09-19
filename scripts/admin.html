@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects admin (local)</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 900px; margin: 1rem auto; padding: 0 1rem; }
+    h1 { font-size: 1.25rem; }
+    .list { list-style: none; padding: 0; margin: 0; }
+    .list li { padding: 0.5rem; border-bottom: 1px solid #eee; cursor: pointer; }
+    .list li:hover { background: #f5f5f5; }
+    .list li.selected { background: #e3f2fd; }
+    .row { display: flex; gap: 1rem; align-items: stretch; min-height: 0; }
+    .col-list { flex: 0 0 280px; display: flex; flex-direction: column; min-height: 0; }
+    .list-wrap { overflow-y: auto; flex: 1; min-height: 200px; max-height: 70vh; border: 1px solid #eee; }
+    .col-form { flex: 1; display: flex; flex-direction: column; min-height: 0; overflow-y: auto; max-height: 70vh; }
+    .form-wrap { padding-right: 0.5rem; }
+    label { display: block; margin-top: 0.75rem; font-weight: 600; }
+    input, select, textarea { width: 100%; padding: 0.4rem; box-sizing: border-box; }
+    textarea { min-height: 60px; }
+    button { margin-top: 1rem; margin-right: 0.5rem; padding: 0.5rem 1rem; cursor: pointer; }
+    .msg { margin-top: 0.5rem; color: green; }
+    .err { color: red; }
+    .btn-delete { background: #d32f2f; color: #fff; border: none; }
+    .btn-delete:hover { background: #b71c1c; }
+  </style>
+</head>
+<body>
+  <h1>Projects (local DB edit)</h1>
+  <p>Port-forward MongoDB first: <code>kubectl port-forward svc/mongodb 27017:27017 -n default</code></p>
+  <div class="row">
+    <div class="col-list">
+      <div class="list-wrap">
+        <ul id="list" class="list"></ul>
+      </div>
+    </div>
+    <div class="col-form">
+      <div class="form-wrap">
+        <form id="form" style="display: none;">
+          <input type="hidden" id="id" />
+          <label>Title</label>
+          <input type="text" id="title" required />
+          <label>Description</label>
+          <textarea id="description"></textarea>
+          <label>Tech</label>
+          <input type="text" id="tech" placeholder="e.g. Node.js, React" />
+          <label>Category</label>
+          <select id="category">
+            <option value="games">games</option>
+            <option value="tools">tools</option>
+            <option value="infrastructure">infrastructure</option>
+          </select>
+          <label><input type="checkbox" id="featured" /> Featured</label>
+          <label>Links (JSON object)</label>
+          <textarea id="links" placeholder='{"source": "https://...", "visit": "https://..."}'></textarea>
+          <button type="submit">Save</button>
+          <button type="button" id="deleteBtn" class="btn-delete">Delete</button>
+          <div id="msg" class="msg"></div>
+        </form>
+        <p id="hint">Select a project from the list.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const listEl = document.getElementById('list');
+    const formEl = document.getElementById('form');
+    const hintEl = document.getElementById('hint');
+    const msgEl = document.getElementById('msg');
+    const fields = ['id', 'title', 'description', 'tech', 'category', 'featured', 'links'];
+
+    async function loadProjects() {
+      const res = await fetch('/api/projects');
+      if (!res.ok) throw new Error(await res.text());
+      const projects = await res.json();
+      listEl.innerHTML = projects.map(p => 
+        `<li data-id="${p._id}">${p.title}</li>`
+      ).join('');
+      listEl.querySelectorAll('li').forEach(li => {
+        li.addEventListener('click', () => select(projects.find(p => p._id === li.dataset.id)));
+      });
+    }
+
+    function select(project) {
+      listEl.querySelectorAll('li').forEach(li => li.classList.remove('selected'));
+      const li = listEl.querySelector(`[data-id="${project._id}"]`);
+      if (li) li.classList.add('selected');
+      document.getElementById('id').value = project._id;
+      document.getElementById('title').value = project.title || '';
+      document.getElementById('description').value = project.description || '';
+      document.getElementById('tech').value = project.tech || '';
+      document.getElementById('category').value = project.category || 'tools';
+      document.getElementById('featured').checked = !!project.featured;
+      document.getElementById('links').value = typeof project.links === 'object' && project.links
+        ? JSON.stringify(project.links, null, 2)
+        : (project.links || '{}');
+      formEl.style.display = 'block';
+      hintEl.style.display = 'none';
+      msgEl.textContent = '';
+    }
+
+    formEl.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      msgEl.textContent = '';
+      msgEl.classList.remove('err');
+      const id = document.getElementById('id').value;
+      let links = document.getElementById('links').value.trim();
+      try {
+        links = links ? JSON.parse(links) : {};
+      } catch {
+        msgEl.textContent = 'Links must be valid JSON';
+        msgEl.classList.add('err');
+        return;
+      }
+      const body = {
+        title: document.getElementById('title').value,
+        description: document.getElementById('description').value,
+        tech: document.getElementById('tech').value,
+        category: document.getElementById('category').value,
+        featured: document.getElementById('featured').checked,
+        links,
+      };
+      const res = await fetch(`/api/projects/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        msgEl.textContent = data.error || res.statusText;
+        msgEl.classList.add('err');
+        return;
+      }
+      msgEl.textContent = 'Saved.';
+      loadProjects();
+    });
+
+    document.getElementById('deleteBtn').addEventListener('click', async () => {
+      const id = document.getElementById('id').value;
+      const title = document.getElementById('title').value;
+      if (!id) return;
+      if (!confirm('Delete "' + title + '"? This cannot be undone.')) return;
+      msgEl.textContent = '';
+      msgEl.classList.remove('err');
+      const res = await fetch('/api/projects/' + id, { method: 'DELETE' });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        msgEl.textContent = data.error || res.statusText;
+        msgEl.classList.add('err');
+        return;
+      }
+      msgEl.textContent = 'Deleted.';
+      formEl.style.display = 'none';
+      hintEl.style.display = 'block';
+      loadProjects();
+    });
+
+    loadProjects().catch(err => {
+      hintEl.textContent = 'Failed to load: ' + err.message;
+      hintEl.style.display = 'block';
+    });
+  </script>
+</body>
+</html>

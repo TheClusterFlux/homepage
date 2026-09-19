@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClusterFlux — Hue Spectrum</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/reset.css">
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="/shared/theme-switcher.css">
+  <link rel="stylesheet" href="/shared/theme-pulse-life.css">
+</head>
+<body data-visual-theme="hue-spectrum">
+  <canvas id="cymatic-canvas" class="cymatic" aria-hidden="true"></canvas>
+  <div class="scan-vignette" aria-hidden="true"></div>
+  <div class="hex-dust" aria-hidden="true"></div>
+
+  <div class="spectrum-app">
+    <header class="mwpsb-header">
+      <div class="mwpsb-header__brand">
+        <img src="/shared/logo.svg" alt="" width="36" height="36">
+        <div>
+          <p class="mwpsb-header__tag">[ MWPSB · LATENT SCAN ]</p>
+          <h1 class="mwpsb-header__title">Hue Spectrum</h1>
+        </div>
+      </div>
+      <div class="mwpsb-header__controls">
+        <label class="scan-field">
+          <span class="scan-field__label">Query</span>
+          <input type="search" id="search-bar" placeholder="Title or tech…" autocomplete="off" aria-label="Search projects">
+        </label>
+        <label class="scan-field scan-field--select">
+          <span class="scan-field__label">Sector</span>
+          <select id="category-filter" aria-label="Category">
+            <option value="all">All sectors</option>
+            <option value="games">Games</option>
+            <option value="tools">Tools</option>
+            <option value="infrastructure">Infrastructure</option>
+          </select>
+        </label>
+      </div>
+      <div class="mwpsb-header__telemetry">
+        <span id="telemetry-count">SUBJECTS: —</span>
+        <span id="telemetry-clock">—</span>
+      </div>
+    </header>
+
+    <section id="featured-section" class="featured-hue" hidden aria-labelledby="featured-heading">
+      <div class="featured-hue__head">
+        <h2 id="featured-heading">Clear-band priority</h2>
+        <span class="featured-hue__stamp">FEATURED</span>
+      </div>
+      <div id="featured-row" class="featured-hue__row" role="list"></div>
+    </section>
+
+    <main class="spectrum-stage" aria-label="Hue coefficient registry">
+      <aside class="spectrum-rail" aria-label="Crime coefficient scale">
+        <div class="spectrum-rail__labels">
+          <span class="spectrum-rail__label spectrum-rail__label--clear">CLEAR</span>
+          <span class="spectrum-rail__label spectrum-rail__label--cloud">CLOUDY</span>
+          <span class="spectrum-rail__label spectrum-rail__label--crim">CRIMINAL</span>
+        </div>
+        <div class="spectrum-rail__bar" id="spectrum-bar">
+          <div class="spectrum-rail__gradient" aria-hidden="true"></div>
+          <div class="spectrum-rail__ticks" aria-hidden="true"></div>
+          <div id="spectrum-markers" class="spectrum-rail__markers"></div>
+          <div id="spectrum-cursor" class="spectrum-rail__cursor" hidden aria-hidden="true"></div>
+        </div>
+        <p class="spectrum-rail__note">Pseudo-hue from title hash · not Sibyl data</p>
+      </aside>
+
+      <div class="spectrum-detail">
+        <div class="spectrum-detail__frame">
+          <p class="spectrum-detail__idle" id="detail-idle">
+            <span class="spectrum-detail__pulse">◉</span>
+            Select a subject on the spectrum or use ↑ ↓ to tune.
+          </p>
+          <article id="detail-panel" class="detail-panel" hidden></article>
+        </div>
+
+        <section class="spectrum-list" aria-labelledby="list-heading">
+          <h2 id="list-heading" class="spectrum-list__heading">Full registry</h2>
+          <ol id="projects-grid" class="spectrum-list__grid"></ol>
+        </section>
+      </div>
+    </main>
+
+    <p id="empty-state" class="empty-scan" hidden>No subjects match this sector.</p>
+
+    <footer class="mwpsb-footer">
+      <span>Concept P — Hue Spectrum</span>
+      <span class="dim">local preview · port 8102</span>
+      <a href="https://github.com/TheClusterFlux" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </footer>
+  </div>
+
+  <script src="/shared/thumb-preload.js"></script>
+  <script src="/shared/theme-registry.js"></script>
+  <script src="/shared/theme-landing.js"></script>
+  <script src="/shared/cluster-pulse.js"></script>
+  <script src="/shared/theme-pulse-life.js"></script>
+  <script src="/shared/theme-switcher.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

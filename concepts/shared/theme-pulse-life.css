@@ -1,0 +1,197 @@
+/* Dual cluster channels: void-resonance (A) + mesh-echo (B). Vars from theme-pulse-life.js */
+
+@keyframes cluster-void-scan {
+  from { transform: translateY(-100%); }
+  to { transform: translateY(100%); }
+}
+
+@keyframes cluster-mesh-breathe {
+  from {
+    transform: scale(1);
+    opacity: calc(0.04 + var(--pulse-mesh-pulse, 0.35) * 0.06);
+  }
+  to {
+    transform: scale(1.06);
+    opacity: calc(0.06 + var(--pulse-mesh-pulse, 0.35) * 0.1);
+  }
+}
+
+@keyframes cluster-grid-pan {
+  from { background-position: 0 0; }
+  to { background-position: 48px 48px; }
+}
+
+@keyframes cluster-hazard-scroll {
+  from { background-position: 0 0; }
+  to { background-position: 28px 0; }
+}
+
+@keyframes cluster-fluor-flicker {
+  0%, 100% { opacity: 1; filter: brightness(1); }
+  48% { opacity: 0.92; filter: brightness(1.05); }
+  50% { opacity: 0.88; filter: brightness(0.95); }
+}
+
+@keyframes cluster-hex-drift {
+  from { background-position: 0 0; }
+  to { background-position: 28px 49px; }
+}
+
+/* Global overlays — void scan + mesh halo (always two motions when live) */
+html.cluster-pulse-live::after {
+  pointer-events: none;
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  opacity: calc(var(--pulse-void-flicker, 0) * 0.05 + 0.02);
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(255, 80, 120, 0.08) 50%,
+    transparent 100%
+  );
+  mix-blend-mode: overlay;
+  animation: cluster-void-scan calc(9s - var(--pulse-void-motion, 0) * 4s) linear infinite;
+}
+
+html.cluster-pulse-live::before {
+  pointer-events: none;
+  content: '';
+  position: fixed;
+  inset: -8%;
+  z-index: 9997;
+  background: radial-gradient(
+    circle at 50% 45%,
+    rgba(0, 212, 255, calc(0.06 + var(--pulse-mesh-pulse, 0.35) * 0.08)),
+    transparent 58%
+  );
+  animation: cluster-mesh-breathe calc(13s - var(--pulse-mesh-motion, 0) * 4s) ease-in-out infinite alternate;
+}
+
+/* —— Guilty Crown: void = thread ambient · mesh = hero pulse —— */
+body[data-visual-theme='guilty-crown'] {
+  --thread-speed: var(--gc-thread-speed, 28s);
+  --animation-scale: var(--gc-animation-scale, 1);
+}
+body[data-visual-theme='guilty-crown'] .hero-section::before {
+  animation-duration: calc(var(--gc-hero-pulse, 6) * 1s);
+}
+
+/* —— Neural Terminal —— */
+body[data-visual-theme='neural-terminal'] .crt-overlay {
+  opacity: var(--nt-crt, 0.45);
+}
+body[data-visual-theme='neural-terminal'] .cursor-blink {
+  animation-duration: calc(var(--nt-blink, 1) * 1s);
+}
+
+/* —— Crystal Cathedral —— */
+body[data-visual-theme='crystal-cathedral'] .cathedral__aurora--a {
+  animation-duration: calc(var(--cc-aurora-a, 22) * 1s);
+}
+body[data-visual-theme='crystal-cathedral'] .cathedral__aurora--b {
+  animation-duration: calc(var(--cc-aurora-b, 28) * 1s);
+}
+
+/* —— Sakura Genome —— */
+body[data-visual-theme='sakura-genome'] .atmo-bloom {
+  animation-duration: calc(var(--sg-bloom, 24) * 1s);
+}
+html.cluster-pulse-live body[data-visual-theme='sakura-genome'] .petal {
+  animation-duration: calc(18s - var(--sg-petal, 0.35) * 9s) !important;
+  animation-name: petalFall !important;
+}
+
+/* —— Void Opera —— */
+body[data-visual-theme='void-opera'] .opera-backdrop__smoke--a {
+  animation-duration: calc(var(--vo-smoke-a, 18) * 1s);
+}
+body[data-visual-theme='void-opera'] .chandelier-glow {
+  animation-duration: calc(var(--vo-chandelier, 5) * 1s);
+}
+
+/* —— Sibyl Index —— */
+body[data-visual-theme='sibyl-index'] .sibyl-backdrop__scanline {
+  animation-duration: calc(var(--si-scan, 12) * 1s);
+}
+body[data-visual-theme='sibyl-index'] .gauge-card__ring {
+  animation-duration: calc(var(--si-gauge, 24) * 1s);
+}
+
+/* —— Lost Christmas —— */
+body[data-visual-theme='lost-christmas'] .lc-void__aurora {
+  animation-duration: calc(var(--lc-aurora, 28) * 1s);
+  opacity: calc(0.75 + var(--pulse-void-pulse, 0.35) * 0.25);
+}
+body[data-visual-theme='lost-christmas'] .lc-void__grain {
+  opacity: var(--lc-grain, 0.12);
+}
+
+/* —— Apocalypse Ring (void = radar sweep · mesh = ring pulse + grid) —— */
+html.cluster-pulse-live body[data-visual-theme='apocalypse-ring'] .radar-hud__sweep {
+  animation: radar-sweep calc(var(--ar-radar, 6) * 1s) linear infinite !important;
+  opacity: calc(0.9 + var(--pulse-void-motion, 0) * 0.1);
+}
+html.cluster-pulse-live body[data-visual-theme='apocalypse-ring'] .radar-hud__pulse {
+  animation: radar-pulse calc(var(--ar-halo, 2.5) * 1s) ease-out infinite !important;
+  opacity: calc(0.45 + var(--pulse-mesh-motion, 0) * 0.4);
+}
+html.cluster-pulse-live body[data-visual-theme='apocalypse-ring'] .void-grid {
+  animation: cluster-grid-pan calc(var(--ar-grid, 18) * 1s) linear infinite;
+}
+
+/* —— Sublevel Zero —— */
+html.cluster-pulse-live body[data-visual-theme='sublevel-zero'] .sz-hazard {
+  animation: cluster-hazard-scroll calc(var(--sz-hazard, 10) * 1s) linear infinite;
+}
+body[data-visual-theme='sublevel-zero'] .sz-blade__led--hot {
+  animation-duration: calc(var(--sz-led, 1.2) * 1s);
+}
+
+/* —— Seraph Static —— */
+body[data-visual-theme='seraph-static'] .crt-scanlines {
+  opacity: var(--ss-scan, 0.35);
+}
+body[data-visual-theme='seraph-static'] .vhs-room__glow {
+  opacity: var(--ss-glow, 0.55);
+  filter: contrast(calc(1 + var(--pulse-mesh-motion, 0) * 0.15));
+}
+
+/* —— Dominator Lock —— */
+body[data-visual-theme='dominator-lock'] .dl-scope__sweep {
+  animation-duration: calc(var(--dl-sweep, 8) * 1s);
+}
+body[data-visual-theme='dominator-lock'] .dl-reticle__sweep {
+  animation-duration: calc(var(--dl-reticle, 3.2) * 1s);
+}
+
+/* —— MWPSB Dossier —— */
+html.cluster-pulse-live body[data-visual-theme='mwpsb-dossier'] .dossier-light__fluorescent {
+  animation: cluster-fluor-flicker calc(2.8s - var(--md-flicker, 0.4) * 1.2s) ease-in-out infinite;
+}
+body[data-visual-theme='mwpsb-dossier'] .dossier-light__grain {
+  opacity: var(--md-grain, 0.12);
+}
+
+/* —— Hue Spectrum —— */
+body[data-visual-theme='hue-spectrum'] .scan-vignette {
+  opacity: var(--hs-vignette, 1);
+}
+body[data-visual-theme='hue-spectrum'] .cymatic {
+  opacity: var(--hs-cymatic, 0.32);
+}
+html.cluster-pulse-live body[data-visual-theme='hue-spectrum'] .hex-dust {
+  animation: cluster-hex-drift calc(24s - var(--pulse-mesh-motion, 0) * 8s) linear infinite;
+}
+
+/* —— Makishima Shelf —— */
+body[data-visual-theme='makishima-shelf'] .ms-room__light {
+  animation-duration: var(--ms-breathe-period, 18s);
+  opacity: var(--ms-room, 0.9);
+}
+body[data-visual-theme='makishima-shelf'] .ms-room__lamp,
+body[data-visual-theme='makishima-shelf'] .ms-mantel__lamp {
+  opacity: calc(0.75 + var(--ms-lamp, 0.35));
+  filter: brightness(calc(0.9 + var(--ms-lamp, 0.35) * 0.35));
+}

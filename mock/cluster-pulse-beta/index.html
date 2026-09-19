@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mesh Echo — pulse mock</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="pulse.css">
+</head>
+<body>
+  <canvas id="particle-canvas" aria-hidden="true"></canvas>
+
+  <main class="page">
+    <span class="badge">Beta channel / independent metrics</span>
+    <h1>Mesh echo</h1>
+    <p class="sub">
+      Control-plane chatter, Cilium operator fabric, Loki query load, and prom scrape handlers —
+      separate PromQL from Void Resonance. Aggregated scalars only.
+    </p>
+
+    <section class="ring-panel">
+      <div class="ring-wrap" aria-label="Mesh echo pulse ring">
+        <svg viewBox="0 0 200 200" role="img" aria-hidden="true">
+          <defs>
+            <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#34d399"/>
+              <stop offset="100%" stop-color="#f59e0b"/>
+            </linearGradient>
+          </defs>
+          <circle class="ring-track" cx="100" cy="100" r="88"/>
+          <circle id="ring-fill" class="ring-fill" cx="100" cy="100" r="88"/>
+        </svg>
+        <div class="ring-center">
+          <span class="ring-label">Mesh signal</span>
+          <span id="pulse-percent" class="ring-value">—</span>
+          <span id="pulse-breakdown" class="ring-unit">—</span>
+        </div>
+      </div>
+      <div class="spark-block">
+        <div class="spark-title">Pulse trace (live)</div>
+        <canvas id="spark-pulse" class="spark-canvas" height="72"></canvas>
+      </div>
+    </section>
+
+    <div class="hud-grid">
+      <article class="metric-card">
+        <h2>Data plane</h2>
+        <div class="metric-row">
+          <span>Cilium RX</span>
+          <span id="val-cilium-rx">—</span>
+        </div>
+        <div class="bar"><i id="bar-cilium-rx"></i></div>
+        <div class="metric-row">
+          <span>Cilium TX</span>
+          <span id="val-cilium-tx">—</span>
+        </div>
+        <div class="metric-row">
+          <span>REST client rate</span>
+          <span id="val-rest">—</span>
+        </div>
+      </article>
+
+      <article class="metric-card">
+        <h2>Observability mesh</h2>
+        <div class="metric-row">
+          <span>Loki query rate</span>
+          <span id="val-loki-q">—</span>
+        </div>
+        <div class="bar"><i id="bar-loki-q"></i></div>
+        <div class="metric-row">
+          <span>Loki streams / swing</span>
+          <span id="val-loki-streams">—</span>
+        </div>
+        <div class="metric-row">
+          <span>PromHTTP / workqueue</span>
+          <span id="val-prom-wq">—</span>
+        </div>
+        <div class="metric-row">
+          <span>Motion (poll delta)</span>
+          <span id="val-motion">—</span>
+        </div>
+      </article>
+    </div>
+
+    <p id="status-line" class="status-line">initializing…</p>
+  </main>
+
+  <script src="pulse.js"></script>
+</body>
+</html>

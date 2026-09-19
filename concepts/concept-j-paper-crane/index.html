@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClusterFlux — Paper Crane</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Karla:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/reset.css">
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="/shared/theme-switcher.css">
+  <link rel="stylesheet" href="/shared/theme-pulse-life.css">
+</head>
+<body data-visual-theme="paper-crane">
+  <div class="pc-washi" aria-hidden="true">
+    <div class="pc-washi__fiber"></div>
+    <div class="pc-washi__ink pc-washi__ink--a"></div>
+    <div class="pc-washi__ink pc-washi__ink--b"></div>
+  </div>
+
+  <div class="pc-shell">
+    <header class="pc-fold-header">
+      <div class="pc-fold-header__panel">
+        <img src="/shared/logo.svg" alt="" class="pc-fold-header__logo" width="40" height="40">
+        <p class="pc-fold-header__kicker">The ClusterFlux</p>
+        <h1 class="pc-fold-header__title">Paper Crane</h1>
+        <p class="pc-fold-header__verse">
+          Deployments folded into light — each project a wing on washi, ink-still and precise.
+        </p>
+      </div>
+      <div class="pc-fold-header__controls">
+        <label class="pc-field">
+          <span class="pc-field__label">Search</span>
+          <input type="search" id="search-bar" placeholder="Title or tech…" autocomplete="off" aria-label="Search projects">
+        </label>
+        <label class="pc-field">
+          <span class="pc-field__label">Fold</span>
+          <select id="category-filter" aria-label="Category">
+            <option value="all">All</option>
+            <option value="games">Games</option>
+            <option value="tools">Tools</option>
+            <option value="infrastructure">Infrastructure</option>
+          </select>
+        </label>
+      </div>
+    </header>
+
+    <main class="pc-atelier">
+      <section id="featured-section" class="pc-horizon" hidden>
+        <h2 class="pc-section__brush">
+          <span class="pc-section__brush-stroke" aria-hidden="true"></span>
+          Horizon Folds
+        </h2>
+        <div id="featured-row" class="pc-horizon__row" role="list"></div>
+      </section>
+
+      <section class="pc-flock-wrap">
+        <h2 class="pc-section__brush">
+          <span class="pc-section__brush-stroke" aria-hidden="true"></span>
+          The Flock
+        </h2>
+        <div id="projects-grid" class="pc-flock" role="list"></div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="pc-footer">
+    <span>Paper Crane</span>
+    <a href="https://github.com/TheClusterFlux" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </footer>
+
+  <script src="/shared/thumb-preload.js"></script>
+  <script src="/shared/theme-registry.js"></script>
+  <script src="/shared/theme-landing.js"></script>
+  <script src="/shared/cluster-pulse.js"></script>
+  <script src="/shared/theme-pulse-life.js"></script>
+  <script src="/shared/theme-switcher.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

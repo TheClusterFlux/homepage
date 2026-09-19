@@ -27,9 +27,16 @@
     <meta name="author" content="TheClusterFlux">
     
     <link rel="stylesheet" href="style-guilty-crown.css">
+    <link rel="stylesheet" href="/shared/theme-switcher.css">
+    <link rel="stylesheet" href="/shared/theme-pulse-life.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <script src="/shared/thumb-preload.js"></script>
+    <script src="/shared/cluster-pulse.js"></script>
+    <script src="/shared/theme-pulse-life.js"></script>
+    <script src="/shared/theme-registry.js"></script>
+    <script src="/shared/theme-landing.js"></script>
 </head>
-<body>
+<body data-visual-theme="guilty-crown">
 
 <header class="header">
   <div class="header-content">
@@ -50,15 +57,22 @@
           />
         </div>
         
-        <div id="filter-container" class="filter-container">
-          <label for="creator-filter"><i class="fas fa-user-filter"></i> Filter Author:</label>
-          <select id="creator-filter">
-            <option value="all">All Creators</option>
+        <div id="category-filter-container" class="filter-container">
+          <label for="category-filter"><i class="fas fa-folder"></i> Category:</label>
+          <select id="category-filter">
+            <option value="all">All</option>
+            <option value="games">Games</option>
+            <option value="tools">Tools</option>
+            <option value="infrastructure">Infrastructure</option>
           </select>
         </div>
       </div>
       
       <div class="header-buttons">
+        <a href="/cv" class="action-button cv-button" title="View CV">
+          <i class="fas fa-file-alt"></i>
+          <span>CV</span>
+        </a>
         <button id="theme-toggle" class="action-button" title="Toggle Dark Mode">
           <i class="fas fa-moon" id="theme-icon"></i>
           <span id="theme-text">Dark</span>
@@ -76,12 +90,12 @@
   </div>
 </header>
 
-<!-- Featured Projects Section -->
-<div id="featured-projects-section" class="featured-projects-section" style="display: none;">
-  <h2 class="featured-section-title">
-    <i class="fas fa-star"></i> Featured Projects
+<!-- Highlighted row: one project per category (Games / Tools / Infrastructure) -->
+<div id="highlighted-section" class="highlighted-section" style="display: none;">
+  <h2 class="highlighted-section-title">
+    <i class="fas fa-star"></i> Highlighted
   </h2>
-  <div id="featured-projects" class="projects-grid featured-grid"></div>
+  <div id="highlighted-row" class="highlighted-row"></div>
 </div>
 
 <div id="all-projects-section">
@@ -89,78 +103,53 @@
   <div id="projects" class="projects-grid"></div>
 </div>
 
-<div id="creators" class="creators-footer">
-  <h2>Creators</h2>
-  <div id="creators-list" class="creators-buttons"></div>
-</div>
-
-
 <script>
   // Dynamically determine base URL based on environment
   const baseURL = '';  // Use empty string for relative URLs
-    
-  // Fetch creators and populate the filter and creators section
+  window.CLUSTER_THUMB_BASE = `${baseURL}/thumbnails/`;
 
-  function fetchCreators() {
-    fetch(`${baseURL}/data/creators.json`)
-      .then(response => {
-        if (!response.ok) {
-          throw new Error(`HTTP error ${response.status}`);
-        }
-        return response.json();
-      })
-      .then(creators => {
-        const filter = document.getElementById('creator-filter');
-        const creatorsList = document.getElementById('creators-list');
-        creatorsList.innerHTML = ''; // Clear existing creators
-        
-        // Clear existing filter options except "All Creators"
-        filter.innerHTML = '<option value="all">All Creators</option>';
+  const VALID_CATEGORIES = ['games', 'tools', 'infrastructure'];
 
-        creators.forEach(creator => {
-          // Add to filter dropdown
-          const option = document.createElement('option');
-          option.value = creator.name;
-          option.textContent = creator.name;
-          filter.appendChild(option);
-
-          // Add to creators section
-          const listItem = document.createElement('li');
-          listItem.innerHTML = `<a href="${creator.github}" target="_blank">${creator.name}</a>`;
-          creatorsList.appendChild(listItem);
-        });
-      })
-      .catch(error => console.error('Error fetching creators:', error));
+  function getCategory(project) {
+    const c = (project.category || 'tools').toLowerCase();
+    return VALID_CATEGORIES.includes(c) ? c : 'tools';
   }
 
-  // Filter projects based on the selected creator
-  document.getElementById('creator-filter').addEventListener('change', (event) => {
-    const selectedCreator = event.target.value;
-    const projectCards = document.querySelectorAll('#projects .card');
-    const featuredCards = document.querySelectorAll('#featured-projects .card');
+  function getCategoryLabel(category) {
+    return category.charAt(0).toUpperCase() + category.slice(1);
+  }
 
-    // Filter regular projects
+  function applyFilters() {
+    const selectedCategory = document.getElementById('category-filter').value;
+    const searchTerm = document.getElementById('search-bar').value.toLowerCase();
+    const projectCards = document.querySelectorAll('#projects .card');
+
     projectCards.forEach(card => {
-      const author = card.querySelector('.author').textContent.replace('Author: ', '');
-      if (selectedCreator === 'all' || author === selectedCreator) {
-        card.style.display = 'block';
-      } else {
-        card.style.display = 'none';
-      }
+      const category = card.getAttribute('data-category') || 'tools';
+      const title = card.querySelector('h5').textContent.toLowerCase();
+      const tech = card.querySelector('.tech-list').textContent.toLowerCase();
+
+      const matchCategory = selectedCategory === 'all' || category === selectedCategory;
+      const matchSearch = !searchTerm || title.includes(searchTerm) || tech.includes(searchTerm);
+
+      card.style.display = matchCategory && matchSearch ? 'block' : 'none';
     });
-    
-    // Filter featured projects
-    featuredCards.forEach(card => {
-      const author = card.querySelector('.author').textContent.replace('Author: ', '');
-      if (selectedCreator === 'all' || author === selectedCreator) {
-        card.style.display = 'block';
-      } else {
-        card.style.display = 'none';
-      }
-    });
-  });
+  }
+
+  document.getElementById('category-filter').addEventListener('change', applyFilters);
+
+  function getVisitUrl(links) {
+    if (!links || typeof links !== 'object') return null;
+    const key = Object.keys(links).find(k =>
+      ['visit', 'website', 'demo'].includes(k.toLowerCase()));
+    return key ? links[key] : null;
+  }
+
   // Helper function to create a project card HTML
-  function createProjectCard(project) {
+  function createProjectCard(project, options) {
+    options = options || {};
+    const category = getCategory(project);
+    const categoryLabel = getCategoryLabel(category);
     const hasImage = project.image && project.image.trim() !== '';
     const imageElement = hasImage 
       ? `<img src="${baseURL}/thumbnails/${project.image}" alt="${project.title}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">`
@@ -174,82 +163,86 @@
            <i class="fas fa-tools"></i>
            <span>Card Under Construction</span>
          </div>`;
+    const featuredLabel = options.isHighlighted ? '<span class="card-featured-label">Featured</span>' : '';
+    const visitUrl = getVisitUrl(project.links);
+    const visitLinkHtml = visitUrl
+      ? `<div class="project-links"><a href="${visitUrl}" class="btn btn-visit" target="_blank" rel="noopener noreferrer">Visit</a></div>`
+      : '';
 
     return `
-      <div class="card">
+      <div class="card" data-category="${category}">
+        ${featuredLabel}
+        <span class="category-badge category-badge-${category}">${categoryLabel}</span>
         ${imageElement}
         ${constructionIcon}
         <div class="card-body">
           <h5>${project.title}</h5>
           <p>${project.description}</p>
           <div class="tech-list">Tech: ${project.tech}</div>
-          <p class="author">Author: ${project.author}</p>
-          <div class="project-links">
-            ${Object.entries(project.links || {})
-              .map(
-                ([key, url]) =>
-                  `<a href="${url}" class="btn" target="_blank">${key}</a>`
-              )
-              .join(' ')}
-          </div>
+          ${visitLinkHtml}
         </div>
       </div>
     `;
+  }
+
+  function projectSort(a, b) {
+    const aHasVisitLink = Object.keys(a.links || {}).some(key =>
+      key.toLowerCase() === 'visit' || key.toLowerCase() === 'website' || key.toLowerCase() === 'demo');
+    const bHasVisitLink = Object.keys(b.links || {}).some(key =>
+      key.toLowerCase() === 'visit' || key.toLowerCase() === 'website' || key.toLowerCase() === 'demo');
+    if (aHasVisitLink && !bHasVisitLink) return -1;
+    if (!aHasVisitLink && bHasVisitLink) return 1;
+    return a.title.localeCompare(b.title);
   }
 
   function fetchProjects() {
     fetch(`${baseURL}/data/projects.json`)
       .then(response => response.json())
       .then(projects => {
-        // Separate featured and all projects (featured projects appear in both sections)
-        const featuredProjects = projects.filter(project => project.featured === true || project.featured === 'true');
-        const allProjects = [...projects]; // Include all projects (featured + non-featured)
-        
-        // Sort featured projects (prioritize those with visit links, then alphabetically)
+        // Normalize category (fallback for legacy projects)
+        projects.forEach(p => {
+          if (!p.category || !VALID_CATEGORIES.includes((p.category || '').toLowerCase())) {
+            p.category = 'tools';
+          } else {
+            p.category = p.category.toLowerCase();
+          }
+        });
+
+        const featuredProjects = projects.filter(p => p.featured === true || p.featured === 'true');
+        const categoryOrder = ['games', 'tools', 'infrastructure'];
         featuredProjects.sort((a, b) => {
-          const aHasVisitLink = Object.keys(a.links || {}).some(key => 
-            key.toLowerCase() === 'visit' || key.toLowerCase() === 'website' || key.toLowerCase() === 'demo');
-          const bHasVisitLink = Object.keys(b.links || {}).some(key => 
-            key.toLowerCase() === 'visit' || key.toLowerCase() === 'website' || key.toLowerCase() === 'demo');
-          
-          if (aHasVisitLink && !bHasVisitLink) return -1;
-          if (!aHasVisitLink && bHasVisitLink) return 1;
-          return a.title.localeCompare(b.title);
+          const ai = categoryOrder.indexOf(getCategory(a));
+          const bi = categoryOrder.indexOf(getCategory(b));
+          if (ai !== bi) return ai - bi;
+          return projectSort(a, b);
         });
-        
-        // Sort all projects (for the "All Projects" section)
-        allProjects.sort((a, b) => {
-          const titleComparison = a.title.localeCompare(b.title);
-          const aHasVisitLink = Object.keys(a.links || {}).some(key => 
-            key.toLowerCase() === 'visit' || key.toLowerCase() === 'website' || key.toLowerCase() === 'demo');
-          const bHasVisitLink = Object.keys(b.links || {}).some(key => 
-            key.toLowerCase() === 'visit' || key.toLowerCase() === 'website' || key.toLowerCase() === 'demo');
-          
-          if (aHasVisitLink && !bHasVisitLink) return -1;
-          if (!aHasVisitLink && bHasVisitLink) return 1;
-          return titleComparison;
-        });
-        
-        // Display featured projects
-        const featuredContainer = document.getElementById('featured-projects');
-        const featuredSection = document.getElementById('featured-projects-section');
-        
+
+        const highlightedSection = document.getElementById('highlighted-section');
+        const highlightedRow = document.getElementById('highlighted-row');
+
         if (featuredProjects.length > 0) {
-          featuredSection.style.display = 'block';
-          featuredContainer.innerHTML = '';
+          highlightedSection.style.display = 'block';
+          highlightedRow.innerHTML = '';
           featuredProjects.forEach(project => {
-            featuredContainer.innerHTML += createProjectCard(project);
+            const slot = document.createElement('div');
+            slot.className = 'highlighted-slot';
+            slot.innerHTML = createProjectCard(project, { isHighlighted: true });
+            highlightedRow.appendChild(slot);
           });
         } else {
-          featuredSection.style.display = 'none';
+          highlightedSection.style.display = 'none';
         }
-        
-        // Display all projects (including featured ones)
+
+        // All projects grid (with category badge and data-category)
+        const allProjects = [...projects];
+        allProjects.sort(projectSort);
         const container = document.getElementById('projects');
         container.innerHTML = '';
         allProjects.forEach(project => {
           container.innerHTML += createProjectCard(project);
         });
+
+        applyFilters();
       })
       .catch(error => console.error('Error fetching projects:', error));
   }
@@ -313,39 +306,9 @@
   }
 
   // Initialize the page
-  fetchCreators();
   fetchProjects();
 
-  // Filter projects based on the search input
-  document.getElementById('search-bar').addEventListener('input', (event) => {
-    const searchTerm = event.target.value.toLowerCase();
-    const projectCards = document.querySelectorAll('#projects .card');
-    const featuredCards = document.querySelectorAll('#featured-projects .card');
-
-    // Filter regular projects
-    projectCards.forEach((card) => {
-      const title = card.querySelector('h5').textContent.toLowerCase();
-      const tech = card.querySelector('.tech-list').textContent.toLowerCase();
-
-      if (title.includes(searchTerm) || tech.includes(searchTerm)) {
-        card.style.display = 'block';
-      } else {
-        card.style.display = 'none';
-      }
-    });
-    
-    // Filter featured projects
-    featuredCards.forEach((card) => {
-      const title = card.querySelector('h5').textContent.toLowerCase();
-      const tech = card.querySelector('.tech-list').textContent.toLowerCase();
-
-      if (title.includes(searchTerm) || tech.includes(searchTerm)) {
-        card.style.display = 'block';
-      } else {
-        card.style.display = 'none';
-      }
-    });
-  });
+  document.getElementById('search-bar').addEventListener('input', applyFilters);
 
   // Navigate to About page
   document.getElementById('about-button').addEventListener('click', () => {
@@ -353,6 +316,7 @@
   });
 
 </script>
+<script src="/shared/theme-switcher.js"></script>
 
 </body>
 </html>

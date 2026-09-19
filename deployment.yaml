@@ -60,6 +60,11 @@ spec:
               secretKeyRef:
                 name: homepage-password
                 key: password
+          # Optional pulse workers (omit to use built-in synthetic waveforms in-cluster):
+          # - name: PULSE_VOID_UPSTREAM
+          #   value: "http://pulse-void.default.svc.cluster.local:8099/api/pulse"
+          # - name: PULSE_MESH_UPSTREAM
+          #   value: "http://pulse-mesh.default.svc.cluster.local:8100/api/pulse"
       imagePullSecrets:
         - name: dockerhub-secret
 ---

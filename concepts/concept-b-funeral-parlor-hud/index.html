@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClusterFlux — Crystal Cathedral (Concept B)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;1,300&family=Syne:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/reset.css">
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="/shared/theme-switcher.css">
+  <link rel="stylesheet" href="/shared/theme-pulse-life.css">
+  <script src="/shared/thumb-preload.js"></script>
+  <script src="/shared/theme-registry.js"></script>
+  <script src="/shared/theme-landing.js"></script>
+</head>
+<body data-visual-theme="crystal-cathedral">
+  <div class="cathedral" aria-hidden="true">
+    <div class="cathedral__void"></div>
+    <div class="cathedral__aurora cathedral__aurora--a"></div>
+    <div class="cathedral__aurora cathedral__aurora--b"></div>
+    <div class="cathedral__radial"></div>
+    <svg class="cathedral__shards" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="shard-cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.55"/>
+          <stop offset="100%" stop-color="#a855f7" stop-opacity="0.15"/>
+        </linearGradient>
+        <linearGradient id="shard-magenta" x1="100%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stop-color="#f472b6" stop-opacity="0.5"/>
+          <stop offset="100%" stop-color="#6366f1" stop-opacity="0.08"/>
+        </linearGradient>
+        <filter id="shard-glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="4" result="b"/>
+          <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+      <g class="shard-layer shard-layer--back" filter="url(#shard-glow)">
+        <polygon class="shard shard--1" fill="url(#shard-cyan)" points="120,80 280,40 320,200 90,220"/>
+        <polygon class="shard shard--2" fill="url(#shard-magenta)" points="980,120 1180,90 1210,280 940,260"/>
+        <polygon class="shard shard--3" fill="url(#shard-cyan)" points="640,600 820,560 860,780 590,760"/>
+      </g>
+      <g class="shard-layer shard-layer--mid" filter="url(#shard-glow)">
+        <polygon class="shard shard--4" fill="url(#shard-magenta)" points="200,420 380,380 410,620 160,640"/>
+        <polygon class="shard shard--5" fill="url(#shard-cyan)" points="1050,480 1280,440 1320,720 1020,700"/>
+        <polygon class="shard shard--6" fill="url(#shard-magenta)" points="480,140 620,100 650,320 450,340"/>
+      </g>
+      <g class="shard-layer shard-layer--front">
+        <polygon class="shard shard--7" fill="url(#shard-cyan)" points="720,200 920,160 960,400 680,420"/>
+        <polygon class="shard shard--8" fill="url(#shard-magenta)" points="40,680 220,640 260,860 20,880"/>
+        <polygon class="shard shard--9" fill="url(#shard-cyan)" points="1180,640 1380,600 1400,860 1160,880"/>
+      </g>
+    </svg>
+    <div class="cathedral__ribbons">
+      <span class="ribbon ribbon--1"></span>
+      <span class="ribbon ribbon--2"></span>
+      <span class="ribbon ribbon--3"></span>
+    </div>
+    <div class="cathedral__particles"></div>
+  </div>
+
+  <div class="haze" aria-hidden="true"></div>
+
+  <header class="nave">
+    <div class="nave__brand">
+      <img src="/shared/logo.svg" alt="" class="nave__logo" width="44" height="44">
+      <div class="nave__titles">
+        <p class="nave__kicker">The ClusterFlux</p>
+        <h1 class="nave__name">Crystal Cathedral</h1>
+      </div>
+    </div>
+    <div class="nave__controls">
+      <label class="control-glass">
+        <span class="visually-hidden">Search projects</span>
+        <input type="search" id="search-bar" placeholder="Seek within the void…" autocomplete="off">
+      </label>
+      <label class="control-glass control-glass--select">
+        <span class="visually-hidden">Filter by category</span>
+        <select id="category-filter">
+          <option value="all">All realms</option>
+          <option value="games">Games</option>
+          <option value="tools">Tools</option>
+          <option value="infrastructure">Infrastructure</option>
+        </select>
+      </label>
+      <a class="link-glass" href="https://github.com/TheClusterFlux" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </div>
+  </header>
+
+  <main class="sanctuary">
+    <section id="featured-section" class="constellation" hidden>
+      <header class="section-head">
+        <h2 class="section-head__title">Luminaries</h2>
+        <p class="section-head__sub">Projects held in the central light</p>
+      </header>
+      <div id="featured-row" class="constellation__row"></div>
+    </section>
+
+    <section class="field-wrap">
+      <header class="section-head">
+        <h2 class="section-head__title">Floating archive</h2>
+        <p class="section-head__sub">Glass slabs drift through the cluster</p>
+      </header>
+      <div id="projects-grid" class="crystal-field"></div>
+    </section>
+  </main>
+
+  <footer class="narthex">
+    <p>Concept B — Crystal Cathedral · Local preview · Port 8092</p>
+  </footer>
+
+  <script src="/shared/cluster-pulse.js"></script>
+  <script src="/shared/theme-pulse-life.js"></script>
+  <script src="/shared/theme-switcher.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

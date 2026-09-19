@@ -1,0 +1,7 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; }
+body { min-height: 100vh; line-height: 1.5; }
+img { max-width: 100%; display: block; }
+button, input, select { font: inherit; }
+a { color: inherit; }

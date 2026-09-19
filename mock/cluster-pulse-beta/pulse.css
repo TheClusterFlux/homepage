@@ -1,0 +1,38 @@
+@import url('../cluster-pulse/pulse.css');
+
+:root {
+  --ice: #34d399;
+  --ice-dim: #6ee7b7;
+  --magenta: #f59e0b;
+  --ring-track: rgba(52, 211, 153, 0.12);
+}
+
+.ring-fill {
+  filter: drop-shadow(0 0 8px rgba(52, 211, 153, 0.55));
+}
+
+.bar > i {
+  background: linear-gradient(90deg, var(--ice), var(--magenta));
+}
+
+.badge {
+  color: var(--ice-dim);
+  border-color: rgba(52, 211, 153, 0.35);
+}
+
+.metric-card h2 {
+  color: var(--ice);
+}
+
+h1 {
+  text-shadow: 0 0 24px rgba(52, 211, 153, calc(var(--glow) * 0.5));
+}
+
+.ring-panel {
+  border-color: rgba(52, 211, 153, 0.22);
+  box-shadow: inset 0 0 40px rgba(52, 211, 153, 0.04);
+}
+
+.spark-canvas {
+  border-color: rgba(52, 211, 153, 0.15);
+}

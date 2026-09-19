@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClusterFlux — Brutalist Editorial (Concept C)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Libre+Franklin:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/reset.css">
+  <link rel="stylesheet" href="theme.css">
+</head>
+<body>
+  <div class="ambient" aria-hidden="true">
+    <div class="mesh mesh-a"></div>
+    <div class="mesh mesh-b"></div>
+    <div class="mesh mesh-c"></div>
+    <div class="grain"></div>
+  </div>
+
+  <header class="masthead">
+    <div class="masthead-rule"></div>
+    <div class="masthead-inner">
+      <div class="masthead-brand">
+        <img src="/shared/logo.svg" alt="" class="logo-mark" width="48" height="48">
+        <div class="masthead-titles">
+          <p class="kicker">Issue № — Cluster Index</p>
+          <h1 class="masthead-title">Cluster<span class="title-accent">Flux</span></h1>
+        </div>
+      </div>
+      <nav class="masthead-controls" aria-label="Filter projects">
+        <label class="field field-search">
+          <span class="field-label">Search</span>
+          <input type="search" id="search-bar" placeholder="Title or stack…" autocomplete="off">
+        </label>
+        <label class="field field-filter">
+          <span class="field-label">Category</span>
+          <select id="category-filter">
+            <option value="all">All</option>
+            <option value="games">Games</option>
+            <option value="tools">Tools</option>
+            <option value="infrastructure">Infrastructure</option>
+          </select>
+        </label>
+      </nav>
+    </div>
+    <div class="masthead-rule masthead-rule-thick"></div>
+  </header>
+
+  <main class="editorial">
+    <section id="hero-featured" class="hero-featured" hidden aria-labelledby="hero-featured-label">
+      <p id="hero-featured-label" class="hero-label">Lead story</p>
+      <div id="hero-featured-root" class="hero-featured-root"></div>
+    </section>
+
+    <section id="featured-section" class="featured-strip-section" hidden aria-labelledby="featured-heading">
+      <div class="strip-header">
+        <h2 id="featured-heading" class="strip-title">Featured</h2>
+        <p class="strip-hint">Scroll →</p>
+      </div>
+      <div id="featured-row" class="featured-strip" tabindex="0"></div>
+    </section>
+
+    <section class="archive-section" aria-labelledby="archive-heading">
+      <div class="archive-header">
+        <h2 id="archive-heading" class="archive-title">Archive</h2>
+        <p id="result-count" class="result-count" aria-live="polite"></p>
+      </div>
+      <div id="projects-grid" class="archive-grid"></div>
+      <p id="empty-state" class="empty-state" hidden>No projects match.</p>
+    </section>
+  </main>
+
+  <footer class="colophon">
+    <div class="colophon-rule"></div>
+    <p>Concept C — Brutalist Editorial · Local preview · Port 8093</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

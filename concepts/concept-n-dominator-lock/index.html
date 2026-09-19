@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClusterFlux — Dominator Lock</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/reset.css">
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="/shared/theme-switcher.css">
+  <link rel="stylesheet" href="/shared/theme-pulse-life.css">
+  <script src="/shared/thumb-preload.js"></script>
+  <script src="/shared/theme-registry.js"></script>
+  <script src="/shared/theme-landing.js"></script>
+</head>
+<body data-visual-theme="dominator-lock">
+  <div class="dl-scope" aria-hidden="true">
+    <div class="dl-scope__grid"></div>
+    <div class="dl-scope__vignette"></div>
+    <div class="dl-scope__crosshair">
+      <span class="dl-scope__ring"></span>
+      <span class="dl-scope__dot"></span>
+    </div>
+    <div class="dl-scope__sweep"></div>
+  </div>
+
+  <header class="dl-hud">
+    <div class="dl-hud__panel dl-hud__panel--brand">
+      <span class="dl-bracket" aria-hidden="true">[</span>
+      <img src="/shared/logo.svg" alt="" class="dl-hud__logo" width="36" height="36">
+      <div>
+        <p class="dl-hud__kicker">MWPSB · ClusterFlux</p>
+        <h1 class="dl-hud__title">Dominator Lock</h1>
+      </div>
+      <span class="dl-bracket dl-bracket--close" aria-hidden="true">]</span>
+    </div>
+
+    <div class="dl-hud__panel dl-hud__panel--readout">
+      <div class="dl-readout">
+        <span class="dl-readout__label">MODE</span>
+        <span class="dl-readout__value" id="dl-mode">PARALYZER</span>
+      </div>
+      <div class="dl-readout">
+        <span class="dl-readout__label">LOCKS</span>
+        <span class="dl-readout__value" id="dl-lock-count">000</span>
+      </div>
+      <div class="dl-readout dl-readout--dim">
+        <span class="dl-readout__label">SCAN</span>
+        <span class="dl-readout__value" id="dl-scan-phase">SWEEP</span>
+      </div>
+    </div>
+
+    <div class="dl-hud__panel dl-hud__panel--filters">
+      <label class="dl-field">
+        <span class="dl-field__label">Target query</span>
+        <input type="search" id="search-bar" placeholder="Title or tech…" autocomplete="off" aria-label="Search projects">
+      </label>
+      <label class="dl-field dl-field--select">
+        <span class="dl-field__label">Sector</span>
+        <select id="category-filter" aria-label="Filter by category">
+          <option value="all">All sectors</option>
+          <option value="games">Games</option>
+          <option value="tools">Tools</option>
+          <option value="infrastructure">Infrastructure</option>
+        </select>
+      </label>
+    </div>
+  </header>
+
+  <main class="dl-main">
+    <section id="featured-section" class="dl-eliminator" hidden>
+      <header class="dl-section-head dl-section-head--eliminator">
+        <div class="dl-section-head__chevron" aria-hidden="true"></div>
+        <div>
+          <p class="dl-section-head__tag">THRESHOLD EXCEEDED</p>
+          <h2 class="dl-section-head__title">Eliminator tier</h2>
+          <p class="dl-section-head__sub">Featured targets · lethal authorization band</p>
+        </div>
+        <span class="dl-section-head__mode">LETHAL · ORANGE</span>
+      </header>
+      <div id="featured-row" class="dl-eliminator__track" role="list"></div>
+    </section>
+
+    <section class="dl-acquire">
+      <header class="dl-section-head">
+        <div class="dl-section-head__chevron" aria-hidden="true"></div>
+        <div>
+          <p class="dl-section-head__tag">NON-LETHAL ACQUIRE</p>
+          <h2 class="dl-section-head__title">Paralyzer queue</h2>
+          <p class="dl-section-head__sub">Staggered lock-on panels · visit link only</p>
+        </div>
+      </header>
+      <div id="projects-grid" class="dl-queue" role="list"></div>
+    </section>
+  </main>
+
+  <footer class="dl-footer">
+    <span>Concept N — Dominator Lock</span>
+    <span class="dl-footer__dim">local preview · port 8100</span>
+    <a href="https://github.com/TheClusterFlux" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </footer>
+
+  <script src="/shared/cluster-pulse.js"></script>
+  <script src="/shared/theme-pulse-life.js"></script>
+  <script src="/shared/theme-switcher.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

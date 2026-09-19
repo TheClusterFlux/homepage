@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClusterFlux — Sibyl Index</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/reset.css">
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="/shared/theme-switcher.css">
+  <link rel="stylesheet" href="/shared/theme-pulse-life.css">
+  <script src="/shared/thumb-preload.js"></script>
+  <script src="/shared/theme-registry.js"></script>
+  <script src="/shared/theme-landing.js"></script>
+</head>
+<body data-visual-theme="sibyl-index">
+  <div class="sibyl-backdrop" aria-hidden="true">
+    <div class="sibyl-backdrop__hex"></div>
+    <div class="sibyl-backdrop__vectors"></div>
+    <div class="sibyl-backdrop__scanline"></div>
+  </div>
+
+  <header class="sibyl-header">
+    <div class="sibyl-header__brand">
+      <img src="/shared/logo.svg" alt="" class="sibyl-header__logo" width="36" height="36">
+      <div>
+        <p class="sibyl-header__bracket">[ MWPSB · CLUSTER REGISTRY ]</p>
+        <h1 class="sibyl-header__title">Sibyl Index</h1>
+      </div>
+    </div>
+    <div class="sibyl-header__controls">
+      <label class="sibyl-field">
+        <span class="sibyl-field__label">Latent query</span>
+        <input type="search" id="search-bar" placeholder="Title or tech…" autocomplete="off" aria-label="Search projects">
+      </label>
+      <label class="sibyl-field sibyl-field--select">
+        <span class="sibyl-field__label">Sector</span>
+        <select id="category-filter" aria-label="Filter by category">
+          <option value="all">All sectors</option>
+          <option value="games">Games</option>
+          <option value="tools">Tools</option>
+          <option value="infrastructure">Infrastructure</option>
+        </select>
+      </label>
+    </div>
+    <div class="sibyl-header__telemetry">
+      <span id="telemetry-index">INDEX: —</span>
+      <span id="telemetry-clock">—</span>
+      <span class="sibyl-header__pulse" aria-hidden="true">SIBYL LINK · ACTIVE</span>
+    </div>
+  </header>
+
+  <main class="sibyl-main">
+    <section id="featured-section" class="sibyl-gauges" hidden aria-labelledby="gauge-heading">
+      <header class="sibyl-section-head">
+        <span class="sibyl-section-head__bracket">[ PRIORITY SCAN ]</span>
+        <h2 id="gauge-heading">Featured reticle</h2>
+      </header>
+      <div id="featured-row" class="sibyl-gauges__row" role="list"></div>
+    </section>
+
+    <section class="sibyl-registry" aria-labelledby="registry-heading">
+      <header class="sibyl-section-head">
+        <span class="sibyl-section-head__bracket">[ FULL INDEX ]</span>
+        <h2 id="registry-heading">Project scan rows</h2>
+        <p class="sibyl-section-head__sub">Visit link only · coefficients decorative</p>
+      </header>
+      <div id="projects-list" class="sibyl-scan-list" role="list"></div>
+      <p id="empty-state" class="sibyl-empty" hidden>No entries match this sector.</p>
+    </section>
+  </main>
+
+  <footer class="sibyl-footer">
+    <span>Concept M — Sibyl Index</span>
+    <span class="dim">local preview · port 8095</span>
+    <a href="https://github.com/TheClusterFlux" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </footer>
+
+  <script src="/shared/cluster-pulse.js"></script>
+  <script src="/shared/theme-pulse-life.js"></script>
+  <script src="/shared/theme-switcher.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

@@ -1,0 +1,404 @@
+[
+  {
+    "_id": "680c56908999c607dfb00643",
+    "links": {},
+    "title": "MongoDB",
+    "description": "A MongoDB service for other services on the cluster to use",
+    "author": "Keanu Watts",
+    "tech": "MongoDB, Helm",
+    "image": "MongoDB.png",
+    "fileType": "png",
+    "category": "infrastructure",
+    "featured": false
+  },
+  {
+    "_id": "680e3cf147ec21efa1c46761",
+    "links": {
+      "visit": "https://habit-tracker.theclusterflux.com"
+    },
+    "title": "Habit Tracker",
+    "description": "A web app for tracking habits and goals.",
+    "author": "Keanu Watts",
+    "tech": "HTML, CSS, Javascript",
+    "image": "Habit_Tracker.png",
+    "fileType": "png",
+    "category": "tools"
+  },
+  {
+    "_id": "680e3d2747ec21efa1c46764",
+    "links": {
+      "visit": "https://suscawatts.com",
+      "WWW": "https://www.suscawatts.com"
+    },
+    "title": "Susca Watts",
+    "description": "Marketing site for Susca Watts Academy — beauty, hair, and business training programmes.",
+    "author": "Stephen Potgieter, Keanu Watts",
+    "tech": "Astro, HTML, CSS, JavaScript",
+    "image": "Susca_Watts.jpg",
+    "fileType": "jpg",
+    "category": "tools"
+  },
+  {
+    "_id": "680e3d5347ec21efa1c46768",
+    "links": {},
+    "title": "sqlite",
+    "description": "A lightweight SQLite wrapper for other services on the cluster to use, with a web interface to see an overview of the data.",
+    "author": "Keanu Watts",
+    "tech": "SQLite, Python",
+    "image": "sqlite.png",
+    "fileType": "png",
+    "category": "infrastructure"
+  },
+  {
+    "_id": "680e3d8047ec21efa1c4676c",
+    "links": {
+      "visit": "https://homepage.theclusterflux.com"
+    },
+    "title": "homepage",
+    "description": "This portfolio page.",
+    "author": "Keanu Watts",
+    "tech": "HTML, CSS, Javascript, MongoDB",
+    "image": "homepage.png",
+    "fileType": "png",
+    "category": "tools"
+  },
+  {
+    "_id": "680e400c47ec21efa1c46774",
+    "links": {
+      "visit": "https://db-sentry.theclusterflux.com"
+    },
+    "title": "DB Sentry",
+    "description": "A web page that shows a quick overview for each database in the cluster.",
+    "author": "Keanu Watts",
+    "tech": "Python, Flask, JavaScript, HTML, CSS",
+    "image": "DB_Sentry.png",
+    "fileType": "png",
+    "category": "tools"
+  },
+  {
+    "_id": "6812720947ec21efa1c46783",
+    "links": {
+      "visit": "https://replay-hub-ui.theclusterflux.com",
+      "Replay Hub (alt)": "https://replay-hub.theclusterflux.com"
+    },
+    "title": "Replay Hub",
+    "description": "Upload, watch, and share video clips with the community",
+    "author": "Keanu Watts",
+    "tech": "AWS S3, Js, Html, CSS, Mongodb,  OAuth/OIDC Authentication, Python, Discord API, SQL, S3, MongoDB",
+    "image": "Replay_Hub.png",
+    "fileType": "png",
+    "featured": true,
+    "category": "tools"
+  },
+  {
+    "_id": "6812724047ec21efa1c4678c",
+    "links": {
+      "visit": "https://le-cloud.theclusterflux.com"
+    },
+    "title": "Le Cloud",
+    "description": "Basic weather front end",
+    "author": "Keanu Watts",
+    "tech": "HTML, CSS, Javascript",
+    "image": "Le_Cloud.png",
+    "fileType": "png",
+    "category": "tools"
+  },
+  {
+    "_id": "682d10275929859567e77b0b",
+    "links": {
+      "visit": "https://loan-lens.theclusterflux.com"
+    },
+    "title": "Finance Suite",
+    "description": "Compare loan repayment strategies and scenarios. Formerly Loan Lens.",
+    "author": "Keanu Watts",
+    "tech": "Javascript, HTML, CSS",
+    "image": "Finance_Suite.png",
+    "fileType": "png",
+    "featured": false,
+    "category": "tools"
+  },
+  {
+    "_id": "68dbdeaab2e5a2ba7efc2b9c",
+    "title": "Access Guard",
+    "description": "access control and user management service.",
+    "author": "Keanu Watts",
+    "tech": "HTML, CSS, JavaScript",
+    "links": {},
+    "fileType": "png",
+    "image": "Access_Guard.png",
+    "category": "tools",
+    "featured": false
+  },
+  {
+    "_id": "68dbdeaab2e5a2ba7efc2b9e",
+    "title": "Invoice Manager",
+    "description": "Custom Invoice management and processing software",
+    "author": "Keanu Watts",
+    "tech": "HTML, CSS, JavaScript, Node.js, Express",
+    "links": {
+      "visit": "https://invoice-manager.theclusterflux.com",
+      "API": "https://invoice-manager-api.theclusterflux.com"
+    },
+    "fileType": "png",
+    "image": "Invoice_Manager.png",
+    "category": "tools",
+    "featured": false
+  },
+  {
+    "_id": "695316666e4fc7d16ad861e0",
+    "title": "Bomberman",
+    "description": "A real-time multiplayer Bomberman game with client-server architecture",
+    "author": "Keanu Watts",
+    "tech": "Node.js, WebSockets, HTML5 Canvas, JavaScript",
+    "links": {
+      "visit": "https://bomberman.theclusterflux.com"
+    },
+    "image": "Bomberman.png",
+    "fileType": "png",
+    "category": "games"
+  },
+  {
+    "_id": "695316666e4fc7d16ad861e1",
+    "title": "Days Since",
+    "description": "Track and display the number of days since important events or milestones",
+    "author": "Keanu Watts",
+    "tech": "Node.js, Express, MongoDB",
+    "links": {
+      "visit": "https://days-since.theclusterflux.com"
+    },
+    "image": "Days_Since.png",
+    "fileType": "png",
+    "category": "tools"
+  },
+  {
+    "_id": "695316666e4fc7d16ad861e2",
+    "title": "LearnHub",
+    "description": "A learning management system for courses and educational content",
+    "author": "Keanu Watts",
+    "tech": "React, Go, Tailwind, AWS S3",
+    "links": {
+      "visit": "https://learnhub.theclusterflux.com"
+    },
+    "image": "LearnHub.png",
+    "fileType": "png",
+    "featured": true,
+    "category": "tools"
+  },
+  {
+    "_id": "698bbcd93c326f3df2a2b837",
+    "title": "Email",
+    "description": "Mail server (Postfix, Dovecot), Email API, and webmail (Roundcube). Mail server and webmail client for the cluster.",
+    "author": "TheClusterFlux",
+    "tech": "Python, FastAPI, Dovecot, Postfix, MySQL, Roundcube",
+    "links": {
+      "visit": "https://mail.theclusterflux.com",
+      "Webmail (Roundcube)": "https://mail-client.theclusterflux.com"
+    },
+    "category": "infrastructure",
+    "fileType": "png",
+    "image": "Email.png"
+  },
+  {
+    "_id": "698bbcd93c326f3df2a2b838",
+    "title": "Excalidraw",
+    "description": "Collaborative whiteboard for sketching and diagrams.",
+    "author": "TheClusterFlux",
+    "tech": "React, TypeScript",
+    "links": {},
+    "category": "tools",
+    "fileType": "png",
+    "image": "Excalidraw.png"
+  },
+  {
+    "_id": "698bbcd93c326f3df2a2b839",
+    "title": "Game of Life",
+    "description": "Real-time multiplayer Conway's Game of Life with Trystero synchronization.",
+    "author": "TheClusterFlux",
+    "tech": "Node.js, Express, Trystero",
+    "links": {
+      "visit": "https://game-of-life.theclusterflux.com"
+    },
+    "category": "games",
+    "fileType": "png",
+    "image": "Game_of_Life.png"
+  },
+  {
+    "_id": "698bbcd93c326f3df2a2b83a",
+    "title": "MCP Server (Cluster Services)",
+    "description": "MCP server for discovering and interacting with cluster services in the Kubernetes cluster.",
+    "author": "TheClusterFlux",
+    "tech": "TypeScript, Node.js, Express, Kubernetes client, MCP SDK",
+    "links": {},
+    "category": "infrastructure",
+    "fileType": "png",
+    "image": "MCP_Server_(Cluster_Services).png"
+  },
+  {
+    "_id": "698bbcd93c326f3df2a2b83c",
+    "title": "MySQL",
+    "description": "MySQL database service for other services on the cluster to use.",
+    "author": "TheClusterFlux",
+    "tech": "MySQL",
+    "links": {},
+    "category": "infrastructure",
+    "fileType": "png",
+    "image": "MySQL.png"
+  },
+  {
+    "_id": "698bbcd93c326f3df2a2b83d",
+    "title": "Tic Tac Toe",
+    "description": "3D Tic Tac Toe multiplayer game with WebSockets.",
+    "author": "TheClusterFlux",
+    "tech": "Node.js, Express, WebSockets",
+    "links": {
+      "visit": "https://tictactoe.theclusterflux.com"
+    },
+    "category": "games",
+    "fileType": "png",
+    "image": "Tic_Tac_Toe.png"
+  },
+  {
+    "_id": "698bbcd93c326f3df2a2b83e",
+    "title": "Mine Mayhem",
+    "description": "Multiplayer Minesweeper-style game with real-time sync.",
+    "author": "TheClusterFlux",
+    "tech": "Next.js, React, TypeScript, Tailwind, Socket.io, Node.js, Express, MongoDB",
+    "links": {
+      "visit": "https://minemayhem.theclusterflux.com"
+    },
+    "category": "games",
+    "fileType": "png",
+    "featured": true,
+    "image": "Mine_Mayhem.png"
+  },
+  {
+    "_id": "698bbcd93c326f3df2a2b83f",
+    "title": "Pipbot",
+    "description": "WhatsApp bot and leaderboard UI for Pips game scores.",
+    "author": "TheClusterFlux",
+    "tech": "Node.js, WhatsApp Web.js, MongoDB, Next.js, React, TypeScript, Tailwind",
+    "links": {
+      "visit": "https://pips.theclusterflux.com"
+    },
+    "category": "tools",
+    "fileType": "png",
+    "image": "Pipbot.png"
+  },
+  {
+    "_id": "6a4c27f10a723f00f8d861e1",
+    "title": "CV Generator",
+    "description": "Generate and manage CVs from structured data.",
+    "author": "Keanu Watts",
+    "tech": "Node.js, React",
+    "links": {
+      "visit": "https://cv-generator.theclusterflux.com"
+    },
+    "category": "tools",
+    "fileType": "png",
+    "image": "CV_Generator.png"
+  },
+  {
+    "_id": "6a4c27f10a723f00f8d861e2",
+    "title": "Monty Hall",
+    "description": "Interactive Monty Hall problem simulator and game.",
+    "author": "Keanu Watts",
+    "tech": "Node.js, HTML, CSS, JavaScript",
+    "links": {
+      "visit": "https://monty-hall.theclusterflux.com"
+    },
+    "category": "games",
+    "fileType": "png",
+    "image": "Monty_Hall.png"
+  },
+  {
+    "_id": "6a4c27f10a723f00f8d861e3",
+    "title": "Moviedle",
+    "description": "Guess the movie from clues — Wordle-style movie game.",
+    "author": "Keanu Watts",
+    "tech": "Node.js, React",
+    "links": {
+      "visit": "https://moviedle.theclusterflux.com"
+    },
+    "category": "games",
+    "fileType": "png",
+    "image": "Moviedle.png"
+  },
+  {
+    "_id": "6aadacf7bfd671683ad861e0",
+    "title": "Ani-Me",
+    "description": "Anime discovery and tracking web app with a dedicated API backend.",
+    "author": "Keanu Watts",
+    "tech": "Node.js, React, TypeScript",
+    "links": {
+      "visit": "https://ani-me.theclusterflux.com"
+    },
+    "category": "tools",
+    "fileType": "png",
+    "image": "Ani-Me.png"
+  },
+  {
+    "_id": "6aadacf7bfd671683ad861e1",
+    "title": "K8 Platform Guide",
+    "description": "Kubernetes platform runbook for TheClusterFlux: docs, templates, and MCP for agents.",
+    "author": "TheClusterFlux",
+    "tech": "Node.js, MCP, Kubernetes",
+    "links": {
+      "visit": "https://k8-platform-guide.theclusterflux.com"
+    },
+    "category": "infrastructure",
+    "fileType": "png",
+    "image": "K8_Platform_Guide.png"
+  },
+  {
+    "_id": "6aadacf7bfd671683ad861e2",
+    "title": "Money",
+    "description": "Personal finance and money tracking web app.",
+    "author": "Keanu Watts",
+    "tech": "Node.js, HTML, CSS, JavaScript",
+    "links": {
+      "visit": "https://money.theclusterflux.com"
+    },
+    "category": "tools",
+    "fileType": "png",
+    "image": "Money.png"
+  },
+  {
+    "_id": "6aadacf7bfd671683ad861e3",
+    "title": "Roller Phone",
+    "description": "Arcade-style roller phone game hosted on the cluster.",
+    "author": "Keanu Watts",
+    "tech": "Node.js, HTML5, JavaScript",
+    "links": {
+      "visit": "https://roller-phone.theclusterflux.com"
+    },
+    "category": "games",
+    "fileType": "png",
+    "image": "Roller_Phone.png"
+  },
+  {
+    "_id": "6aadacf7bfd671683ad861e4",
+    "title": "RPS Royal",
+    "description": "Rock, paper, scissors multiplayer game with royal-themed UI.",
+    "author": "Keanu Watts",
+    "tech": "Node.js, WebSockets, JavaScript",
+    "links": {
+      "visit": "https://rps-royal.theclusterflux.com"
+    },
+    "category": "games",
+    "fileType": "png",
+    "image": "RPS_Royal.png"
+  },
+  {
+    "_id": "6aadacf7bfd671683ad861e5",
+    "title": "Archive",
+    "description": "S3-backed file archive and sharing for uploads and downloads on the cluster.",
+    "author": "Keanu Watts",
+    "tech": "Node.js, AWS S3",
+    "links": {
+      "visit": "https://archive.theclusterflux.com"
+    },
+    "category": "tools",
+    "fileType": "png",
+    "image": "Archive.png"
+  }
+]

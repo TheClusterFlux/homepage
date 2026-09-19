@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClusterFlux — King's Vault</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/reset.css">
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="/shared/theme-switcher.css">
+  <link rel="stylesheet" href="/shared/theme-pulse-life.css">
+</head>
+<body data-visual-theme="kings-vault">
+  <div class="kv-chamber" aria-hidden="true">
+    <div class="kv-chamber__vault"></div>
+    <div class="kv-chamber__arch"></div>
+    <div class="kv-chamber__lamp"></div>
+  </div>
+
+  <div class="kv-shell">
+    <aside class="kv-ledger">
+      <div class="kv-ledger__seal" aria-hidden="true">
+        <span class="kv-ledger__crown">♛</span>
+      </div>
+      <p class="kv-ledger__kicker">The ClusterFlux</p>
+      <h1 class="kv-ledger__title">King's Vault</h1>
+      <p class="kv-ledger__motto">
+        Crown holdings under lock — each strongbox a deployment worth guarding.
+      </p>
+      <div class="kv-ledger__filters">
+        <label class="kv-field">
+          <span class="kv-field__label">Ledger</span>
+          <input type="search" id="search-bar" placeholder="Title or tech…" autocomplete="off" aria-label="Search projects">
+        </label>
+        <label class="kv-field">
+          <span class="kv-field__label">Wing</span>
+          <select id="category-filter" aria-label="Category">
+            <option value="all">All wings</option>
+            <option value="games">Games</option>
+            <option value="tools">Tools</option>
+            <option value="infrastructure">Infrastructure</option>
+          </select>
+        </label>
+      </div>
+    </aside>
+
+    <main class="kv-rotunda">
+      <section id="featured-section" class="kv-reliquary" hidden>
+        <h2 class="kv-section-title">Crown reliquary</h2>
+        <div id="featured-row" class="kv-reliquary__row" role="list"></div>
+      </section>
+
+      <section class="kv-strongroom">
+        <h2 class="kv-section-title">Strongroom index</h2>
+        <div id="projects-grid" class="kv-grid" role="list"></div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="kv-footer">
+    <span>King's Vault</span>
+    <a href="https://github.com/TheClusterFlux" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </footer>
+
+  <script src="/shared/thumb-preload.js"></script>
+  <script src="/shared/theme-registry.js"></script>
+  <script src="/shared/theme-landing.js"></script>
+  <script src="/shared/cluster-pulse.js"></script>
+  <script src="/shared/theme-pulse-life.js"></script>
+  <script src="/shared/theme-switcher.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

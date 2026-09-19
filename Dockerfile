@@ -11,6 +11,10 @@ RUN npm install
 
 # First copy all the source code
 COPY src/ ./src/
+COPY concepts/ ./concepts/
+
+# Copy CV assets used by the /cv routes
+COPY CV-*.pdf ./
 
 # Create data directories if they don't exist
 RUN mkdir -p ./src/data/thumbnails

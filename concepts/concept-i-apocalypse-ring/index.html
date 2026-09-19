@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClusterFlux — Apocalypse Ring</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/reset.css">
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="/shared/theme-switcher.css">
+  <link rel="stylesheet" href="/shared/theme-pulse-life.css">
+  <script src="/shared/thumb-preload.js"></script>
+  <script src="/shared/theme-registry.js"></script>
+  <script src="/shared/theme-landing.js"></script>
+</head>
+<body data-visual-theme="apocalypse-ring">
+  <div class="void-grid" aria-hidden="true"></div>
+  <div class="void-vignette" aria-hidden="true"></div>
+
+  <header class="hud-header">
+    <div class="hud-header__brand">
+      <img src="/shared/logo.svg" alt="" class="hud-header__logo" width="40" height="40">
+      <div>
+        <p class="hud-header__kicker">ClusterFlux · Genome Link</p>
+        <h1 class="hud-header__title">Apocalypse Ring</h1>
+      </div>
+    </div>
+    <div class="hud-header__controls">
+      <label class="hud-field">
+        <span class="hud-field__label">Scan</span>
+        <input type="search" id="search-bar" placeholder="Title or tech…" autocomplete="off" aria-label="Search projects">
+      </label>
+      <label class="hud-field hud-field--select">
+        <span class="hud-field__label">Sector</span>
+        <select id="category-filter" aria-label="Filter by category">
+          <option value="all">All</option>
+          <option value="games">Games</option>
+          <option value="tools">Tools</option>
+          <option value="infrastructure">Infrastructure</option>
+        </select>
+      </label>
+    </div>
+    <div class="hud-header__telemetry">
+      <span id="telemetry-count">NODES: —</span>
+      <span id="telemetry-clock">—</span>
+    </div>
+  </header>
+
+  <main class="orbital-stage" role="application" aria-label="Orbital project registry">
+    <div class="radar-hud">
+      <div class="radar-hud__ticks" aria-hidden="true"></div>
+      <div class="radar-hud__ring-guides" aria-hidden="true">
+        <span class="guide guide--outer"></span>
+        <span class="guide guide--mid"></span>
+        <span class="guide guide--inner"></span>
+      </div>
+      <div class="radar-hud__sweep" aria-hidden="true"></div>
+      <div class="radar-hud__pulse" aria-hidden="true"></div>
+
+      <div id="ring-outer" class="orbit-ring orbit-ring--outer" aria-label="Project orbit"></div>
+
+      <div class="core-panel" id="core-panel">
+        <div class="core-panel__idle" id="core-idle">
+          <p class="core-panel__sigil" aria-hidden="true">◈</p>
+          <h2 class="core-panel__heading">Orbital Registry</h2>
+          <p class="core-panel__hint">Arrows rotate the whole ring one step. Whoever lands at top center becomes selected.</p>
+          <p class="core-panel__stat" id="core-stat">Awaiting telemetry…</p>
+        </div>
+        <div class="core-panel__detail" id="detail-panel" hidden></div>
+      </div>
+    </div>
+
+    <aside class="hud-legend" aria-label="Controls legend">
+      <p><kbd>←</kbd><kbd>→</kbd> rotate ring · top = selected</p>
+      <p><kbd>Esc</kbd> clear focus</p>
+      <p class="hud-legend__note">Click a node to jump it to top</p>
+    </aside>
+  </main>
+
+  <footer class="hud-footer">
+    <span>Concept I — Apocalypse Ring</span>
+    <span class="dim">local preview · port 8097</span>
+    <a href="https://github.com/TheClusterFlux" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </footer>
+
+  <script src="/shared/cluster-pulse.js"></script>
+  <script src="/shared/theme-pulse-life.js"></script>
+  <script src="/shared/theme-switcher.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

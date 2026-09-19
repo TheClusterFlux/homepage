@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClusterFlux — EGOIST Signal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/reset.css">
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="/shared/theme-switcher.css">
+  <link rel="stylesheet" href="/shared/theme-pulse-life.css">
+</head>
+<body data-visual-theme="egoist-signal">
+  <div class="broadcast-frame">
+    <aside class="signal-spine" aria-hidden="true">
+      <div class="spine-diagonal"></div>
+      <p class="spine-tag">EGOIST</p>
+      <p class="spine-sub">TX · LIVE</p>
+    </aside>
+
+    <div class="broadcast-main">
+      <header class="broadcast-header">
+        <div class="waveform-band" aria-hidden="true">
+          <div class="waveform-bars" id="waveform-bars"></div>
+          <div class="waveform-scan"></div>
+        </div>
+
+        <div class="header-split">
+          <div class="header-brand">
+            <img src="/shared/logo.svg" alt="" class="brand-mark" width="44" height="44">
+            <div class="brand-copy">
+              <p class="brand-kicker">Void Genome · Public Feed</p>
+              <h1 class="brand-title">Cluster<span class="brand-accent">Flux</span></h1>
+            </div>
+          </div>
+
+          <nav class="header-controls" aria-label="Filter transmissions">
+            <label class="ctrl ctrl-search">
+              <span class="ctrl-label">Search</span>
+              <input type="search" id="search-bar" placeholder="Signal match…" autocomplete="off" spellcheck="false">
+            </label>
+            <label class="ctrl ctrl-filter">
+              <span class="ctrl-label">Band</span>
+              <select id="category-filter">
+                <option value="all">All channels</option>
+                <option value="games">Games</option>
+                <option value="tools">Tools</option>
+                <option value="infrastructure">Infrastructure</option>
+              </select>
+            </label>
+          </nav>
+        </div>
+      </header>
+
+      <main class="transmission-stage">
+        <section id="featured-section" class="featured-bento" hidden aria-labelledby="featured-heading">
+          <div class="section-head">
+            <h2 id="featured-heading" class="section-title">Priority signal</h2>
+            <span class="section-meta">BOOSTED</span>
+          </div>
+          <div id="featured-row" class="featured-grid"></div>
+        </section>
+
+        <section class="archive-bento" aria-labelledby="grid-heading">
+          <div class="section-head">
+            <h2 id="grid-heading" class="section-title">Transmission grid</h2>
+            <p id="result-count" class="section-count" aria-live="polite"></p>
+          </div>
+          <div id="projects-grid" class="bento-grid"></div>
+          <p id="empty-state" class="empty-state" hidden>No transmissions on this band.</p>
+        </section>
+      </main>
+
+      <footer class="broadcast-foot">
+        <span>Concept F — EGOIST Signal</span>
+        <span class="foot-dot">◆</span>
+        <span>Local preview · port 8095</span>
+      </footer>
+    </div>
+  </div>
+
+  <script src="/shared/thumb-preload.js"></script>
+  <script src="/shared/theme-registry.js"></script>
+  <script src="/shared/theme-landing.js"></script>
+  <script src="/shared/cluster-pulse.js"></script>
+  <script src="/shared/theme-pulse-life.js"></script>
+  <script src="/shared/theme-switcher.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

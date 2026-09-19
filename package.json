@@ -4,6 +4,11 @@
   "description": "once read, please replace this readme with one detailing your service, what it does, how to use it, and any other relevant information. 😊",
   "main": "index.js",
   "scripts": {
+    "concepts": "node concepts/run-concepts.js",
+    "pulse-mock": "node mock/cluster-pulse/server.js",
+    "pulse-beta": "node mock/cluster-pulse-beta/server.js",
+    "pulse-dual": "node mock/run-pulse-dual.js",
+    "theme-snapshots": "node scripts/capture-theme-snapshots.mjs",
     "start": "node src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

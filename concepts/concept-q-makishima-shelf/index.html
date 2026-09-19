@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClusterFlux — Makishima Shelf</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/reset.css">
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="/shared/theme-switcher.css">
+  <link rel="stylesheet" href="/shared/theme-pulse-life.css">
+</head>
+<body data-visual-theme="makishima-shelf">
+  <div class="ms-room" aria-hidden="true">
+    <div class="ms-room__wainscot"></div>
+    <div class="ms-room__vignette ms-room__vignette--left"></div>
+    <div class="ms-room__vignette ms-room__vignette--right"></div>
+    <div class="ms-room__light"></div>
+    <div class="ms-room__lamp"></div>
+    <div class="ms-room__grain"></div>
+  </div>
+
+  <div class="ms-shell">
+    <header class="ms-header">
+      <div class="ms-header__intro">
+        <img src="/shared/logo.svg" alt="" class="ms-header__mark" width="36" height="36">
+        <p class="ms-header__kicker">The ClusterFlux · private reading room</p>
+        <h1 class="ms-header__title">Makishima Shelf</h1>
+        <p class="ms-header__epigraph">
+          What do you think the books on this shelf are for?
+        </p>
+        <p class="ms-header__catalogue" id="volume-count" aria-live="polite"></p>
+        <ul class="ms-header__tags" aria-label="Room notes">
+          <li>East alcove</li>
+          <li>Oiled oak</li>
+          <li>Gaslight after dusk</li>
+        </ul>
+      </div>
+      <div class="ms-header__catalog">
+        <label class="ms-field">
+          <span class="ms-field__label">Catalog search</span>
+          <input type="search" id="search-bar" placeholder="Title or stack…" autocomplete="off" aria-label="Search projects">
+        </label>
+        <label class="ms-field">
+          <span class="ms-field__label">Section</span>
+          <select id="category-filter" aria-label="Category">
+            <option value="all">All volumes</option>
+            <option value="games">Games</option>
+            <option value="tools">Tools</option>
+            <option value="infrastructure">Infrastructure</option>
+          </select>
+        </label>
+      </div>
+    </header>
+
+    <section id="featured-section" class="ms-gallery ms-gallery--upper" hidden aria-labelledby="featured-heading">
+      <div class="ms-mantel" aria-hidden="true">
+        <span class="ms-mantel__lamp"></span>
+        <span class="ms-mantel__frame"></span>
+      </div>
+      <h2 id="featured-heading" class="ms-gallery__label">Featured · covers face-out</h2>
+      <div id="featured-row" class="ms-shelf ms-shelf--featured">
+        <div class="ms-shelf__books ms-shelf__books--featured" role="list"></div>
+        <div class="ms-shelf__board" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <main class="ms-stacks" aria-labelledby="stacks-heading">
+      <div class="ms-stacks__rule" aria-hidden="true"></div>
+      <h2 id="stacks-heading" class="ms-gallery__label">Two shelves · spines</h2>
+      <div id="projects-grid" class="ms-stacks__grid"></div>
+      <p id="empty-state" class="ms-empty" hidden>No volumes match your catalog query.</p>
+    </main>
+
+    <aside id="book-detail" class="ms-lectern" hidden aria-live="polite" aria-hidden="true">
+      <div class="ms-lectern__panel">
+        <button type="button" class="ms-lectern__close" id="detail-close" aria-label="Close volume">×</button>
+        <div class="ms-lectern__inner">
+          <p class="ms-lectern__section" id="detail-cat"></p>
+          <h3 class="ms-lectern__title" id="detail-title"></h3>
+          <p class="ms-lectern__desc" id="detail-desc"></p>
+          <p class="ms-lectern__tech" id="detail-tech"></p>
+          <div class="ms-lectern__media" id="detail-media"></div>
+          <div class="ms-lectern__actions" id="detail-actions"></div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <footer class="ms-footer">
+    <p class="ms-footer__quote">“A book is a tool — and the hand that chooses it defines the room.”</p>
+    <p class="ms-footer__meta">
+      <span>Makishima Shelf</span>
+      <span class="ms-footer__dot" aria-hidden="true">·</span>
+      <span>Preview · Port 8103</span>
+    </p>
+  </footer>
+
+  <script src="/shared/thumb-preload.js"></script>
+  <script src="/shared/theme-registry.js"></script>
+  <script src="/shared/theme-landing.js"></script>
+  <script src="/shared/cluster-pulse.js"></script>
+  <script src="/shared/theme-pulse-life.js"></script>
+  <script src="/shared/theme-switcher.js"></script>
+  <script src="app.js?v=6"></script>
+</body>
+</html>

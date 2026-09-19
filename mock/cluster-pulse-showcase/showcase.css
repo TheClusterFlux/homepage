@@ -1,0 +1,208 @@
+:root {
+  --void: #0a0e14;
+  --silver: #c0c0c0;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--void);
+  color: var(--silver);
+  font-family: Rajdhani, "Segoe UI", system-ui, sans-serif;
+  letter-spacing: 0.05em;
+}
+
+.top {
+  padding: 1rem 1.25rem 0.5rem;
+  text-align: center;
+}
+
+.top h1 {
+  margin: 0;
+  font-size: 1.25rem;
+  text-transform: uppercase;
+  color: #e8eef5;
+}
+
+.top p {
+  margin: 0.35rem 0 0;
+  font-size: 0.75rem;
+  opacity: 0.55;
+}
+
+.dual {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem 1.5rem;
+  min-height: calc(100vh - 4rem);
+}
+
+@media (max-width: 900px) {
+  .dual {
+    grid-template-columns: 1fr;
+  }
+}
+
+.channel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 420px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #0d1219;
+  overflow: hidden;
+}
+
+.channel.theme-alpha {
+  border-color: rgba(96, 165, 250, 0.25);
+}
+
+.channel.theme-beta {
+  border-color: rgba(52, 211, 153, 0.25);
+}
+
+.channel-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.85;
+}
+
+.channel-body {
+  position: relative;
+  z-index: 1;
+  padding: 1rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.channel-head h2 {
+  margin: 0;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+}
+
+.theme-alpha .channel-head h2 {
+  color: #93c5fd;
+}
+
+.theme-beta .channel-head h2 {
+  color: #6ee7b7;
+}
+
+.channel-head p {
+  margin: 0.25rem 0 0;
+  font-size: 0.65rem;
+  opacity: 0.5;
+  line-height: 1.35;
+}
+
+.ring-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.ring-mini {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  flex-shrink: 0;
+}
+
+.ring-mini svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.ring-track {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.06);
+  stroke-width: 6;
+}
+
+.theme-alpha .ring-fill {
+  fill: none;
+  stroke: url(#grad-alpha);
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+
+.theme-beta .ring-fill {
+  fill: none;
+  stroke: url(#grad-beta);
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+
+.ring-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.ring-pct {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: #f0f6ff;
+  line-height: 1;
+}
+
+.ring-sub {
+  font-size: 0.55rem;
+  opacity: 0.55;
+  text-transform: uppercase;
+}
+
+.spark-mini {
+  flex: 1;
+  min-width: 0;
+}
+
+.spark-mini canvas {
+  width: 100%;
+  height: 56px;
+  display: block;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.metrics-mini {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.35rem 0.75rem;
+  font-size: 0.68rem;
+}
+
+.metrics-mini span:nth-child(odd) {
+  opacity: 0.55;
+}
+
+.metrics-mini span:nth-child(even) {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: #e8eef5;
+}
+
+.channel-foot {
+  font-size: 0.6rem;
+  opacity: 0.4;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  margin-top: auto;
+}

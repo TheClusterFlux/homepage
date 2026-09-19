@@ -1,0 +1,234 @@
+:root {
+  --void: #0a0e14;
+  --void-mid: #121a24;
+  --silver: #c0c0c0;
+  --ice: #60a5fa;
+  --ice-dim: #93c5fd;
+  --magenta: #e879a9;
+  --ring-track: rgba(96, 165, 250, 0.12);
+  --glow: 0.45;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: var(--void);
+  color: var(--silver);
+  font-family: "Rajdhani", "Segoe UI", system-ui, sans-serif;
+  letter-spacing: 0.06em;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+#particle-canvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.page {
+  position: relative;
+  z-index: 1;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2rem 1.25rem 3rem;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: var(--ice-dim);
+  border: 1px solid rgba(96, 165, 250, 0.35);
+  padding: 0.2rem 0.55rem;
+  margin-bottom: 0.75rem;
+}
+
+h1 {
+  margin: 0 0 0.35rem;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #e8eef5;
+  text-shadow: 0 0 24px rgba(96, 165, 250, calc(var(--glow) * 0.5));
+}
+
+.sub {
+  margin: 0 0 2rem;
+  font-size: 0.85rem;
+  color: rgba(192, 192, 192, 0.65);
+  max-width: 42rem;
+  line-height: 1.5;
+}
+
+.hud-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+@media (max-width: 720px) {
+  .hud-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.ring-panel {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1.5rem;
+  background: linear-gradient(145deg, rgba(18, 26, 36, 0.92), rgba(10, 14, 20, 0.85));
+  border: 1px solid rgba(96, 165, 250, 0.22);
+  box-shadow: inset 0 0 40px rgba(96, 165, 250, 0.04);
+}
+
+.ring-wrap {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+
+.ring-wrap svg {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.ring-track {
+  fill: none;
+  stroke: var(--ring-track);
+  stroke-width: 6;
+}
+
+.ring-fill {
+  fill: none;
+  stroke: url(#ringGradient);
+  stroke-width: 6;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 0.12s linear;
+  filter: drop-shadow(0 0 8px rgba(96, 165, 250, 0.55));
+}
+
+.ring-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.ring-label {
+  font-size: 0.65rem;
+  color: var(--ice-dim);
+  text-transform: uppercase;
+}
+
+.ring-value {
+  font-size: 2.4rem;
+  font-weight: 600;
+  color: #f0f6ff;
+  line-height: 1;
+}
+
+.ring-unit {
+  font-size: 0.7rem;
+  color: rgba(192, 192, 192, 0.5);
+}
+
+.spark-block {
+  flex: 1;
+  min-width: 240px;
+}
+
+.spark-title {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: var(--ice-dim);
+  margin-bottom: 0.35rem;
+}
+
+.spark-canvas {
+  width: 100%;
+  height: 72px;
+  display: block;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(96, 165, 250, 0.15);
+}
+
+.metric-card {
+  padding: 1rem 1.1rem;
+  background: var(--void-mid);
+  border: 1px solid rgba(192, 192, 192, 0.08);
+}
+
+.metric-card h2 {
+  margin: 0 0 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--ice);
+}
+
+.metric-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-size: 0.8rem;
+  margin-bottom: 0.45rem;
+}
+
+.metric-row span:last-child {
+  font-variant-numeric: tabular-nums;
+  color: #e8eef5;
+}
+
+.bar {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  margin-top: 0.35rem;
+  overflow: hidden;
+}
+
+.bar > i {
+  display: block;
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--ice), var(--magenta));
+  transition: width 0.12s linear;
+}
+
+.status-line {
+  margin-top: 1.5rem;
+  font-size: 0.72rem;
+  color: rgba(192, 192, 192, 0.45);
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+.status-line.demo {
+  color: var(--magenta);
+}
+
+footer.note {
+  margin-top: 2rem;
+  font-size: 0.68rem;
+  color: rgba(192, 192, 192, 0.35);
+  line-height: 1.45;
+}

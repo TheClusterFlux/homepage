@@ -1,0 +1,507 @@
+:root {
+  --office-base: #0a0c10;
+  --office-grey: #2a2e36;
+  --office-grey-light: #3d434d;
+  --office-fog: #6b7280;
+  --clinical: #a4a4a4;
+  --clinical-bright: #c8cdd4;
+  --manila: #c4a574;
+  --manila-dark: #9a7b4f;
+  --manila-paper: #e8dcc8;
+  --manila-shadow: rgba(20, 16, 10, 0.45);
+  --stamp-red: #8b1e1e;
+  --stamp-ink: rgba(139, 30, 30, 0.82);
+  --sibyl-line: #0b69af;
+  --text: #d4d8de;
+  --text-dim: #8a919c;
+  --font-display: 'Rajdhani', sans-serif;
+  --font-mono: 'Share Tech Mono', monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  font-family: var(--font-display);
+  font-weight: 500;
+  color: var(--text);
+  background: var(--office-base);
+  letter-spacing: 0.04em;
+}
+
+/* Cool grey office lighting */
+.dossier-light {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.dossier-light__fluorescent {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(105deg, rgba(180, 195, 210, 0.07) 0%, transparent 42%),
+    linear-gradient(180deg, rgba(90, 100, 115, 0.35) 0%, rgba(10, 12, 16, 0.95) 55%, #060708 100%);
+}
+
+.dossier-light__desk {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 38vh;
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.55), transparent);
+}
+
+.dossier-light__grain {
+  position: absolute;
+  inset: 0;
+  opacity: 0.12;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  mix-blend-mode: overlay;
+}
+
+.dossier-header,
+.dossier-scroll,
+.dossier-footer {
+  position: relative;
+  z-index: 1;
+}
+
+.dossier-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto auto;
+  gap: 1rem 1.5rem;
+  align-items: start;
+  padding: 1.5rem clamp(1rem, 4vw, 2.5rem) 1rem;
+  border-bottom: 1px solid rgba(164, 164, 164, 0.2);
+  background: linear-gradient(180deg, rgba(42, 46, 54, 0.92), rgba(10, 12, 16, 0.75));
+  backdrop-filter: blur(6px);
+}
+
+.dossier-header__seal {
+  grid-row: 1 / span 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4.5rem;
+  height: 4.5rem;
+  border: 2px solid var(--clinical);
+  border-radius: 50%;
+  opacity: 0.85;
+}
+
+.dossier-header__ring {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  color: var(--clinical-bright);
+}
+
+.dossier-header__copy {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.75rem;
+}
+
+.dossier-header__logo {
+  filter: grayscale(0.6) brightness(1.1);
+}
+
+.dossier-header__kicker {
+  flex: 1 1 100%;
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--sibyl-line);
+  letter-spacing: 0.12em;
+}
+
+.dossier-header__title {
+  margin: 0;
+  font-size: clamp(1.75rem, 4vw, 2.35rem);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--clinical-bright);
+}
+
+.dossier-header__sub {
+  flex: 1 1 100%;
+  margin: 0;
+  font-size: 0.95rem;
+  color: var(--text-dim);
+  max-width: 42rem;
+}
+
+.dossier-header__controls {
+  grid-column: 2 / 4;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+}
+
+.dossier-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 10rem;
+}
+
+.dossier-field__label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  color: var(--clinical);
+  letter-spacing: 0.1em;
+}
+
+.dossier-field input,
+.dossier-field select {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--office-grey-light);
+  background: rgba(10, 12, 16, 0.85);
+  color: var(--text);
+  border-radius: 2px;
+}
+
+.dossier-field input:focus,
+.dossier-field select:focus {
+  outline: 1px solid var(--sibyl-line);
+  outline-offset: 1px;
+}
+
+.dossier-header__status {
+  grid-column: 3;
+  grid-row: 1;
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--clinical);
+}
+
+.dossier-header__stamp {
+  display: inline-block;
+  margin-top: 0.35rem;
+  padding: 0.15rem 0.45rem;
+  border: 2px solid var(--stamp-red);
+  color: var(--stamp-red);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  transform: rotate(-4deg);
+}
+
+.dossier-scroll {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 1.5rem clamp(1rem, 4vw, 2rem) 3rem;
+}
+
+.dossier-section-head {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.dossier-section-head__tab {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 0.35rem 0.75rem;
+  background: var(--manila-dark);
+  color: #1a1408;
+  border-radius: 4px 4px 0 0;
+  letter-spacing: 0.12em;
+}
+
+.dossier-section-head__title {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.dossier-section-head__sub {
+  margin: 0.15rem 0 0;
+  font-size: 0.9rem;
+  color: var(--text-dim);
+}
+
+.dossier-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.dossier-stack--priority {
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px dashed rgba(164, 164, 164, 0.25);
+}
+
+/* Manila folder case file */
+.dossier-file {
+  position: relative;
+  background: linear-gradient(165deg, var(--manila-paper) 0%, #dccfb8 48%, var(--manila) 100%);
+  color: #1e1a14;
+  border-radius: 2px 6px 6px 6px;
+  box-shadow:
+    0 2px 0 var(--manila-dark),
+    0 12px 28px var(--manila-shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  padding: 2.25rem 1.25rem 1rem;
+  transform: rotate(-0.35deg);
+}
+
+.dossier-file:nth-child(even) {
+  transform: rotate(0.4deg);
+}
+
+.dossier-file--priority {
+  box-shadow:
+    0 2px 0 var(--manila-dark),
+    0 0 0 2px rgba(11, 105, 175, 0.35),
+    0 16px 36px var(--manila-shadow);
+}
+
+.dossier-file__tab {
+  position: absolute;
+  top: -0.65rem;
+  left: 1rem;
+  padding: 0.35rem 1rem 0.25rem;
+  background: linear-gradient(180deg, #d4bc96, var(--manila));
+  border-radius: 4px 4px 0 0;
+  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.15);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  color: #2a2218;
+}
+
+.dossier-file__stamp {
+  position: absolute;
+  top: 1.25rem;
+  right: 1rem;
+  padding: 0.25rem 0.65rem;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.1rem;
+  letter-spacing: 0.18em;
+  color: var(--stamp-ink);
+  border: 3px double var(--stamp-red);
+  transform: rotate(12deg);
+  opacity: 0.88;
+  pointer-events: none;
+}
+
+.dossier-file__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.85rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(30, 26, 20, 0.2);
+}
+
+.dossier-file__division {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.2rem 0.5rem;
+  border: 1px solid rgba(30, 26, 20, 0.35);
+}
+
+.dossier-file__division--games {
+  border-color: #5a3d8a;
+  color: #3d2860;
+}
+
+.dossier-file__division--tools {
+  border-color: var(--sibyl-line);
+  color: #0a4a7a;
+}
+
+.dossier-file__division--infrastructure {
+  border-color: #3d5a40;
+  color: #2a4030;
+}
+
+.dossier-file__coeff {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: #4a4034;
+}
+
+.dossier-file__coeff strong {
+  font-size: 1.05rem;
+  color: #1a1408;
+}
+
+.dossier-file__body {
+  display: grid;
+  grid-template-columns: minmax(7rem, 9rem) 1fr;
+  gap: 1rem 1.25rem;
+  align-items: start;
+}
+
+@media (max-width: 520px) {
+  .dossier-file__body {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dossier-file__mugshot {
+  aspect-ratio: 3 / 4;
+  background: #2a2e36;
+  border: 3px solid #1a1a1a;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+  overflow: hidden;
+}
+
+.dossier-file__mugshot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(0.85) contrast(1.05) brightness(0.92);
+}
+
+.dossier-file__mugshot--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 1.5rem;
+  color: var(--clinical);
+}
+
+.dossier-file__subject {
+  margin: 0 0 0.5rem;
+  font-size: 1.35rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1.15;
+  padding-right: 4.5rem;
+}
+
+.dossier-file__synopsis {
+  margin: 0 0 0.65rem;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: #3a342c;
+}
+
+.dossier-redact {
+  display: inline-block;
+  position: relative;
+  color: transparent;
+  user-select: none;
+}
+
+.dossier-redact::after {
+  content: '';
+  position: absolute;
+  inset: 0.05em -0.1em;
+  background: #1a1a1a;
+  border-radius: 1px;
+}
+
+.dossier-file__stack {
+  margin: 0 0 0.85rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: #5a5248;
+  line-height: 1.4;
+}
+
+.dossier-file__actions {
+  margin-top: auto;
+}
+
+.dossier-file__visit {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  padding: 0.45rem 0.85rem;
+  border: 2px solid #1a1408;
+  background: transparent;
+  color: #1a1408;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s;
+}
+
+.dossier-file__visit:hover {
+  background: #1a1408;
+  color: var(--manila-paper);
+}
+
+.dossier-file__visit--muted {
+  opacity: 0.55;
+  border-style: dashed;
+}
+
+.dossier-file__footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.85rem;
+  padding-top: 0.5rem;
+  border-top: 1px dashed rgba(30, 26, 20, 0.25);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  color: rgba(30, 26, 20, 0.45);
+}
+
+.dossier-priority .dossier-file {
+  transform: rotate(0deg);
+}
+
+.dossier-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  justify-content: center;
+  padding: 1.25rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  border-top: 1px solid rgba(164, 164, 164, 0.15);
+}
+
+.dossier-footer a {
+  color: var(--clinical);
+}
+
+.dossier-footer__dim {
+  opacity: 0.65;
+}
+
+@media (max-width: 720px) {
+  .dossier-header {
+    grid-template-columns: 1fr;
+  }
+
+  .dossier-header__seal {
+    display: none;
+  }
+
+  .dossier-header__controls,
+  .dossier-header__status {
+    grid-column: 1;
+  }
+
+  .dossier-header__status {
+    text-align: left;
+  }
+}

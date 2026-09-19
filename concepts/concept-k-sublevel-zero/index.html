@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClusterFlux — Sublevel Zero</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/reset.css">
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="/shared/theme-switcher.css">
+  <link rel="stylesheet" href="/shared/theme-pulse-life.css">
+  <script src="/shared/thumb-preload.js"></script>
+  <script src="/shared/theme-registry.js"></script>
+  <script src="/shared/theme-landing.js"></script>
+</head>
+<body data-visual-theme="sublevel-zero">
+  <div class="sz-bunker" aria-hidden="true">
+    <div class="sz-bunker__concrete"></div>
+    <div class="sz-bunker__duct"></div>
+    <div class="sz-bunker__fog"></div>
+  </div>
+
+  <div class="sz-hazard sz-hazard--top" aria-hidden="true"></div>
+
+  <header class="sz-header">
+    <div class="sz-header__brand">
+      <img src="/shared/logo.svg" alt="" class="sz-header__logo" width="40" height="40">
+      <div>
+        <p class="sz-header__kicker">ClusterFlux · Sublevel B-7</p>
+        <h1 class="sz-header__title">Sublevel Zero</h1>
+      </div>
+    </div>
+    <div class="sz-header__controls">
+      <label class="sz-field">
+        <span class="sz-field__label">Query</span>
+        <input type="search" id="search-bar" placeholder="Title or tech…" autocomplete="off" aria-label="Search projects">
+      </label>
+      <label class="sz-field sz-field--select">
+        <span class="sz-field__label">Zone</span>
+        <select id="category-filter" aria-label="Filter by category">
+          <option value="all">All zones</option>
+          <option value="games">Games</option>
+          <option value="tools">Tools</option>
+          <option value="infrastructure">Infrastructure</option>
+        </select>
+      </label>
+    </div>
+    <div class="sz-header__status">
+      <span id="sz-blade-count">BLADES: —</span>
+      <span class="sz-header__tag">RACK POWER · ON</span>
+    </div>
+  </header>
+
+  <main class="sz-floor">
+    <section id="featured-section" class="sz-priority" hidden>
+      <header class="sz-section-head">
+        <span class="sz-section-head__stripe" aria-hidden="true"></span>
+        <div>
+          <h2 class="sz-section-head__title">Priority bay</h2>
+          <p class="sz-section-head__sub">Featured blades · hot aisle</p>
+        </div>
+      </header>
+      <div class="sz-rack sz-rack--priority">
+        <div class="sz-rack__rail sz-rack__rail--left" aria-hidden="true"></div>
+        <div id="featured-row" class="sz-rack__bays" role="list"></div>
+        <div class="sz-rack__rail sz-rack__rail--right" aria-hidden="true"></div>
+      </div>
+    </section>
+
+    <section class="sz-datacenter">
+      <header class="sz-section-head">
+        <span class="sz-section-head__stripe" aria-hidden="true"></span>
+        <div>
+          <h2 class="sz-section-head__title">Blade inventory</h2>
+          <p class="sz-section-head__sub">Row-mounted deploy units · visit link only</p>
+        </div>
+      </header>
+      <div class="sz-rack">
+        <div class="sz-rack__rail sz-rack__rail--left" aria-hidden="true"></div>
+        <div id="projects-grid" class="sz-rack__bays" role="list"></div>
+        <div class="sz-rack__rail sz-rack__rail--right" aria-hidden="true"></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="sz-hazard sz-hazard--bottom" aria-hidden="true"></div>
+
+  <footer class="sz-footer">
+    <span>Concept K — Sublevel Zero</span>
+    <span class="sz-footer__dim">local preview · port 8098</span>
+    <a href="https://github.com/TheClusterFlux" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </footer>
+
+  <script src="/shared/cluster-pulse.js"></script>
+  <script src="/shared/theme-pulse-life.js"></script>
+  <script src="/shared/theme-switcher.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

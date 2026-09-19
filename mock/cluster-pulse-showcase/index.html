@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dual cluster pulse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="showcase.css">
+</head>
+<body>
+  <svg width="0" height="0" aria-hidden="true">
+    <defs>
+      <linearGradient id="grad-alpha" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#60a5fa"/>
+        <stop offset="100%" stop-color="#e879a9"/>
+      </linearGradient>
+      <linearGradient id="grad-beta" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%" stop-color="#34d399"/>
+        <stop offset="100%" stop-color="#f59e0b"/>
+      </linearGradient>
+    </defs>
+  </svg>
+
+  <header class="top">
+    <h1>Dual genome telemetry</h1>
+    <p>Two independent pulse channels · <code>8099</code> void-resonance + <code>8100</code> mesh-echo · showcase <code>8101</code></p>
+  </header>
+
+  <div class="dual">
+    <div id="panel-alpha"></div>
+    <div id="panel-beta"></div>
+  </div>
+
+  <script src="showcase.js?v=2"></script>
+</body>
+</html>

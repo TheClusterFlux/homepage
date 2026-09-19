@@ -1,0 +1,143 @@
+/* Fixed slot: bottom-right on every visual theme */
+.cf-theme-dock {
+  position: fixed;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  z-index: 100000;
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 0.8125rem;
+}
+
+.cf-theme-trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  background: rgba(12, 12, 18, 0.82);
+  color: #f2f2f6;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.cf-theme-trigger:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.42);
+}
+
+.cf-theme-trigger:focus-visible {
+  outline: 2px solid #e879f9;
+  outline-offset: 2px;
+}
+
+.cf-theme-trigger__icon {
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 120deg,
+    #22d3ee,
+    #e879f9,
+    #fbbf24,
+    #22d3ee
+  );
+}
+
+.cf-theme-panel {
+  position: absolute;
+  bottom: calc(100% + 0.65rem);
+  right: 0;
+  width: min(17.5rem, calc(100vw - 2rem));
+  margin: 0;
+  padding: 0.65rem;
+  list-style: none;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(10, 10, 16, 0.94);
+  color: #ececf1;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.45);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+}
+
+.cf-theme-dock[data-open='true'] .cf-theme-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.cf-theme-panel__title {
+  padding: 0.35rem 0.5rem 0.55rem;
+  font-size: 0.6875rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.cf-theme-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.55rem 0.6rem;
+  border: none;
+  border-radius: 0.5rem;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+
+.cf-theme-option:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.cf-theme-option[aria-current='true'] {
+  background: rgba(34, 211, 238, 0.12);
+}
+
+.cf-theme-option__name {
+  font-weight: 600;
+}
+
+.cf-theme-option__meta {
+  font-size: 0.6875rem;
+  color: rgba(255, 255, 255, 0.45);
+  text-transform: capitalize;
+}
+
+/* Light host pages can restyle via data on body */
+body[data-visual-theme='sakura-genome'] .cf-theme-trigger,
+body[data-visual-theme='makishima-shelf'] .cf-theme-trigger,
+body[data-visual-theme='guilty-crown'][data-theme='light'] .cf-theme-trigger {
+  border-color: rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.92);
+  color: #141418;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+body[data-visual-theme='sakura-genome'] .cf-theme-panel,
+body[data-visual-theme='makishima-shelf'] .cf-theme-panel,
+body[data-visual-theme='guilty-crown'][data-theme='light'] .cf-theme-panel {
+  border-color: rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.96);
+  color: #141418;
+}
+
+@media (max-width: 480px) {
+  .cf-theme-dock {
+    bottom: 0.85rem;
+    right: 0.85rem;
+  }
+  .cf-theme-trigger span.cf-theme-trigger__label {
+    display: none;
+  }
+}

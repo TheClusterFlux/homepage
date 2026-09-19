@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClusterFlux — MWPSB Dossier</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/reset.css">
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="/shared/theme-switcher.css">
+  <link rel="stylesheet" href="/shared/theme-pulse-life.css">
+  <script src="/shared/thumb-preload.js"></script>
+  <script src="/shared/theme-registry.js"></script>
+  <script src="/shared/theme-landing.js"></script>
+</head>
+<body data-visual-theme="mwpsb-dossier">
+  <div class="dossier-light" aria-hidden="true">
+    <div class="dossier-light__fluorescent"></div>
+    <div class="dossier-light__desk"></div>
+    <div class="dossier-light__grain"></div>
+  </div>
+
+  <header class="dossier-header">
+    <div class="dossier-header__seal" aria-hidden="true">
+      <span class="dossier-header__ring">MWPSB</span>
+    </div>
+    <div class="dossier-header__copy">
+      <img src="/shared/logo.svg" alt="" class="dossier-header__logo" width="36" height="36">
+      <p class="dossier-header__kicker">[ PUBLIC SAFETY BUREAU · DIV. 1 ]</p>
+      <h1 class="dossier-header__title">Case File Index</h1>
+      <p class="dossier-header__sub">ClusterFlux deployment registry · latent-criminal screening waived for internal review</p>
+    </div>
+    <div class="dossier-header__controls">
+      <label class="dossier-field">
+        <span class="dossier-field__label">Search dossier</span>
+        <input type="search" id="search-bar" placeholder="Subject or stack trace…" autocomplete="off" aria-label="Search projects">
+      </label>
+      <label class="dossier-field dossier-field--select">
+        <span class="dossier-field__label">Division</span>
+        <select id="category-filter" aria-label="Filter by category">
+          <option value="all">All divisions</option>
+          <option value="games">Games</option>
+          <option value="tools">Tools</option>
+          <option value="infrastructure">Infrastructure</option>
+        </select>
+      </label>
+    </div>
+    <div class="dossier-header__status">
+      <span id="dossier-file-count">FILES: —</span>
+      <span class="dossier-header__stamp">INTERNAL USE</span>
+    </div>
+  </header>
+
+  <main class="dossier-scroll">
+    <section id="featured-section" class="dossier-priority" hidden>
+      <header class="dossier-section-head">
+        <span class="dossier-section-head__tab" aria-hidden="true">PRIORITY</span>
+        <div>
+          <h2 class="dossier-section-head__title">Priority cases</h2>
+          <p class="dossier-section-head__sub">Featured subjects · immediate review queue</p>
+        </div>
+      </header>
+      <div id="featured-row" class="dossier-stack dossier-stack--priority" role="list"></div>
+    </section>
+
+    <section class="dossier-archive">
+      <header class="dossier-section-head">
+        <span class="dossier-section-head__tab" aria-hidden="true">ARCHIVE</span>
+        <div>
+          <h2 class="dossier-section-head__title">Open dossiers</h2>
+          <p class="dossier-section-head__sub">Manila case files · visit link only · no source disclosure</p>
+        </div>
+      </header>
+      <div id="projects-grid" class="dossier-stack" role="list"></div>
+    </section>
+  </main>
+
+  <footer class="dossier-footer">
+    <span>Concept O — MWPSB Dossier</span>
+    <span class="dossier-footer__dim">local preview · port 8101</span>
+    <a href="https://github.com/TheClusterFlux" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </footer>
+
+  <script src="/shared/cluster-pulse.js"></script>
+  <script src="/shared/theme-pulse-life.js"></script>
+  <script src="/shared/theme-switcher.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

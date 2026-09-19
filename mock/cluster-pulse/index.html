@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cluster Pulse — mock</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="pulse.css">
+</head>
+<body>
+  <canvas id="particle-canvas" aria-hidden="true"></canvas>
+
+  <main class="page">
+    <span class="badge">Mock / not wired to homepage</span>
+    <h1>Void resonance</h1>
+    <p class="sub">
+      Pulse blends ingress turbulence (5m swing + σ), container CPU ripple, scrape bursts, and
+      poll-to-poll motion — aggregated scalars only, no pod or host labels.
+    </p>
+
+    <section class="ring-panel">
+      <div class="ring-wrap" aria-label="Composite pulse ring">
+        <svg viewBox="0 0 200 200" role="img" aria-hidden="true">
+          <defs>
+            <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#60a5fa"/>
+              <stop offset="100%" stop-color="#e879a9"/>
+            </linearGradient>
+          </defs>
+          <circle class="ring-track" cx="100" cy="100" r="88"/>
+          <circle id="ring-fill" class="ring-fill" cx="100" cy="100" r="88"/>
+        </svg>
+        <div class="ring-center">
+          <span class="ring-label">Genome signal</span>
+          <span id="pulse-percent" class="ring-value">—</span>
+          <span id="pulse-breakdown" class="ring-unit">—</span>
+        </div>
+      </div>
+      <div class="spark-block">
+        <div class="spark-title">Pulse trace (live, ~96s window)</div>
+        <canvas id="spark-pulse" class="spark-canvas" height="72"></canvas>
+      </div>
+    </section>
+
+    <div class="hud-grid">
+      <article class="metric-card">
+        <h2>Ingress turbulence</h2>
+        <div class="metric-row">
+          <span>Connection swing (5m)</span>
+          <span id="val-ingress-swing">—</span>
+        </div>
+        <div class="bar"><i id="bar-ingress-swing"></i></div>
+        <div class="metric-row">
+          <span>Connection σ (10m)</span>
+          <span id="val-ingress-volatility">—</span>
+        </div>
+        <div class="metric-row">
+          <span>Active / waiting</span>
+          <span id="val-ingress-active">—</span>
+        </div>
+        <div class="metric-row">
+          <span>HTTP rate</span>
+          <span id="val-ingress-rps">—</span>
+        </div>
+      </article>
+
+      <article class="metric-card">
+        <h2>Workload ripple</h2>
+        <div class="metric-row">
+          <span>Container CPU</span>
+          <span id="val-cpu">—</span>
+        </div>
+        <div class="bar"><i id="bar-cpu"></i></div>
+        <div class="metric-row">
+          <span>Scrape sample rate</span>
+          <span id="val-scrape">—</span>
+        </div>
+        <div class="bar"><i id="bar-scrape"></i></div>
+        <div class="metric-row">
+          <span>Loki ingest</span>
+          <span id="val-loki-bytes">—</span>
+        </div>
+        <div class="metric-row">
+          <span>Motion (poll delta)</span>
+          <span id="val-motion">—</span>
+        </div>
+      </article>
+    </div>
+
+    <p id="status-line" class="status-line">initializing…</p>
+
+    <footer class="note">
+      Run: <code>node mock/cluster-pulse/server.js</code> then open http://127.0.0.1:8099 .
+      Polls every 400ms. Tune calibration in <code>server.js</code> when deploying.
+    </footer>
+  </main>
+
+  <script src="pulse.js"></script>
+</body>
+</html>

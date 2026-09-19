@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClusterFlux — Lost Christmas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Infant:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/reset.css">
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="/shared/theme-switcher.css">
+  <link rel="stylesheet" href="/shared/theme-pulse-life.css">
+</head>
+<body data-visual-theme="lost-christmas">
+  <div class="lc-void" aria-hidden="true">
+    <div class="lc-void__aurora"></div>
+    <div class="lc-void__city"></div>
+    <div class="lc-void__grain"></div>
+  </div>
+
+  <div class="lc-shell">
+    <aside class="lc-rail">
+      <img src="/shared/logo.svg" alt="" class="lc-rail__logo" width="36" height="36">
+      <p class="lc-rail__kicker">The ClusterFlux</p>
+      <h1 class="lc-rail__title">Lost Christmas</h1>
+      <p class="lc-rail__poem">
+        What remains after the song ends — deployments still glowing in an empty winter city.
+      </p>
+      <div class="lc-rail__filters">
+        <label class="lc-filter">
+          <span class="lc-filter__label">Search</span>
+          <input type="search" id="search-bar" placeholder="Title or tech…" autocomplete="off" aria-label="Search projects">
+        </label>
+        <label class="lc-filter">
+          <span class="lc-filter__label">Wing</span>
+          <select id="category-filter" aria-label="Category">
+            <option value="all">All</option>
+            <option value="games">Games</option>
+            <option value="tools">Tools</option>
+            <option value="infrastructure">Infrastructure</option>
+          </select>
+        </label>
+      </div>
+      <p class="lc-rail__note">Scroll the red thread · featured burns brighter</p>
+    </aside>
+
+    <main class="lc-procession">
+      <section id="featured-section" class="lc-triptych-wrap" hidden>
+        <h2 class="lc-procession__label">Embers</h2>
+        <div id="featured-row" class="lc-triptych" role="list"></div>
+      </section>
+
+      <div class="lc-spine-wrap">
+        <div class="lc-spine" aria-hidden="true"></div>
+        <ol id="projects-grid" class="lc-nodes"></ol>
+      </div>
+    </main>
+  </div>
+
+  <footer class="lc-footer">
+    <span>Lost Christmas</span>
+    <a href="https://github.com/TheClusterFlux" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </footer>
+
+  <script src="/shared/thumb-preload.js"></script>
+  <script src="/shared/theme-registry.js"></script>
+  <script src="/shared/theme-landing.js"></script>
+  <script src="/shared/cluster-pulse.js"></script>
+  <script src="/shared/theme-pulse-life.js"></script>
+  <script src="/shared/theme-switcher.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

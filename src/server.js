@@ -5,9 +5,25 @@ const { fetchAndSaveHomepageData, addProjectWithImage, addCreator, addTechnology
 const fs = require('fs');
 const { exec } = require('child_process');
 const http = require('http');
+const { mountPulseRoutes } = require('./pulseProxy');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
+
+function resolveCvPath() {
+  const rootDir = path.join(__dirname, '..');
+  const preferredCv = path.join(rootDir, 'CV-Keanu-Watts-2026.pdf');
+
+  if (fs.existsSync(preferredCv)) {
+    return preferredCv;
+  }
+
+  const cvCandidate = fs
+    .readdirSync(rootDir)
+    .find(name => /^CV-.*\.pdf$/i.test(name));
+
+  return cvCandidate ? path.join(rootDir, cvCandidate) : null;
+}
 
 app.use(express.json());
 
@@ -16,6 +32,27 @@ app.use(express.json());
 app.use(express.static(path.join(__dirname)));
 app.use('/thumbnails', express.static(path.join(__dirname, '/data/thumbnails')));
 app.use('/data', express.static(path.join(__dirname, 'data')));
+
+const conceptsRoot = path.join(__dirname, '..', 'concepts');
+app.use('/shared', express.static(path.join(conceptsRoot, 'shared')));
+const themeMounts = [
+  { route: '/themes/neural-terminal', dir: 'concept-a-void-cathedral' },
+  { route: '/themes/crystal-cathedral', dir: 'concept-b-funeral-parlor-hud' },
+  { route: '/themes/sakura-genome', dir: 'concept-d-sakura-genome' },
+  { route: '/themes/void-opera', dir: 'concept-e-void-opera' },
+  { route: '/themes/sibyl-index', dir: 'concept-m-sibyl-index' },
+  { route: '/themes/dominator-lock', dir: 'concept-n-dominator-lock' },
+  { route: '/themes/mwpsb-dossier', dir: 'concept-o-mwpsb-dossier' },
+  { route: '/themes/hue-spectrum', dir: 'concept-p-hue-spectrum' },
+  { route: '/themes/makishima-shelf', dir: 'concept-q-makishima-shelf' },
+  { route: '/themes/sublevel-zero', dir: 'concept-k-sublevel-zero' },
+  { route: '/themes/seraph-static', dir: 'concept-l-seraph-static' },
+  { route: '/themes/lost-christmas', dir: 'concept-h-lost-christmas' },
+  { route: '/themes/apocalypse-ring', dir: 'concept-i-apocalypse-ring' },
+];
+for (const t of themeMounts) {
+  app.use(t.route, express.static(path.join(conceptsRoot, t.dir)));
+}
 
 // Configure multer for file uploads
 const upload = multer({ dest: 'uploads/' }); // Temporary directory for uploaded files
@@ -339,12 +376,72 @@ app.get('/about.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'about.html'));
 });
 
+app.get('/cv', (req, res) => {
+  const cvPath = resolveCvPath();
+
+  if (!cvPath) {
+    return res.status(404).send('CV file not found');
+  }
+
+  const cvFileName = path.basename(cvPath);
+  res.type('html').send(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CV - TheClusterFlux</title>
+  <style>
+    body { font-family: Segoe UI, Arial, sans-serif; background: #f6f7fb; color: #1f2937; margin: 0; padding: 2rem; }
+    .wrap { max-width: 900px; margin: 0 auto; background: white; border-radius: 12px; padding: 1.5rem; box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+    h1 { margin: 0 0 1rem; }
+    .actions { display: flex; gap: .75rem; margin-bottom: 1rem; flex-wrap: wrap; }
+    a { text-decoration: none; background: #2563eb; color: #fff; padding: .6rem .9rem; border-radius: 8px; font-weight: 600; }
+    a.secondary { background: #111827; }
+    iframe { width: 100%; height: 80vh; border: 1px solid #e5e7eb; border-radius: 8px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Curriculum Vitae</h1>
+    <div class="actions">
+      <a href="/cv/view" target="_blank" rel="noopener noreferrer">View CV</a>
+      <a class="secondary" href="/cv/download">Download CV</a>
+      <a class="secondary" href="/">Back to homepage</a>
+    </div>
+    <iframe src="/cv/view#view=FitH" title="CV Preview: ${cvFileName}"></iframe>
+  </div>
+</body>
+</html>`);
+});
+
+app.get('/cv/view', (req, res) => {
+  const cvPath = resolveCvPath();
+
+  if (!cvPath) {
+    return res.status(404).send('CV file not found');
+  }
+
+  res.sendFile(cvPath);
+});
+
+app.get('/cv/download', (req, res) => {
+  const cvPath = resolveCvPath();
+
+  if (!cvPath) {
+    return res.status(404).send('CV file not found');
+  }
+
+  res.download(cvPath, path.basename(cvPath));
+});
+
+mountPulseRoutes(app);
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // Fallback route - must be last
-app.get(/^\/(?!api)(?!about\.html)(?!prometheus)(?!data)(?!thumbnails).*/, (req, res) => {
+app.get(/^\/(?!api)(?!about\.html)(?!cv)(?!prometheus)(?!data)(?!thumbnails)(?!themes)(?!shared).*/, (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 

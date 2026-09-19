@@ -99,8 +99,12 @@ async function addProjectWithImage(projectData, imagePath) {
         const bucket = new GridFSBucket(db, { bucketName: 'thumbnails' });
         
         // Validate projectData structure
-        if (!projectData.title || !projectData.description || !projectData.author || !projectData.links || !projectData.tech || !projectData.fileType) {
+        const validCategories = ['games', 'tools', 'infrastructure'];
+        if (!projectData.title || !projectData.description || !projectData.links || !projectData.tech || !projectData.fileType) {
             throw new Error('Invalid project data structure. Ensure it matches projects.json.');
+        }
+        if (!projectData.category || !validCategories.includes(projectData.category)) {
+            throw new Error('Invalid or missing category. Must be one of: games, tools, infrastructure.');
         }
         
         //replace spaces with underscores in the title

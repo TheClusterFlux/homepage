@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClusterFlux — Sakura Genome (Concept D)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/reset.css">
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="/shared/theme-switcher.css">
+  <link rel="stylesheet" href="/shared/theme-pulse-life.css">
+</head>
+<body data-visual-theme="sakura-genome">
+  <div class="sakura-layer" aria-hidden="true">
+    <span class="petal petal--1"></span>
+    <span class="petal petal--2"></span>
+    <span class="petal petal--3"></span>
+    <span class="petal petal--4"></span>
+    <span class="petal petal--5"></span>
+    <span class="petal petal--6"></span>
+    <span class="petal petal--7"></span>
+    <span class="petal petal--8"></span>
+    <span class="petal petal--9"></span>
+    <span class="petal petal--10"></span>
+    <span class="petal petal--11"></span>
+    <span class="petal petal--12"></span>
+    <span class="petal petal--13"></span>
+    <span class="petal petal--14"></span>
+    <span class="petal petal--15"></span>
+    <span class="petal petal--16"></span>
+    <span class="petal petal--17"></span>
+    <span class="petal petal--18"></span>
+  </div>
+
+  <div class="genome-atmosphere" aria-hidden="true">
+    <div class="atmo-bloom atmo-bloom--pink"></div>
+    <div class="atmo-bloom atmo-bloom--cyan"></div>
+    <div class="atmo-grid"></div>
+  </div>
+
+  <header class="genome-header">
+    <div class="genome-header__brand">
+      <img src="/shared/logo.svg" alt="" class="genome-header__logo" width="40" height="40">
+      <div class="genome-header__titles">
+        <p class="genome-header__kicker">Genome registry · light sequence</p>
+        <h1 class="genome-header__title">Sakura <span class="title-cyan">Genome</span></h1>
+      </div>
+    </div>
+    <nav class="genome-header__controls" aria-label="Filter projects">
+      <label class="control">
+        <span class="control__label">Search</span>
+        <input type="search" id="search-bar" placeholder="Title or stack…" autocomplete="off">
+      </label>
+      <label class="control control--select">
+        <span class="control__label">Category</span>
+        <select id="category-filter">
+          <option value="all">All sequences</option>
+          <option value="games">Games</option>
+          <option value="tools">Tools</option>
+          <option value="infrastructure">Infrastructure</option>
+        </select>
+      </label>
+    </nav>
+  </header>
+
+  <section id="featured-section" class="featured-band" hidden aria-labelledby="featured-heading">
+    <div class="featured-band__head">
+      <h2 id="featured-heading" class="featured-band__title">Featured band</h2>
+      <p class="featured-band__sub">Pinned sequences along the helix</p>
+    </div>
+    <div id="featured-row" class="featured-band__strip"></div>
+  </section>
+
+  <main class="genome-stage">
+    <div class="spine-rail" aria-hidden="true">
+      <div class="spine-rail__strand spine-rail__strand--a"></div>
+      <div class="spine-rail__strand spine-rail__strand--b"></div>
+      <div class="spine-rail__core"></div>
+      <div class="spine-rail__pulse"></div>
+    </div>
+
+    <section class="timeline-wrap" aria-labelledby="timeline-heading">
+      <header class="timeline-head">
+        <h2 id="timeline-heading" class="timeline-head__title">Project spine</h2>
+        <p id="result-count" class="timeline-head__count" aria-live="polite"></p>
+      </header>
+      <div id="projects-grid" class="spine-timeline" role="list"></div>
+      <p id="empty-state" class="empty-state" hidden>No projects match your filter.</p>
+    </section>
+  </main>
+
+  <footer class="genome-footer">
+    <p>Concept D — Sakura Genome · Local preview · Port 8093</p>
+  </footer>
+
+  <script src="/shared/thumb-preload.js"></script>
+  <script src="/shared/theme-registry.js"></script>
+  <script src="/shared/theme-bootstrap.js"></script>
+  <script src="/shared/cluster-pulse.js"></script>
+  <script src="/shared/theme-pulse-life.js"></script>
+  <script src="/shared/theme-switcher.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

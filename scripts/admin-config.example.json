@@ -1,0 +1,4 @@
+{
+  "mongoUri": "mongodb://root:YOUR_PASSWORD@localhost:27017",
+  "port": 3080
+}

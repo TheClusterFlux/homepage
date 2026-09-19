@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ClusterFlux — Void Opera</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/reset.css">
+  <link rel="stylesheet" href="theme.css">
+  <link rel="stylesheet" href="/shared/theme-switcher.css">
+  <link rel="stylesheet" href="/shared/theme-pulse-life.css">
+</head>
+<body data-visual-theme="void-opera">
+  <div class="opera-backdrop" aria-hidden="true">
+    <div class="opera-backdrop__void"></div>
+    <div class="opera-backdrop__smoke opera-backdrop__smoke--a"></div>
+    <div class="opera-backdrop__smoke opera-backdrop__smoke--b"></div>
+    <div class="opera-backdrop__smoke opera-backdrop__smoke--c"></div>
+    <div class="opera-backdrop__dust"></div>
+    <div class="curtain curtain--left">
+      <div class="curtain__folds"></div>
+      <div class="curtain__gold-trim"></div>
+    </div>
+    <div class="curtain curtain--right">
+      <div class="curtain__folds"></div>
+      <div class="curtain__gold-trim"></div>
+    </div>
+    <div class="footlights"></div>
+    <div class="proscenium-arch" aria-hidden="true">
+      <svg viewBox="0 0 1200 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0,120 L0,40 Q600,-20 1200,40 L1200,120 Z" fill="url(#arch-gold)"/>
+        <defs>
+          <linearGradient id="arch-gold" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#3d1518"/>
+            <stop offset="45%" stop-color="#1a0a0c"/>
+            <stop offset="100%" stop-color="#0a0506"/>
+          </linearGradient>
+        </defs>
+      </svg>
+    </div>
+  </div>
+
+  <div class="chandelier-glow" aria-hidden="true"></div>
+
+  <header class="playhouse-header">
+    <div class="playhouse-header__brand">
+      <img src="/shared/logo.svg" alt="" class="playhouse-header__logo" width="48" height="48">
+      <div>
+        <p class="playhouse-header__kicker">The ClusterFlux Repertory</p>
+        <h1 class="playhouse-header__title">Void Opera</h1>
+      </div>
+    </div>
+    <p class="playhouse-header__tagline">A nocturne in deployed services</p>
+  </header>
+
+  <div class="box-office">
+    <label class="box-office__field">
+      <span class="box-office__label">Inquire the repertoire</span>
+      <input type="search" id="search-bar" placeholder="Title or craft…" autocomplete="off" aria-label="Search projects">
+    </label>
+    <label class="box-office__field box-office__field--select">
+      <span class="box-office__label">Genre</span>
+      <select id="category-filter" aria-label="Filter by category">
+        <option value="all">All acts</option>
+        <option value="games">Games</option>
+        <option value="tools">Tools</option>
+        <option value="infrastructure">Infrastructure</option>
+      </select>
+    </label>
+  </div>
+
+  <main class="opera-house">
+    <section id="featured-section" class="principal-stage" hidden>
+      <header class="program-head">
+        <span class="program-head__rule" aria-hidden="true"></span>
+        <h2 class="program-head__title">Principal Performances</h2>
+        <p class="program-head__sub">Illuminated upon the void</p>
+        <span class="program-head__rule" aria-hidden="true"></span>
+      </header>
+      <div class="spotlight-rig" aria-hidden="true">
+        <div class="spotlight-cone spotlight-cone--1"></div>
+        <div class="spotlight-cone spotlight-cone--2"></div>
+        <div class="spotlight-cone spotlight-cone--3"></div>
+      </div>
+      <div id="featured-row" class="principal-row"></div>
+    </section>
+
+    <section class="playbill-section">
+      <header class="program-head">
+        <span class="program-head__rule" aria-hidden="true"></span>
+        <h2 class="program-head__title">Evening Program</h2>
+        <p class="program-head__sub">Each project an act in tonight's bill</p>
+        <span class="program-head__rule" aria-hidden="true"></span>
+      </header>
+      <div id="projects-grid" class="playbill" role="list"></div>
+    </section>
+  </main>
+
+  <footer class="opera-footer">
+    <p>Concept E — Void Opera · Local preview · Port 8094</p>
+    <a href="https://github.com/TheClusterFlux" target="_blank" rel="noopener noreferrer">GitHub</a>
+  </footer>
+
+  <script src="/shared/thumb-preload.js"></script>
+  <script src="/shared/theme-registry.js"></script>
+  <script src="/shared/theme-landing.js"></script>
+  <script src="/shared/cluster-pulse.js"></script>
+  <script src="/shared/theme-pulse-life.js"></script>
+  <script src="/shared/theme-switcher.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
