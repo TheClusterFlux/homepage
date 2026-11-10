@@ -9,6 +9,8 @@ const { mountPulseRoutes } = require('./pulseProxy');
 const { mountThemeVoteRoutes } = require('./themeVotes');
 
 const app = express();
+let catalogueReady = false;
+app.get('/readyz', (_req, res) => res.status(catalogueReady ? 200 : 503).json({ ready: catalogueReady }));
 const PORT = process.env.PORT || 8080;
 
 function resolveCvPath() {
@@ -127,6 +129,7 @@ app.get('/api/fetch-data', async (req, res) => {
   try {
     console.log('Fetching data from MongoDB...');
     await fetchAndSaveHomepageData();
+    catalogueReady = true;
     res.status(200).json({ 
       success: true, 
       message: 'Data fetched and saved locally',
@@ -148,6 +151,7 @@ app.get('/api/fetch-data', async (req, res) => {
   try {
     console.log('Fetching initial data from MongoDB...');
     await fetchAndSaveHomepageData();
+    catalogueReady = true;
     console.log('Initial data fetched successfully');
   } catch (error) {
     console.error('Error fetching initial data:', error);
@@ -323,7 +327,6 @@ app.post('/api/add-project', upload.single('image'), async (req, res) => {
     try {
         // Parse project data from the request body
         const projectData = JSON.parse(req.body.projectData); // Ensure the key matches the form field name
-        console.log('Project Data:', projectData);
 
         const imagePath = req.file.path; // Path to the uploaded image
         console.log('Image Path:', imagePath);
@@ -345,7 +348,6 @@ app.post('/api/add-creator', async (req, res) => {
     try {
         // Parse creator data from the request body
         const creatorData = req.body; // Use the correct key for the JSON data
-        console.log('Creator Data:', creatorData);
 
         // Call the function to add the creator to the database
         await addCreator(creatorData);
@@ -361,7 +363,6 @@ app.post('/api/add-technology', async (req, res) => {
     try {
         // Parse technology data from the request body
         const technologyData = req.body;
-        console.log('Technology Data:', technologyData);
 
         // Call the function to add the technology to the database
         await addTechnology(technologyData);

@@ -1,10 +1,7 @@
 const crypto = require('crypto');
 const { MongoClient } = require('mongodb');
 
-const IS_LOCAL = process.env.IS_LOCAL === 'true';
-const MONGO_URI = IS_LOCAL
-  ? `mongodb://root:${process.env.MONGO_PASSWORD}@localhost:27017`
-  : `mongodb://root:${process.env.MONGO_PASSWORD}@mongodb.default.svc.cluster.local:27017`;
+const { connectionURI, databaseName } = require('./mongo');
 
 const VALID_THEME_IDS = new Set([
   'guilty-crown',
@@ -41,10 +38,10 @@ function normalizeVoterId(voterId) {
 }
 
 async function withDb(fn) {
-  const client = new MongoClient(MONGO_URI);
+  const client = new MongoClient(connectionURI);
   try {
     await client.connect();
-    const db = client.db('homepage');
+    const db = client.db(databaseName);
     const collection = db.collection('theme_votes');
     if (!indexReady) {
       await collection.createIndex({ voterId: 1 }, { unique: true });

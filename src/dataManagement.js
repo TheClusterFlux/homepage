@@ -1,28 +1,18 @@
 const { MongoClient, GridFSBucket } = require('mongodb');
 const fs = require('fs');
 const path = require('path');
-const { Readable } = require('stream');
 
-const IS_LOCAL = process.env.IS_LOCAL === 'true';
-const MONGO_URI = IS_LOCAL
-  ? `mongodb://root:${process.env.MONGO_PASSWORD}@localhost:27017`
-  : `mongodb://root:${process.env.MONGO_PASSWORD}@mongodb.default.svc.cluster.local:27017`;
-const maskedMongoUri = IS_LOCAL
-  ? MONGO_URI
-  : MONGO_URI.replace(
-      `${process.env.MONGO_USERNAME}:${process.env.MONGO_PASSWORD}`,
-      '****:****'
-    );
-
-console.log(`Connecting to MongoDB at: ${maskedMongoUri}`);
+const { pipeline } = require('stream/promises');
+const { randomUUID } = require('crypto');
+const { connectionURI, databaseName } = require('./mongo');
 
 async function fetchAndSaveHomepageData() {
-    const client = new MongoClient(MONGO_URI); // Create a new client instance
+    const client = new MongoClient(connectionURI); // Create a new client instance
     try {
         await client.connect();
         console.log('Connected to MongoDB');
 
-        const db = client.db('homepage');
+        const db = client.db(databaseName);
         const creatorsCollection = db.collection('creators');
         const projectsCollection = db.collection('projects');
         const technologiesCollection = db.collection('technologies');
@@ -51,31 +41,25 @@ async function fetchAndSaveHomepageData() {
             fs.mkdirSync(thumbnailsDir);
         }
 
-        const cursor = await bucket.find({});
-        await cursor.forEach(async (file) => {
-            let filename = file.filename.replace(/\s+/g, '_'); // Replace spaces with underscores in the filename
-            const downloadStream = bucket.openDownloadStreamByName(filename);
-            const filePath = path.join(thumbnailsDir, filename);
-            const writeStream = fs.createWriteStream(filePath);
-
-            downloadStream.pipe(writeStream);
-            downloadStream.on('end', () => console.log(`Thumbnail saved: ${filename}`));
-            downloadStream.on('error', (err) => console.error(`Error saving thumbnail ${filename}:`, err));
-            while (downloadStream.readable) {
-                await new Promise((resolve) => setTimeout(resolve, 100)); // Wait for the stream to finish
+        // Process duplicate filenames in upload order so the newest version is served.
+        for await (const file of bucket.find({}).sort({ uploadDate: 1, _id: 1 })) {
+            const filename = path.basename(file.filename).replace(/\s+/g, '_');
+            const destination = path.join(thumbnailsDir, filename);
+            const tempPath = destination + '.' + randomUUID();
+            try {
+                await pipeline(bucket.openDownloadStream(file._id), fs.createWriteStream(tempPath));
+                fs.renameSync(tempPath, destination);
+            } finally {
+                await fs.promises.rm(tempPath, { force: true });
             }
-        });
-        //sleep for 1 second to ensure all streams are closed before exiting
-        await new Promise(resolve => setTimeout(resolve, 1000));
-    } catch (error) {
-        console.error('Error fetching data from MongoDB:', error);
+        }
     } finally {
         await client.close();
     }
 }
 
 async function addProjectWithImage(projectData, imagePath) {
-    const client = new MongoClient(MONGO_URI); // Create a new client instance
+    const client = new MongoClient(connectionURI); // Create a new client instance
     try {
         
         //expect a password to be passed in the projectData object
@@ -83,7 +67,7 @@ async function addProjectWithImage(projectData, imagePath) {
             throw new Error('Password is required to add a project.');
         }
         // Check if the password is correct
-        const password = process.env.PASSWORD || 'defaultpassword'; // Use a default password if not set
+        const password = process.env.PASSWORD; // Use a default password if not set
         if (projectData.password !== password) {
             throw new Error('Incorrect password. Project not added.');
         }
@@ -94,7 +78,7 @@ async function addProjectWithImage(projectData, imagePath) {
         await client.connect();
         console.log('Connected to MongoDB');
     
-        const db = client.db('homepage');
+        const db = client.db(databaseName);
         const projectsCollection = db.collection('projects');
         const bucket = new GridFSBucket(db, { bucketName: 'thumbnails' });
         
@@ -139,7 +123,7 @@ async function addProjectWithImage(projectData, imagePath) {
 }
 
 async function addCreator(creatorData) {
-    const client = new MongoClient(MONGO_URI); // Create a new client instance
+    const client = new MongoClient(connectionURI); // Create a new client instance
     try {
         if (!creatorData) {
             throw new Error('Creator data is required to add a creator.');
@@ -148,7 +132,7 @@ async function addCreator(creatorData) {
             throw new Error('Password is required to add a creator.');
         }
         // Check if the password is correct
-        const password = process.env.PASSWORD || 'defaultpassword'; // Use a default password if not set
+        const password = process.env.PASSWORD; // Use a default password if not set
         if (creatorData.password !== password) {
             throw new Error('Incorrect password. Creator not added.');
         }
@@ -159,7 +143,7 @@ async function addCreator(creatorData) {
         await client.connect();
         console.log('Connected to MongoDB');
         
-        const db = client.db('homepage');
+        const db = client.db(databaseName);
         const creatorsCollection = db.collection('creators');
         
         // Validate creatorData structure
@@ -179,7 +163,7 @@ async function addCreator(creatorData) {
 }
 
 async function addTechnology(technologyData) {
-    const client = new MongoClient(MONGO_URI);
+    const client = new MongoClient(connectionURI);
     try {
         if (!technologyData) {
             throw new Error('Technology data is required to add a technology.');
@@ -189,7 +173,7 @@ async function addTechnology(technologyData) {
         }
         
         // Check if the password is correct
-        const password = process.env.PASSWORD || 'defaultpassword';
+        const password = process.env.PASSWORD;
         if (technologyData.password !== password) {
             throw new Error('Incorrect password. Technology not added.');
         }
@@ -200,7 +184,7 @@ async function addTechnology(technologyData) {
         await client.connect();
         console.log('Connected to MongoDB');
         
-        const db = client.db('homepage');
+        const db = client.db(databaseName);
         const technologiesCollection = db.collection('technologies');
         
         // Validate technologyData structure
